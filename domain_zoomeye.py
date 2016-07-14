@@ -28,9 +28,14 @@ def main():
 	zoomeye_results = search_zoomeye(domain)
 	dict_zoomeye_results = json.loads(zoomeye_results)
 	if 'matches' in dict_zoomeye_results.keys():
+		print len(dict_zoomeye_results['matches'])
 		for x in dict_zoomeye_results['matches']:
 			if x['site'].split('.')[-2] == domain.split('.')[-2]:
-				print "IP: %s\nSite: %s\nTitle: %s\nHeaders: %s\nLocation: %s\n" % (x['ip'], x['site'], x['title'], x['headers'].replace("\n",""), x['geoinfo'])
+				if 'title' in x.keys():
+					print "IP: %s\nSite: %s\nTitle: %s\nHeaders: %s\nLocation: %s\n" % (x['ip'], x['site'], x['title'], x['headers'].replace("\n",""), x['geoinfo'])
+				else:
+					for val in x.keys():
+						print "%s: %s" % (val, x[val])
 	print "\n-----------------------------\n"
 
 if __name__ == "__main__":

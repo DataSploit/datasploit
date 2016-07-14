@@ -10,18 +10,23 @@ def github_search(query, code):
 	req = requests.get(endpoint_git) 
 	soup = BeautifulSoup(req.content, 'html.parser')
 	mydivs = soup.findAll("span", { "class" : "counter" })
-	if mydivs:
+	if mydivs and len(mydivs) >= 1::
 		return "%s Results found in github Codes. \nExplore results manually: %s" % (str(mydivs[0]).split(">")[1].split("<")[0], endpoint_git)
 	else:
-		return "Couldn't find any code matching the query"
+		return None
 
 
 def main():
 	domain = sys.argv[1]
 	#make Search github code for the given domain.
-	print github_search(domain, 'Code')
+	git_results = github_search(domain, 'Code')
+	if git_results is not None:
+		print git_results
+	else:
+		print "Sad! Nothing found on github"
 	print "\n-----------------------------\n"
-
 
 if __name__ == "__main__":
 	main()
+
+

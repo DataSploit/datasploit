@@ -7,7 +7,6 @@ import socket
 def shodandomainsearch(domain):
 	print "\t\t\t[+] Searching in Shodan" 
 	endpoint =  "https://api.shodan.io/shodan/host/search?key=%s&query=hostname:%s&facets={facets}" % (cfg.shodan_api, domain)
-	print endpoint
 	req = requests.get(endpoint)
 	return req.content
 

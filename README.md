@@ -21,7 +21,12 @@ Other modules:
 * instagram_client_secret
 * jsonwhois
 
-*We are working towards few sample API keys which we can deliver as part of the project, so that new users can quickly evaluate the tool. Although those will help only in running basic scans, as all the evaluations will go with these keys and hence more chances of hitting the rate limiting on these APIs.*
+
+## Before running the program, please make sure that you have:
+* Changed the name of the file 'config_sample.py' to config.py
+* Entered all the required APIs in config.py file, as mentioned above. 
+* Installed MongoDb and the mongodb is running. [Refer to documentation](https://docs.mongodb.com/manual/installation/): 
+
 
 ## Usage
 To launch an automated OSINT on domain, shoot following query:

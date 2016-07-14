@@ -5,9 +5,8 @@ python-wappalyzer
 tldextract
 dnspython
 argparse
-dnspython
 clearbit
 bs4
 lxml
 tqdm
-config
+pymongo
