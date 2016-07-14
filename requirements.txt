@@ -10,3 +10,5 @@ bs4
 lxml
 tqdm
 pymongo
+config
+

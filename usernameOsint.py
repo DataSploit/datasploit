@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+import tweepy
+import re
+from collections import Counter
+
 import requests
 import sys
 import config as cfg
@@ -9,6 +14,9 @@ from bs4 import BeautifulSoup
 
 import os
 import urllib
+
+twitterex=0 #counter for identifying if twitter account is found
+
 def git_user_details(username):
 	req = requests.get("https://api.github.com/users/%s" % (username))
 	return json.loads(req.content)
@@ -99,6 +107,8 @@ def profilepic(urls):
 				valx='src'
 				pro="twitter"
 				extracting(url,tg,att,val,valx,pro)
+				global twitterex
+				twitterex=1
 				continue
 			except KeyError:
 				pass
@@ -226,6 +236,47 @@ def profilepic(urls):
 	return imglinks
 
 
+def twitterdetails(username):
+	auth = tweepy.OAuthHandler(cfg.consumer_key, cfg.consumer_secret)
+	auth.set_access_token(cfg.access_token, cfg.access_token_secret)
+
+	#preparing auth
+	api = tweepy.API(auth)
+
+	
+	f = open("temptweets.txt","w+")
+	#writing tweets to temp file- last 1000
+	for tweet in tweepy.Cursor(api.user_timeline, id=username).items(1000):
+		f.write(tweet.text.encode("utf-8"))
+		f.write("\n")
+		
+
+
+	#extracting hashtags
+	f = open('temptweets.txt', 'r')
+	q=f.read()
+	strings = re.findall(r'(?:\#+[\w_]+[\w\'_\-]*[\w_]+)', q)	#Regex(s) Source: https://marcobonzanini.com/2015/03/09/mining-twitter-data-with-python-part-2/
+	#extracting users
+	tusers = re.findall(r'(?:@[\w_]+)', q)
+	f.close()
+
+	hashlist=[]
+	userlist=[]
+	for item in strings:
+		item=item.strip( '#' )
+		item=item.lower()
+		hashlist.append(item)
+	
+	hashlist=hashlist[:10]
+	for itm in tusers:
+		itm=itm.strip( '@' )
+		itm=itm.lower()
+		userlist.append(itm)
+	
+	userlist=userlist[:10]
+	
+	return hashlist,userlist
+
 username = sys.argv[1]
 
 
@@ -260,3 +311,19 @@ print "\t\t\t[+] Finding Profile Pics\n"
 for x in imagelinks:
 	print x
 print "\n\n-----------------------------\n"
+
+
+if (twitterex==1):
+#counting hashtag occurrence
+	hashlist,userlist=twitterdetails(username)
+	count= Counter(hashlist).most_common()
+	print "Top Hashtag Occurrence for user "+username+" based on last 1000 tweets"
+	for hash,cnt in count:
+		print "#"+hash+" : "+str(cnt)
+	print "\n"	
+		
+#counting user occurrence
+	countu= Counter(userlist).most_common()
+	print "Top User Occurrence for user "+username+" based on last 1000 tweets"
+	for usr,cnt in countu:
+		print "@"+usr+" : "+str(cnt)

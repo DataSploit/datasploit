@@ -14,29 +14,35 @@ def censys_search(domain):
         params = {'query' : domain, 'page' : page}
         res = requests.post("https://www.censys.io/api/v1/search/ipv4", json = params, auth = (cfg.censysio_id, cfg.censysio_secret))
         payload = res.json()
-       
 
-        for r in payload['results']:
-            temp_dict = {}
-            ip = r["ip"]
-            proto = r["protocols"]
-            proto = [p.split("/")[0] for p in proto]
-            proto.sort(key=float)
-            protoList = ','.join(map(str, proto))  
+        if 'error' not in payload.keys():
+            if 'results' in payload.keys():
+                for r in payload['results']:
+                    temp_dict = {}
+                    ip = r["ip"]
+                    proto = r["protocols"]
+                    proto = [p.split("/")[0] for p in proto]
+                    proto.sort(key=float)
+                    protoList = ','.join(map(str, proto))  
 
-            temp_dict["ip"] = ip
-            temp_dict["protocols"] = protoList       
-       
-            #print '[%s] IP: %s - aaProtocols: %s' % (colored('*', 'red'), ip, protoList)
-           
-            if '80' in protoList:
-                new_dict = view(ip, temp_dict)
-                censys_list.append(new_dict)
-            else:
-                censys_list.append(temp_dict)
+                    temp_dict["ip"] = ip
+                    temp_dict["protocols"] = protoList       
+               
+                    #print '[%s] IP: %s - aaProtocols: %s' % (colored('*', 'red'), ip, protoList)
+                   
+                    if '80' in protoList:
+                        new_dict = view(ip, temp_dict)
+                        censys_list.append(new_dict)
+                    else:
+                        censys_list.append(temp_dict)
 
-        pages = payload['metadata']['pages']
-        page += 1
+                pages = payload['metadata']['pages']
+                page += 1
+        else:
+            print "X"
+            print payload['error']
+            return None
+            break
 
 def view(server, temp_dict):
     res = requests.get("https://www.censys.io/api/v1/view/ipv4/%s" % (server), auth = (cfg.censysio_id, cfg.censysio_secret))

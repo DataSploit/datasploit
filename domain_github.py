@@ -10,7 +10,7 @@ def github_search(query, code):
 	req = requests.get(endpoint_git) 
 	soup = BeautifulSoup(req.content, 'html.parser')
 	mydivs = soup.findAll("span", { "class" : "counter" })
-	if mydivs and len(mydivs) >= 1::
+	if mydivs and len(mydivs) >= 1:
 		return "%s Results found in github Codes. \nExplore results manually: %s" % (str(mydivs[0]).split(">")[1].split("<")[0], endpoint_git)
 	else:
 		return None
