@@ -1,4 +1,6 @@
-# Overview of the tool:
+# DataSploit
+
+## Overview of the tool
 * Performs OSINT on a domain / email / username / phone and find out information from different sources.
 * Correlates and collaborate the results, show them in a consolidated manner. 
 * Tries to find out credentials, api-keys, tokens, subdomains, domain history, legacy portals, etc. related to the target. 
@@ -25,7 +27,7 @@ Other modules:
 ## Before running the program, please make sure that you have:
 * Changed the name of the file 'config_sample.py' to config.py
 * Entered all the required APIs in config.py file, as mentioned above. 
-* Installed MongoDb and the mongodb is running. [Refer to documentation](https://docs.mongodb.com/manual/installation/): 
+* Installed MongoDb and the mongodb is running. [Refer to documentation](https://docs.mongodb.com/manual/installation/)
 
 
 ## Usage
@@ -46,7 +48,7 @@ To launch an automated OSINT on domain, shoot following query:
 python domainOsint.py <domain_name>
 ```
 
-## SETUP and Contribution
+## Setup and Contribution
 * Change config_sample.py to config.py
 ```
 mv config_sample.py config.py
@@ -55,7 +57,6 @@ mv config_sample.py config.py
 * Sources for which API keys are missing, will be simply skipped for the search. 
 
 ### Config files
-
 
 ### Python dependencies
 
