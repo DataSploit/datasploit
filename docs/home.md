@@ -1,4 +1,5 @@
 # Welcome to the DataSploit wiki!!!
+
 ## Overview
 
 * Performs automated OSINT on a domain / email / username / phone and find out relevant information from different sources. 
