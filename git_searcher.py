@@ -18,9 +18,10 @@ def find_repos(username):
 	list_repos = []
 	url = "https://api.github.com/users/%s/repos?access_token=%s" % (username, access_token)
 	req = requests.get(url)
-	print json.loads(req.content)
 	for repos in json.loads(req.content):
-		list_repos.append(repos['full_name'])
+		repos['full_name']
+		if repos['fork'] == False:
+			list_repos.append(repos['full_name'])
 	return list_repos
 
 def find_commits(repo_name):

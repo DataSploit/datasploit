@@ -62,7 +62,7 @@ def profilepic(urls):
 	if len(urls) or git_data['avatar_url']:
 		if not os.path.exists(username):
 			os.makedirs(username)
-	if git_data['avatar_url']:
+	if git_data.get("avatar_url", "") != "":
 		path=username+"/github.jpg"
 		urllib.urlretrieve(git_data['avatar_url'], path)
 	for url in urls:
@@ -237,8 +237,8 @@ def profilepic(urls):
 
 
 def twitterdetails(username):
-	auth = tweepy.OAuthHandler(cfg.consumer_key, cfg.consumer_secret)
-	auth.set_access_token(cfg.access_token, cfg.access_token_secret)
+	auth = tweepy.OAuthHandler(cfg.twitter_consumer_key, cfg.twitter_consumer_secret)
+	auth.set_access_token(cfg.twitter_access_token, cfg.twiter_access_token_secret)
 
 	#preparing auth
 	api = tweepy.API(auth)
@@ -281,20 +281,23 @@ username = sys.argv[1]
 
 
 print "\t\t\t[+] Checking git user details\n"
-git_data = git_user_details(username)
-print "Login: %s" % git_data['login']
-print "avatar_url: %s"  % git_data['avatar_url']
-print "id: %s" % git_data['id']
-print "Repos: %s" % git_data['repos_url']
-print "Name: %s" % git_data['name']
-print "Company: %s" % git_data['company']
-print "Blog: %s" % git_data['blog']
-print "Location: %s" % git_data['location']
-print "Hireable: %s" % git_data['hireable']
-print "Bio: %s" % git_data['bio']
-print "On GitHub: %s" % git_data['created_at']
-print "Last Activity: %s" % git_data['updated_at']
-print "\n-----------------------------\n"
+try:
+	git_data = git_user_details(username)
+	print "Login: %s" % git_data['login']
+	print "avatar_url: %s"  % git_data['avatar_url']
+	print "id: %s" % git_data['id']
+	print "Repos: %s" % git_data['repos_url']
+	print "Name: %s" % git_data['name']
+	print "Company: %s" % git_data['company']
+	print "Blog: %s" % git_data['blog']
+	print "Location: %s" % git_data['location']
+	print "Hireable: %s" % git_data['hireable']
+	print "Bio: %s" % git_data['bio']
+	print "On GitHub: %s" % git_data['created_at']
+	print "Last Activity: %s" % git_data['updated_at']
+	print "\n-----------------------------\n"
+except:
+	print 'Git account do not exist on this username.'
 
 
 
@@ -306,7 +309,7 @@ for lnk in links:
 print "\n-----------------------------\n"
 
 imagelinks=profilepic(links)
-imagelinks.append(git_data['avatar_url'])
+imagelinks.append(git_data.get("avatar_url", ""))
 print "\t\t\t[+] Finding Profile Pics\n"
 for x in imagelinks:
 	print x

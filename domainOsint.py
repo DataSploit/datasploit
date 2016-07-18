@@ -323,6 +323,7 @@ def do_everything(domain):
 		
 
 
+	'''
 	if cfg.censysio_id != "" and cfg.censysio_secret != "":
 		print "[+]\t Kicking off Censys Search. This may take a while.."
 		censys_search(domain)
@@ -331,7 +332,7 @@ def do_everything(domain):
 			for x in censys_list:
 				print x
 		print "\n-----------------------------\n"
-	
+	'''
 
 	
 	#Code for shodan Ip search. now we are doing Hostname search.
