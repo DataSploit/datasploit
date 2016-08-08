@@ -36,12 +36,48 @@ and enter the respective values in config.py file. Leave all other key value pai
 Datasploit uses mongoDb in the backend and hence require a running instance of mongoDb in order to save and query data. Install the mongoDb database as per the instructions from the below mentioned site:
 > https://docs.mongodb.com/manual/installation
 
-Create a directory for storing the db files, and Start the mongoDb service with this database path:
+For MAC
+```
+brew install mongodb
+```
+
+Create a directory inside datasploit master folder for storing the db files, and Start the mongoDb service with this database path:
 ```
 mkdir datasploitDb
 mongod --dbpath datasploitDb
 ```
+
 Congratulations, you are now good to go. Lets go ahead and run our automated script for OSINT on a domain. 
 ```
-python domainOsint.py <domain_name>
+python domainOsint.py -d <domain_name>
 ```
+
+If you are looking for the UI part.
+
+### Step 6: Install RabbitMQ
+
+Let the previous terminal open with that, open a new terminal and install RabbitMQ
+> https://www.rabbitmq.com/install-homebrew.html
+
+For MAC
+```
+brew install rabbitmq
+PATH=$PATH:/usr/local/sbin >> .bash_profile
+rabbitmq-server
+```
+
+### Step 7: Start django server
+
+Open a new terminal, go inside your datasploit master folder
+
+```
+cd core
+python manage.py runserver
+```
+
+Now it will show an ip:port mostly http://127.0.0.1:8000 once you get this then open below link to get the UI.
+> 127.0.0.1:8000/osint
+
+Now feel free to run the domain osint using UI.
+
+
