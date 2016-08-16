@@ -44,6 +44,7 @@ from pymongo import MongoClient
 import clearbit
 import time
 import hashlib
+import config
 from termcolor import colored
 
 reload(sys)
@@ -88,7 +89,7 @@ censys_list = []
 ######
 
 dict_to_apend= {}
-client = MongoClient()
+client = MongoClient(config.mongo_uri)
 db = client.database1
 
 allusernames_list = []
