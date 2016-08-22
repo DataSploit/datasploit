@@ -32,7 +32,7 @@ Options:
 
 * Bunch of Python libraries (use requirements.txt)
 * MongoDb, Django, Celery and RabbitMq (Refer to setup guide).
-* Ubuntu requires brew, libxml2-dev and libxslt1-dev to be installed
+* Ubuntu requires `brew`, `libxml2-dev`, `libxslt1-dev` and `zlib1g-dev` to be installed
 
 ## Detailed Tool Documentation:
 
