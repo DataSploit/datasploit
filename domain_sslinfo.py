@@ -1,6 +1,6 @@
 import sys
 import json
-import requests 
+import requests
 from bs4 import BeautifulSoup
 import re
 from termcolor import colored
@@ -13,8 +13,11 @@ def check_ssl_htbsecurity(domain):
 	headers['Content-Type'] = "application/x-www-form-urlencoded"
 	data='domain=%s&dnsr=off&recheck=false' % domain
 	req = requests.post('https://www.htbridge.com/ssl/chssl/1451425590.html', headers=headers , data=data)
-	results = json.loads(req.content)
-	return results
+	if req.content:
+		results = json.loads(req.content)
+		return results
+	else:
+		return "Empty JSON"
 
 def main():
 	domain = sys.argv[1]
@@ -43,4 +46,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-
