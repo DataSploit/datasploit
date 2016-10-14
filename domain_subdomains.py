@@ -27,24 +27,24 @@ def check_and_append_subdomains(subdomain):
 def subdomains(domain):
 	r = requests.get("https://dnsdumpster.com/")
 	cookies = {}
-	cookies['csrftoken'] = r.cookies['csrftoken']
+	if 'csrftoken' in r.cookies.keys():
+		cookies['csrftoken'] = r.cookies['csrftoken']
+		data = {}
+		data['csrfmiddlewaretoken'] = cookies['csrftoken']
+		data['targetip'] = domain
+		headers = {}
+		headers['Referer'] = "https://dnsdumpster.com/"
+		req = requests.post("https://dnsdumpster.com/", data = data, cookies = cookies, headers = headers)
+		#print req.content
+		soup =  BeautifulSoup(req.content, 'lxml')
 
-	data = {}
-	data['csrfmiddlewaretoken'] = cookies['csrftoken']
-	data['targetip'] = sys.argv[1]
-
-	headers = {}
-	headers['Referer'] = "https://dnsdumpster.com/"
-
-	req = requests.post("https://dnsdumpster.com/", data = data, cookies = cookies, headers = headers)
-	soup =  BeautifulSoup(req.content, 'lxml')
-
-	subdomains=soup.findAll('td',{"class":"col-md-4"})
-	for subd in subdomains:
-		if domain in subd.text:
-			check_and_append_subdomains(subd.text.split()[0])
-		else:
-			pass
+		subdomains=soup.findAll('td',{"class":"col-md-4"})
+		for subd in subdomains:
+			if domain in subd.text:
+				print subd.text.split()[0]
+				check_and_append_subdomains(subd.text.split()[0])
+			else:
+				pass
 
 
 def find_subdomains_from_wolfram(domain):
@@ -155,7 +155,6 @@ def subdomains_from_netcraft(domain):
 			next_page = 21
 
 			for x in range(2,num_pages):
-				print "....."
 				url  = "http://searchdns.netcraft.com/?host=%s&last=%s&from=%s&restriction=site%%20contains" % (domain, last_item, next_page)
 				req2 = requests.get(url)
 				link_regx = re.compile('<a href="http://toolbar.netcraft.com/site_report\?url=(.*)">')

@@ -21,15 +21,6 @@ def git_user_details(username):
 	req = requests.get("https://api.github.com/users/%s" % (username))
 	return json.loads(req.content)
 
-	'''to add few more stuff
-	https://api.github.com/users/anantshri/orgs
-	https://api.github.com/search/issues?q=type:pr+is:merged+author:anantshri&per_page=100
-	https://api.github.com/users/anantshri/starred?per_page=100&page
-	https://api.github.com/users/anantshri/repos?per_page=100
-
-	'''
-
-
 def usernamesearch(username):
 	data = {"username":username}
 	req = requests.post('https://usersearch.org/results_normal.php',data=data, verify=False)
