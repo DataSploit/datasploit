@@ -34,4 +34,7 @@ Options:
 ## Detailed Tool Documentation:
 > [http://datasploit.readthedocs.io/en/latest/](http://datasploit.readthedocs.io/en/latest/)
 
+##Video tutorial to setup DataSploit in fresh ubuntu box
+> [https://www.youtube.com/playlist?list=PLF-PQi4RWPTFFaKoTjChUHMRjJ-Im3OJK]
+
 
