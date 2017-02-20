@@ -1,8 +1,9 @@
 import requests
 import re
+import codecs
 import sys
 
-list_urls = open("check_urls.txt")
+list_urls = codecs.open("check_urls.txt", encoding='utf-8')
 existing_urls = []
 host = sys.argv[1]
 base_url = "http://" + host + "/"

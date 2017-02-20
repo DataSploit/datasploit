@@ -6,10 +6,9 @@ import config as cfg
 
 
 def censys_search(domain):
+    #censys_list = []
     pages = float('inf')
     page = 1
-
-    #censys_list = []
     while page <= pages:
         print "Parsed and collected results from page %s" % (str(page))
         params = {'query' : domain, 'page' : page}
@@ -24,17 +23,19 @@ def censys_search(domain):
                     proto = r["protocols"]
                     proto = [p.split("/")[0] for p in proto]
                     proto.sort(key=float)
-                    protoList = ','.join(map(str, proto))  
+                    protoList = ','.join(map(str, proto))
 
                     temp_dict["ip"] = ip
-                    temp_dict["protocols"] = protoList       
-               
+                    temp_dict["protocols"] = protoList
+
                     #print '[%s] IP: %s - aaProtocols: %s' % (colored('*', 'red'), ip, protoList)
-                   
+
+                    print temp_dict
                     if '80' in protoList:
                         new_dict = view(ip, temp_dict)
                         censys_list.append(new_dict)
                     else:
+
                         censys_list.append(temp_dict)
 
                 pages = payload['metadata']['pages']
@@ -47,8 +48,7 @@ def censys_search(domain):
 
 def view(server, temp_dict):
     res = requests.get("https://www.censys.io/api/v1/view/ipv4/%s" % (server), auth = (cfg.censysio_id, cfg.censysio_secret))
-    payload = res.json()       
-
+    payload = res.json()
     try:
         if 'title' in payload['80']['http']['get'].keys():
             #print "[+] Title: %s" % payload['80']['http']['get']['title']
@@ -56,7 +56,7 @@ def view(server, temp_dict):
             temp_dict['title'] = title
         if 'server' in payload['80']['http']['get']['headers'].keys():
             header = "[+] Server: %s" % payload['80']['http']['get']['headers']['server']
-            temp_dict["server_header"] = payload['80']['http']['get']['headers']['server'] 
+            temp_dict["server_header"] = payload['80']['http']['get']['headers']['server']
         return temp_dict
 
     except Exception as error:
@@ -68,6 +68,7 @@ censys_list = []
 
 def main():
     domain = sys.argv[1]
+    print "Starting censys on : " + domain
     censys_search(domain)
     for x in censys_list:
         print x

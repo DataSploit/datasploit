@@ -40,7 +40,8 @@ def google_search(domain,start_index):
 			print "Title: %s\nURL: %s\nSnippet: %s\n" % (x['title'], colorize(x['link']), colorize(x['snippet']))
 			start_index = +1
 		return int(results['searchInformation']['totalResults'])
-	elif results['searchInformation']['totalResults'] == "0":
+        #searchInformation isn't guaranteed to be in results
+	elif 'searchInformation' in results and results['searchInformation']['totalResults'] == "0":
 			print '0 Results found'
 			return 0
 	elif results['error']['code'] == 403:
@@ -49,7 +50,7 @@ def google_search(domain,start_index):
 	else:
 		return 0
 	#return json.loads(res.text)
-	
+
 
 def main():
 	domain = sys.argv[1]
@@ -60,7 +61,7 @@ def main():
 			more_iters = (total_results / 10)
 			if more_iters >= 10:
 					print colored(style.BOLD + '\n---> Too many results, Daily API limit might exceed\n' + style.END, 'red')
-			for x in xrange(1,more_iters + 1):	
+			for x in xrange(1,more_iters + 1):
 				google_search(domain, (x*10)+1)
 		print "\n\n-----------------------------\n"
 	else:

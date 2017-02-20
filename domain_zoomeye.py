@@ -27,8 +27,8 @@ def search_zoomeye(domain):
 	zoomeye_token = get_accesstoken_zoomeye(domain)
 	authData = {"Authorization": "JWT " + str(zoomeye_token)}
 	req = requests.get('http://api.zoomeye.org/web/search/?query=site:%s&page=1' % domain, headers=authData)
-	return req.text
-	
+	return req.text.encode('utf-8')
+
 
 def main():
 	domain = sys.argv[1]

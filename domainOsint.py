@@ -4,7 +4,8 @@ import time
 import whois
 import requests
 import socket
-import sys	
+import codecs
+import sys
 import json
 from Wappalyzer import Wappalyzer, WebPage
 from bs4 import BeautifulSoup
@@ -104,23 +105,23 @@ def printart():
 
 def do_everything(domain):
 	dict_to_apend['targetname'] = domain
-	
+
 	API_URL = "https://www.censys.io/api/v1"
 	#print cfg.zoomeyeuser
 
-	
+
 	#print WhoIs information
 	whoisdata = whoisnew(domain)
 	print whoisdata
 	dict_to_apend['whois'] = whoisdata
 
 
-	
+
 	#print DNS Information
 	dns_records = parse_dns_records(domain)
-	#dict_to_apend['dns_records'] = dns_records > not working 
+	#dict_to_apend['dns_records'] = dns_records > not working
 	#bson.errors.InvalidDocument: Cannot encode object: <DNS IN A rdata: 54.208.84.166>
-	
+
 	for x in dns_records.keys():
 		print x
 		if "No" in dns_records[x] and "Found" in dns_records[x]:
@@ -129,7 +130,7 @@ def do_everything(domain):
 			for y in dns_records[x]:
 				print "\t%s" % (y)
 			#print type(dns_records[x])
-	
+
 	print colored(style.BOLD + '\n---> Finding Paste(s)..\n' + style.END, 'blue')
 	if cfg.google_cse_key != "" and cfg.google_cse_key != "XYZ" and cfg.google_cse_cx != "" and cfg.google_cse_cx != "XYZ":
 		total_results = google_search(domain, 1)
@@ -137,7 +138,7 @@ def do_everything(domain):
 			more_iters = (total_results / 10)
 			if more_iters >= 10:
 					print colored(style.BOLD + '\n---> Too many results, Daily API limit might exceed\n' + style.END, 'red')
-			for x in xrange(1,more_iters + 1):	
+			for x in xrange(1,more_iters + 1):
 				google_search(domain, (x*10)+1)
 		print "\n\n-----------------------------\n"
 	else:
@@ -184,26 +185,26 @@ def do_everything(domain):
 	except:
 		print "[-] HTTPS connection was unavailable"
 		wappalyze_results['https'] = []
-	
+
 
 	if len(wappalyze_results.keys()) >= 1:
 		dict_to_apend['wappalyzer'] = wappalyze_results
 
-	
+
 	#make Search github code for the given domain.
-	
+
 	git_results = github_search(domain, 'Code')
 	if git_results is not None:
 		print git_results
 	else:
 		print colored("Sad! Nothing found on github", 'red')
-	
-	#collecting emails for the domain and adding information in master email list. 
+
+	#collecting emails for the domain and adding information in master email list.
 	if cfg.emailhunter != "":
 		emails = emailhunter(domain)
 		if len(collected_emails) >= 1:
 			for x in collected_emails:
-				print str(x)	
+				print str(x)
 			dict_to_apend['email_ids'] = collected_emails
 
 
@@ -212,7 +213,7 @@ def do_everything(domain):
 
 	while True:
 		a = raw_input(colored("\n\nDo you want to launch osint check for these emails? [(Y)es/(N)o/(S)pecificEmail]: ", 'red'))
-		if a.lower() =="yes" or a.lower() == "y":	
+		if a.lower() =="yes" or a.lower() == "y":
 			for x in collected_emails:
 				print "Checking for %s" % x
 				print_emailosint(x)
@@ -235,7 +236,7 @@ def do_everything(domain):
 	'''
 
 
-	
+
 	dns_ip_history = netcraft_domain_history(domain)
 	if len(dns_ip_history.keys()) >= 1:
 		for x in dns_ip_history.keys():
@@ -248,16 +249,16 @@ def do_everything(domain):
 	##print "---> Check_subdomains from wolframalpha"
 	##find_subdomains_from_wolfram(domain)
 
-	
+
 
 	#domain pagelinks
-	links=pagelinks(domain)	
+	links=pagelinks(domain)
 	if len(links) >= 1:
 		for x in links:
 			print x
 		dict_to_apend['pagelinks'] = links
 
-	
+
 	#calling and printing subdomains after pagelinks.
 
 	subdomains_from_netcraft(domain)
@@ -267,7 +268,7 @@ def do_everything(domain):
 		for sub in subdomain_list:
 			print sub
 		dict_to_apend['subdomains'] = subdomain_list
-	
+
 	#wikileaks
 	leaklinks=wikileaks(domain)
 	for tl,lnk in leaklinks.items():
@@ -275,8 +276,8 @@ def do_everything(domain):
 	if len(leaklinks.keys()) >= 1:
 		dict_to_apend['wikileaks'] = leaklinks
 	print "For all results, visit: "+ 'https://search.wikileaks.org/?query=&exact_phrase=%s&include_external_sources=True&order_by=newest_document_date'%(domain)
-	
-	
+
+
 
 	links_brd =boardsearch_forumsearch(domain)
 	for tl,lnk in links_brd.items():
@@ -334,8 +335,10 @@ def do_everything(domain):
 
 
 
-def main(): 
+def main():
 	signal.signal(signal.SIGINT, signal_handler)
+        sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+        sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 	options, args = parser.parse_args()
 	printart()
 	domain = options.domain

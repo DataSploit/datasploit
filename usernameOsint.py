@@ -6,6 +6,7 @@ from collections import Counter
 
 import requests
 import sys
+import codecs
 import config as cfg
 import clearbit
 import json
@@ -49,8 +50,8 @@ def extracting(prourl,tag,attribute,value,finattrib,profile):
 		urllib.urlretrieve(img[finattrib], path)
 
 def profilepic(urls):
-	
-	
+
+
 	if len(urls) or git_data['avatar_url']:
 		if not os.path.exists(username):
 			os.makedirs(username)
@@ -79,7 +80,7 @@ def profilepic(urls):
 				extracting(url,tg,att,val,valx,pro)
 				continue
 			except KeyError:
-				pass	
+				pass
 		elif 'youtube' in url:
 			try:
 				tg='link'
@@ -90,7 +91,7 @@ def profilepic(urls):
 				extracting(url,tg,att,val,valx,pro)
 				continue
 			except KeyError:
-				pass		
+				pass
 		elif 'twitter' in url:
 			try:
 				tg='img'
@@ -236,17 +237,17 @@ def twitterdetails(username):
 	#preparing auth
 	api = tweepy.API(auth)
 
-	
-	f = open("temptweets.txt","w+")
+
+	f = codecs.open("temptweets.txt","w+", encoding='utf-8')
 	#writing tweets to temp file- last 1000
 	for tweet in tweepy.Cursor(api.user_timeline, id=username).items(1000):
 		f.write(tweet.text.encode("utf-8"))
 		f.write("\n")
-		
+
 
 
 	#extracting hashtags
-	f = open('temptweets.txt', 'r')
+	f = codecs.open('temptweets.txt', 'r', encoding='utf-8')
 	q=f.read()
 	strings = re.findall(r'(?:\#+[\w_]+[\w\'_\-]*[\w_]+)', q)	#Regex(s) Source: https://marcobonzanini.com/2015/03/09/mining-twitter-data-with-python-part-2/
 	#extracting users
@@ -259,15 +260,15 @@ def twitterdetails(username):
 		item=item.strip( '#' )
 		item=item.lower()
 		hashlist.append(item)
-	
+
 	hashlist=hashlist[:10]
 	for itm in tusers:
 		itm=itm.strip( '@' )
 		itm=itm.lower()
 		userlist.append(itm)
-	
+
 	userlist=userlist[:10]
-	
+
 	return hashlist,userlist
 
 username = sys.argv[1]
@@ -316,8 +317,8 @@ if (twitterex==1):
 	print "Top Hashtag Occurrence for user "+username+" based on last 1000 tweets"
 	for hash,cnt in count:
 		print "#"+hash+" : "+str(cnt)
-	print "\n"	
-		
+	print "\n"
+
 #counting user occurrence
 	countu= Counter(userlist).most_common()
 	print "Top User Occurrence for user "+username+" based on last 1000 tweets"

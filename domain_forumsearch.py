@@ -16,7 +16,7 @@ def boardsearch_forumsearch(domain):
 	print colored(style.BOLD + '\n---> Gathering links from Forums:\n' + style.END, 'blue')
 	time.sleep(0.3)
 	req = requests.get('http://boardreader.com/index.php?a=l&q=%s&d=0&extended_search=1&q1=%s&ltype=all&p=50'%(domain,domain))
-	soup=BeautifulSoup(req.content, "lxml")
+	soup=BeautifulSoup(req.content.encode('utf-8'), "lxml")
 	text=soup.findAll('bdo',{"dir":"ltr"})
 	links={}
 	for lk in text:
