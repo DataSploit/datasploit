@@ -26,8 +26,7 @@ def search(request):
 			pattern = "^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$"
 			check = re.match(pattern, domain)
 			if check:
-				functions = [domain_GooglePDF.run]	
-				functions = [domain_GooglePDF.run, domain_checkpunkspider.checkpunkspider, domain_dnsrecords.parse_dns_records, domain_emailhunter.emailhunter, domain_forumsearch.boardsearch_forumsearch, domain_github.github_search, domain_history.netcraft_domain_history, domain_pagelinks.pagelinks, domain_shodan.shodandomainsearch, domain_sslinfo.check_ssl_htbsecurity, domain_wappalyzer.wappalyzeit, domain_whois.whoisnew, domain_wikileaks.wikileaks, domain_subdomains.run]	
+				functions = [domain_GooglePDF.run, domain_checkpunkspider.checkpunkspider, domain_dnsrecords.parse_dns_records, domain_emailhunter.emailhunter, domain_forumsearch.boardsearch_forumsearch, domain_github.github_search, domain_history.netcraft_domain_history, domain_pagelinks.pagelinks, domain_shodan.shodandomainsearch, domain_sslinfo.check_ssl_htbsecurity, domain_wappalyzer.wappalyzeit, domain_whois.whoisnew, domain_wikileaks.wikileaks, domain_subdomains.run]
 				
 				taskId = str(uuid4())
 				client = MongoClient(settings.MONGO_HOSTNAME, 27017)
