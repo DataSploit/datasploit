@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 from osint import *
 
@@ -29,7 +30,7 @@ def search(request):
 				functions = [domain_GooglePDF.run, domain_checkpunkspider.checkpunkspider, domain_dnsrecords.parse_dns_records, domain_emailhunter.emailhunter, domain_forumsearch.boardsearch_forumsearch, domain_github.github_search, domain_history.netcraft_domain_history, domain_pagelinks.pagelinks, domain_shodan.shodandomainsearch, domain_sslinfo.check_ssl_htbsecurity, domain_wappalyzer.wappalyzeit, domain_whois.whoisnew, domain_wikileaks.wikileaks, domain_subdomains.run]	
 				
 				taskId = str(uuid4())
-				client = MongoClient()
+				client = MongoClient(settings.MONGO_HOSTNAME, 27017)
 			        db = client.database1
 			        d = {"status_check": taskId, "count": len(functions), "type": "poller"}
 				print d
@@ -53,7 +54,7 @@ def status(request):
 		taskId = request.POST.get("taskId", None)
 		domain = request.POST.get("domain", None)
 		if taskId and domain:
-			client = MongoClient()
+			client = MongoClient(settings.MONGO_HOSTNAME, 27017)
                         db = client.database1
 			cursor = db.domaindata.find({"type": "poller", "status_check": taskId})
 			if cursor.count() == 1:
