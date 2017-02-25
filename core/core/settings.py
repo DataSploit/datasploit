@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-import os
+import os, socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'djcelery',
+    'django_celery_results',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -75,12 +75,35 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+# To allow local installs as well as the use of a separate postgres docker container
+DATABASES = {}
+try:
+    socket.gethostbyname('postgres')
+except socket.error:
+    default_db = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+else:
+    default_db = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'postgres',
+        'PORT': 5432,
+    }
+
+DATABASES = {
+    'default': default_db
 }
+
+# To allow local installs as well as the use of a separate mongodb docker container
+try:
+    socket.gethostbyname('mongodb')
+except socket.error:
+    MONGO_HOSTNAME = '127.0.0.1'
+else:
+    MONGO_HOSTNAME = 'mongodb'
 
 
 # Password validation
@@ -115,8 +138,16 @@ USE_L10N = True
 
 USE_TZ = True
 
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERY_RESULT_BACKEND='django-db'
 CELERY_IMPORTS = ("ui.tasks")
+
+# To allow local installs as well as the use of a separate rabbitmq container
+try:
+    socket.gethostbyname('rabbitmq')
+except socket.error:
+    CELERY_BROKER_URL = 'pyamqp://guest@127.0.0.1/'
+else:
+    CELERY_BROKER_URL = 'pyamqp://guest@rabbitmq/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/

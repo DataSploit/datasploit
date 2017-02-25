@@ -39,4 +39,7 @@ Options:
 ## Detailed Tool Documentation:
 > [http://datasploit.readthedocs.io/en/latest/](http://datasploit.readthedocs.io/en/latest/)
 
-
+# Using docker-compose
+* install docker
+* docker-compose up -d
+* if this is your first time running this: docker-compose exec datasploit python manage.py migrate

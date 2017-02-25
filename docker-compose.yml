@@ -1,0 +1,30 @@
+version: '2.1'
+
+volumes:
+  certs: 
+  vhost: 
+
+services:
+  datasploit:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+  datasploit-worker:
+    image: datasploit
+    depends_on:
+      - rabbitmq
+      - datasploit
+    environment:
+      C_FORCE_ROOT: root
+    command: ["celery", "-A", "core", "-b", "amqp://guest@rabbitmq", "worker", "-l", "info", "--concurrency", "20"]
+  rabbitmq:
+    image: rabbitmq:3-alpine
+  mongodb:
+    image: mongo:3
+  postgres:
+    image: postgres:alpine
+    healthcheck:
+      test: su postgres -c "pg_ctl status"
