@@ -63,7 +63,7 @@ def main():
 					print colored(style.BOLD + '\n---> Too many results, Daily API limit might exceed\n' + style.END, 'red')
 			for x in xrange(1,more_iters + 1):
 				google_search(domain, (x*10)+1)
-		print "\n\n-----------------------------\n"
+		print "\n\n-----------------------------------------n"
 	else:
 		print colored(style.BOLD + '\n[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
 

@@ -12,6 +12,10 @@ import re
 from email_fullcontact import fullcontact
 from termcolor import colored
 from email_pastes import google_search,colorize
+from email_basic_checks import basic_checks
+
+
+
 class style:
    BOLD = '\033[1m'
    END = '\033[0m'
@@ -103,6 +107,9 @@ def print_emailosint(email):
 	else:
 		print colored("[-] No breach status found.", 'red')
 	'''
+
+	basic_checks(email)
+
 	print colored(style.BOLD + '\n---> Finding User Information\n' + style.END, 'blue')
 	time.sleep(0.3)
 	data = fullcontact(email)

@@ -76,7 +76,7 @@ def main():
 	ip_addr = sys.argv[1]
 	shodansearch(ip_addr)
 	#print res_from_shodan
-	print colored(style.BOLD + '-----------------------------------' + style.END, 'blue')
+	print colored(style.BOLD + '-----------------------------------------' + style.END, 'blue')
 
 if __name__ == "__main__":
 	main()

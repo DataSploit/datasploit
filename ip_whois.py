@@ -21,7 +21,7 @@ def ip_whois(ip):
 		results = 'notfound'
 		print 'ASN Registry Lookup Failed'
 	if results != 'notfound':
-		print colored(style.BOLD + '\nReport for IP: %s\n' + style.END, 'green') % str(ip)
+		print colored(style.BOLD + '\nWhoIS Report for IP: %s\n' + style.END, 'green') % str(ip)
 		print colored(style.BOLD + '--------------- Basic Info ---------------' + style.END, 'blue')
 		print 'ASN ID: %s' % results['asn']
 		if 'network' in results.keys():
