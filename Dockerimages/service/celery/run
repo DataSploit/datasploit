@@ -1,0 +1,6 @@
+#!/bin/bash
+
+C_FORCE_ROOT=root
+cd /datasploit/core
+celery -A core worker -l info --concurrency 20       
+
