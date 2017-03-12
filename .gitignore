@@ -5,9 +5,12 @@ __pycache__/
 
 config.py
 /config.py
+Dockerimages/config.py
+Dockerimages/src/*
 facebook_user_details.py
 generate_passwords.py
 git_searcher.py
+
 
 instaUsernameOsint.py
 ip_to_neighboursites.py

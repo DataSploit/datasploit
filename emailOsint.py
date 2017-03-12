@@ -49,15 +49,15 @@ def haveIbeenpwned(email):
 		return json.loads(req.content)
 	else:
 		return {}
-	
+
 
 def gravatar(email):
-	gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() 
+	gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest()
 	return gravatar_url
 
 def emaildom(email):
 	req = requests.get('http://www.whoismind.com/email/%s.html'%(email))
-	soup=BeautifulSoup(req.content, "lxml")
+	soup=BeautifulSoup(req.content.encode('utf-8'), "lxml")
 	atag=soup.findAll('a')
 	domains=[]
 	for at in atag:
@@ -95,9 +95,9 @@ def list_down_usernames():
 			print x
 		print "\n"
 
-	
+
 def print_emailosint(email):
-	
+
 	'''
 	hbp = haveIbeenpwned(email)
 	if len(hbp) != 0:
@@ -135,7 +135,7 @@ def print_emailosint(email):
 				print '\nChat Accounts'
 				for x in data.get("contactInfo","").get('chats', ''):
 					print "\t%s on %s" % (x.get('handle', ''), x.get('client', ''))
-		
+
 		print colored(style.BOLD + '\n Social Profiles\n' + style.END, 'green')
 		for x in data.get("socialProfiles",""):
 			head = "\t%s:" % x.get('type','').upper()
@@ -184,7 +184,7 @@ def print_emailosint(email):
 		print doms
 	'''
 
-	
+
 	print colored(style.BOLD + '\n---> Finding Paste(s)..\n' + style.END, 'blue')
 	if cfg.google_cse_key != "" and cfg.google_cse_key != "XYZ" and cfg.google_cse_cx != "" and cfg.google_cse_cx != "XYZ":
 		total_results = google_search(email, 1)
@@ -192,7 +192,7 @@ def print_emailosint(email):
 			more_iters = (total_results / 10)
 			if more_iters >= 10:
 					print colored(style.BOLD + '\n---> Too many results, Daily API limit might exceed\n' + style.END, 'red')
-			for x in xrange(1,more_iters + 1):	
+			for x in xrange(1,more_iters + 1):
 				google_search(email, (x*10)+1)
 		print "\n\n-----------------------------\n"
 	else:
@@ -209,7 +209,7 @@ def print_emailosint(email):
 	else:
 		print colored('[-] No Associated Slides found.', 'red')
 
-	
+
 	scdlinks=emailscribddocs(email)
 	if len(scdlinks) != 0:
 		print colored(style.BOLD + '\n---> Associated SCRIBD documents:\n' + style.END, 'blue')
@@ -228,7 +228,7 @@ def print_emailosint(email):
 def main():
 	print_emailosint(email)
 	list_down_usernames()
-	
+
 if __name__ == "__main__":
 	main()
 

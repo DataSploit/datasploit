@@ -22,7 +22,7 @@ def find_repos(username):
 	list_repos = []
 	url = "https://api.github.com/users/%s/repos?access_token=%s" % (username, access_token)
 	req = requests.get(url)
-	if 'API rate limit exceeded' not in req.text:
+	if 'API rate limit exceeded' not in req.text.encode('utf-8'):
 		for repos in json.loads(req.content):
 			repos['full_name']
 			if repos['fork'] == False:

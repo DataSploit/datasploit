@@ -2,7 +2,7 @@
 
 import sys
 import json
-import requests 
+import requests
 from bs4 import BeautifulSoup
 import re
 from domain_pagelinks import pagelinks
@@ -38,7 +38,7 @@ def subdomains(domain):
 		headers['Referer'] = "https://dnsdumpster.com/"
 		req = requests.post("https://dnsdumpster.com/", data = data, cookies = cookies, headers = headers)
 		#print req.content
-		soup =  BeautifulSoup(req.content, 'lxml')
+		soup =  BeautifulSoup(req.content.encode('utf-8'), 'lxml')
 
 		subdomains=soup.findAll('td',{"class":"col-md-4"})
 		for subd in subdomains:
@@ -75,7 +75,7 @@ def find_subdomains_from_wolfram(domain):
 
 	if recalculate != "":
 		recalc_code = json.loads(req1.content)['queryresult']['recalculate'].split("=")[1].split("&")[0]
-		
+
 		#third request to get calc_id
 		#print "http://www.wolframalpha.com/input/json.jsp?action=recalc&format=image,plaintext,imagemap,minput,moutput&id=%s&output=JSON&output=JSON&scantimeout=10&statemethod=deploybutton&storesubpodexprs=true" % (recalc_code)
 		req2 = requests.get("http://www.wolframalpha.com/input/json.jsp?action=recalc&format=image,plaintext,imagemap,minput,moutput&id=%s&output=JSON&output=JSON&scantimeout=10&statemethod=deploybutton&storesubpodexprs=true" % (recalc_code), headers=headers, proxies=proxies)
@@ -83,7 +83,7 @@ def find_subdomains_from_wolfram(domain):
 		for x in pods:
 			if "Web statistics for" in x['title']:
 				async_code =  x['async'].split('=')[1]
-		
+
 		#fourth request to get id for subdomains.
 		req3 = requests.get("http://www.wolframalpha.com/input/json.jsp?action=asyncPod&format=image,plaintext,imagemap,minput,moutput&formattimeout=20&id=%s&output=JSON&podtimeout=20&statemethod=deploybutton&storesubpodexprs=true" % (async_code), headers=headers, proxies=proxies)
 		for x in json.loads(req3.content)['pods'][0]['deploybuttonstates']:
@@ -92,7 +92,7 @@ def find_subdomains_from_wolfram(domain):
 				sub_code = x['input']
 			else:
 				pass
-		
+
 		#fifth request to find few subdomains
 		url = "http://www.wolframalpha.com/input/json.jsp?async=false&dbid=%s&format=image,plaintext,imagemap,sound,minput,moutput&includepodid=WebSiteStatisticsPod:InternetData&input=%s&output=JSON&podTitle=Web+statistics+for+all+of+%s&podstate=%s&s=%s&statemethod=deploybutton&storesubpodexprs=true&text=Subdomains" % (sub_code, domain, domain, sub_code, server_value)
 		req4 = requests.get(url, headers = headers, proxies = proxies)
@@ -109,9 +109,9 @@ def find_subdomains_from_wolfram(domain):
 				else:
 					more_code = "blank_bro"
 
-		#wooh, final request bitch. 
+		#wooh, final request bitch.
 		url = "http://www.wolframalpha.com/input/json.jsp?async=false&dbid=%s&format=image,plaintext,imagemap,sound,minput,moutput&includepodid=WebSiteStatisticsPod:InternetData&input=%s&output=JSON&podTitile=Subdomains&podstate=%s&s=%s&statemethod=deploybutton&storesubpodexprs=true&text=More" % (more_code, domain, more_code, servervalue_for_more)
-		req5 = requests.get(url, headers = headers, proxies = proxies) 
+		req5 = requests.get(url, headers = headers, proxies = proxies)
 		for x in json.loads(req5.content)['queryresult']['subpods']:
 			if x['title'] == "Subdomains":
 				temp_subdomain_list = x['plaintext'].split("\n")
@@ -141,15 +141,15 @@ def subdomains_from_netcraft(domain):
 	link_regx = re.compile('<a href="http://toolbar.netcraft.com/site_report\?url=(.*)">')
 	links_list = link_regx.findall(req1.content)
 	for x in links_list:
-		dom_name = x.split("/")[2].split(".")  
+		dom_name = x.split("/")[2].split(".")
 		if (dom_name[len(dom_name) - 1] == target_dom_name[1]) and (dom_name[len(dom_name) - 2] == target_dom_name[0]):
 			check_and_append_subdomains(x.split("/")[2])
 	num_regex = re.compile('Found (.*) site')
 	num_subdomains = num_regex.findall(req1.content)
-	if num_subdomains == []:
+	if num_subdomains :
 		num_regex = re.compile('First (.*) sites returned')
 		num_subdomains = num_regex.findall(req1.content)
-	if num_subdomains[0] != str(0):
+	if num_subdomains and num_subdomains[0] != str(0):
 		num_pages = int(num_subdomains[0])/20+1
 		if num_pages > 1:
 			last_regex = re.compile('<td align="left">%s.</td><td align="left">\n<a href="(.*)" rel="nofollow">' % (20))
@@ -162,7 +162,7 @@ def subdomains_from_netcraft(domain):
 				link_regx = re.compile('<a href="http://toolbar.netcraft.com/site_report\?url=(.*)">')
 				links_list = link_regx.findall(req2.content)
 				for y in links_list:
-					dom_name1 = y.split("/")[2].split(".") 
+					dom_name1 = y.split("/")[2].split(".")
 					if (dom_name1[len(dom_name1) - 1] == target_dom_name[1]) and (dom_name1[len(dom_name1) - 2] == target_dom_name[0]):
 						check_and_append_subdomains(y.split("/")[2])
 				last_item = links_list[len(links_list) - 1].split("/")[2]
