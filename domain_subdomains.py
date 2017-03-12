@@ -146,10 +146,10 @@ def subdomains_from_netcraft(domain):
 			check_and_append_subdomains(x.split("/")[2])
 	num_regex = re.compile('Found (.*) site')
 	num_subdomains = num_regex.findall(req1.content)
-	if num_subdomains == []:
+	if num_subdomains :
 		num_regex = re.compile('First (.*) sites returned')
 		num_subdomains = num_regex.findall(req1.content)
-	if num_subdomains[0] != str(0):
+	if num_subdomains and num_subdomains[0] != str(0):
 		num_pages = int(num_subdomains[0])/20+1
 		if num_pages > 1:
 			last_regex = re.compile('<td align="left">%s.</td><td align="left">\n<a href="(.*)" rel="nofollow">' % (20))
