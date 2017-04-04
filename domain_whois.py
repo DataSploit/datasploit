@@ -1,28 +1,23 @@
-#!/usr/bin/env python
-
 import sys
+
 import whois
-from termcolor import colored
-import time
 
-class style:
-   BOLD = '\033[1m'
-   END = '\033[0m'
+from os_int_service import OsIntService
 
 
-def whoisnew(domain):
-	print colored(style.BOLD + '---> Finding Whois Information.' + style.END, 'blue')
-	time.sleep(0.3)
-	whoisdict = {}
-	w = whois.whois(domain)
-	return w
+class Whois(OsIntService):
+    def _perform_query(self):
+        return whois.whois(self.domain)
+
+    def _formatted_data(self):
+        return str(self.raw_data)
 
 
 def main():
-	domain = sys.argv[1]
-	print whoisnew(domain)
-	print "\n-----------------------------\n"
+    domain = sys.argv[1]
+    w = Whois(domain)
+    w.retrieve()
 
 
 if __name__ == "__main__":
-	main()
+    main()
