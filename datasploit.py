@@ -3,13 +3,6 @@ import sys
 import re
 import os
 
-
-import optparse
-parser = optparse.OptionParser()
-parser.add_option('-a', '--active', action="store", dest="domain", help="Launches Active Scans (work in progress)", default="spam")
-options, args = parser.parse_args()
-
-
 def printart():
     print "\n\t  ____/ /____ _ / /_ ____ _ _____ ____   / /____  (_)/ /_"
     print "\t  / __  // __ `// __// __ `// ___// __ \ / // __ \ / // __/"
@@ -26,8 +19,10 @@ def main():
 
     printart()
     print "User Input: "+ sys.argv[1]
-
-    if re.match('[^@]+@[^@]+\.[^@]+', sys.argv[1]):
+    if sys.argv[1] == "--help" or sys.argv[1] == "-h" or sys.argv[1] == "--h":
+        print "Usage datasploit.py <input>"
+        print "We will try to autodetect the input and perform relevent OSINT"
+    elif re.match('[^@]+@[^@]+\.[^@]+', sys.argv[1]):
         print "Looks like an EMAIL, running Email_OSINT...\n"
         command='./emailOsint.py '+sys.argv[1]
         # insecure way used-os.command**************. Do not expose to web interface
