@@ -9,30 +9,27 @@ from termcolor import colored
 
 ENABLED = True
 
-
 class style:
     BOLD = '\033[1m'
     END = '\033[0m'
-
 
 def github_search(query):
     endpoint_git = "https://api.github.com/search/code?q=%s&access_token=%s" % (query, cfg.github_access_token)
     req = requests.get(endpoint_git)
     data = json.loads(req.content)
-    return data['total_count'], data['items']
-
+    print data
+    if data['message'] == 'Bad credentials':
+        return None, 'Error'
+    else:
+        return data['total_count'], data['items']
 
 def banner():
     print colored(style.BOLD + '\n---> Searching Github for domain results\n' + style.END, 'blue')
 
-
-def main(domain):
-    count, results = github_search(domain)
-    return [count, results]
-
-
 def output(data, domain=""):
-    if not data[0]:
+    if data[1] == 'Error':
+        print colored('Authentication failed. Check Github API key in config.py.\n', 'red')
+    elif not data[0]:
         print colored("Sad! Nothing found on github", 'red')
     else:
         print colored("[+] Found %s results on github." % data[0], 'green')
@@ -49,13 +46,15 @@ def output(data, domain=""):
     print "\nCheck results here: https://github.com/search?q=%s&type=Code&utf8=%%E2%%9C%%93" % domain
     print "-----------------------------\n"
 
-
 if __name__ == "__main__":
-    try:
+    if len(sys.argv) > 1:
         domain = sys.argv[1]
+    else:
+        print "Please provide a domain name as argument"
+        sys.exit(0)
+    try:
         banner()
-        result = main(domain)
-        output(result, domain)
+        count, result = github_search(domain)
+        output([count, result], domain)
     except Exception as e:
         print e
-        print "Please provide a domain name as argument"
