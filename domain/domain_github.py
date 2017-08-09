@@ -51,11 +51,14 @@ def output(data, domain=""):
 
 
 if __name__ == "__main__":
-    try:
+    if len(sys.argv) > 1:
         domain = sys.argv[1]
+    else:
+        print "Please provide a domain name as argument"
+        sys.exit(0)
+    try:
         banner()
         result = main(domain)
         output(result, domain)
     except Exception as e:
         print e
-        print "Please provide a domain name as argument"
