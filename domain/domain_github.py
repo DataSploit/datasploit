@@ -25,12 +25,6 @@ def github_search(query):
 def banner():
     print colored(style.BOLD + '\n---> Searching Github for domain results\n' + style.END, 'blue')
 
-
-def main(domain):
-    count, results = github_search(domain)
-    return [count, results]
-
-
 def output(data, domain=""):
     if not data[0]:
         print colored("Sad! Nothing found on github", 'red')
@@ -49,7 +43,6 @@ def output(data, domain=""):
     print "\nCheck results here: https://github.com/search?q=%s&type=Code&utf8=%%E2%%9C%%93" % domain
     print "-----------------------------\n"
 
-
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         domain = sys.argv[1]
@@ -58,7 +51,7 @@ if __name__ == "__main__":
         sys.exit(0)
     try:
         banner()
-        result = main(domain)
+        count, results = github_search(domain)
         output(result, domain)
     except Exception as e:
         print e
