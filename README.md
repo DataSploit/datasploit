@@ -37,7 +37,7 @@ Options:
 ```
 
 # Required Setup:
-* Python 2.7 (because dependency [`python-Wappalyzer`](https://github.com/chorsley/python-Wappalyzer) does not support Python 3.0)
+* Python 2.7 (because dependency [`python-Wappalyzer`](https://github.com/chorsley/python-Wappalyzer) does not support Python 3)
 * Bunch of python libraries (use `pip install -r requirements.txt`)
 
 
