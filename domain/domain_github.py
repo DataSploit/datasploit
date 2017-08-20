@@ -27,12 +27,19 @@ def banner():
 
 
 def main(domain):
-    count, results = github_search(domain)
-    return [count, results]
+    if cfg.github_access_token == '':
+        return [None, "INVALID_API"]
+    else:
+        count, results = github_search(domain)
+        return [count, results]
 
 
 def output(data, domain=""):
-    if not data[0]:
+    if data[1] == "INVALID_API":
+        print colored(style.BOLD + 
+                      '\n[-] github_access_token not configured. Skipping Github search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' +
+                      style.END, 'red')
+    elif not data[0]:
         print colored("Sad! Nothing found on github", 'red')
     else:
         print colored("[+] Found %s results on github." % data[0], 'green')
@@ -46,8 +53,8 @@ def output(data, domain=""):
             print "    Owner: %s" % snip['repository']['full_name']
             print "    Repository: %s" % snip['repository']['html_url']
             count += 1
-    print "\nCheck results here: https://github.com/search?q=%s&type=Code&utf8=%%E2%%9C%%93" % domain
-    print "-----------------------------\n"
+        print "\nCheck results here: https://github.com/search?q=%s&type=Code&utf8=%%E2%%9C%%93" % domain
+        print "-----------------------------\n"
 
 
 if __name__ == "__main__":
