@@ -13,7 +13,6 @@ from termcolor import colored
 # Control whether the module is enabled or not
 ENABLED = True
 
-
 class style:
     BOLD = '\033[1m'
     END = '\033[0m'
@@ -70,31 +69,33 @@ def twitterdetails(username):
         item = item.lower()
         hashlist.append(item)
 
-    hashlist = hashlist[:10]
     for itm in tusers:
         itm = itm.strip('@')
         itm = itm.lower()
         userlist.append(itm)
 
-    userlist = userlist[:10]
+    activitydetails = {
+                       'Hashtag Interactions': hashlist[:10],
+                       'User Interactions': userlist[:10]
+                      }
 
-    return hashlist, userlist, userdetails
+    return activitydetails, userdetails
 
 
 def main(username):
     r = requests.get("https://twitter.com/%s" % username)
     if r.status_code == 200:
-        hashlist, userlist, userdetails = twitterdetails(username)
-        return [hashlist, userlist, userdetails]
+        activitydetails, userdetails = twitterdetails(username)
+        return [activitydetails, userdetails]
     else:
         return None
 
 
 def output(data, username=""):
     if data:
-        hashlist = data[0]
-        userlist = data[1]
-        userdetails = data[2]
+        hashlist = data[0]['Hashtag Interactions']
+        userlist = data[0]['User Interactions']
+        userdetails = data[1]
         for k,v in userdetails.iteritems():
             try:
                 print k + ": " + str(v)
@@ -121,7 +122,7 @@ if __name__ == "__main__":
         username = sys.argv[1]
         banner()
         result = main(username)
-        output(result, username, userdetails)
+        output(result, username)
     except Exception as e:
         print e
         print "Please provide a username as argument"
