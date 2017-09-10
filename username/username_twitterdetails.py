@@ -32,9 +32,17 @@ def twitterdetails(username):
 
     f = open("temptweets.txt", "w+")
     # writing tweets to temp file- last 1000
-    for tweet in tweepy.Cursor(api.user_timeline, id=username).items(1000):
-        f.write(tweet.text.encode("utf-8"))
-        f.write("\n")
+    try:
+        for tweet in tweepy.Cursor(api.user_timeline, id=username).items(1000):
+            f.write(tweet.text.encode("utf-8"))
+            f.write("\n")
+    except tweepy.error.TweepError as e:
+        if '401' in e.message:
+            print colored(style.BOLD +
+                '[!] Error: API Keys are invalid or Twitter account set to private.\n'
+                + style.END, 'red')
+        else:
+            print colored(style.BOLD + '[!] Error: ' + str(e) + '.\n' + style.END, 'red')
 
     # extracting hashtags
     f = open('temptweets.txt', 'r')

@@ -22,15 +22,18 @@ def extracting(imglinks, username, prourl, tag, attribute, value, finattrib, pro
     res = requests.get(prourl)
     soup = BeautifulSoup(res.content, "lxml")
     img = soup.find(tag, {attribute: value})
-    if profile == "ask.fm":
-        img[finattrib] = "http:" + img[finattrib]
-        imglinks.append(img[finattrib])
-        path = "profile_pic/" + username + "/" + profile + ".jpg"
-        urllib.urlretrieve(img[finattrib], path)
-    else:
-        imglinks.append(img[finattrib])
-        path = "profile_pic/" + username + "/" + profile + ".jpg"
-        urllib.urlretrieve(img[finattrib], path)
+    try:
+        if profile == "ask.fm":
+            img[finattrib] = img[finattrib]
+            imglinks.append(img[finattrib])
+            path = "profile_pic/" + username + "/" + profile + ".jpg"
+            urllib.urlretrieve(img[finattrib], path)
+        else:
+            imglinks.append(img[finattrib])
+            path = "profile_pic/" + username + "/" + profile + ".jpg"
+            urllib.urlretrieve(img[finattrib], path)
+    except TypeError as e:
+        colored(style.BOLD + '[!] Error: ' + str(e) + '.\n' + style.END, 'red')
     return imglinks
 
 
