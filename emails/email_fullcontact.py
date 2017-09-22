@@ -32,7 +32,7 @@ def banner():
 def output(data, email=""):
     if type(data) == list and data[1] == "INVALID_API":
         print colored(
-                style.BOLD + '\n[-] Full-Contact API Key not configured. Skipping Fullcontact Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+                style.BOLD + '\n[-] Full-Contact API Key not configured. Skipping Fullcontact Search.\nPlease refer to https://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
     else:
         if data.get("status", "") == 200:
             if data.get("contactInfo", "") != "":

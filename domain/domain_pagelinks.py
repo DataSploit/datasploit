@@ -17,7 +17,7 @@ class style:
 def pagelinks(domain):
     time.sleep(0.3)
     try:
-        req = requests.get('http://api.hackertarget.com/pagelinks/?q=%s' % (domain))
+        req = requests.get('https://api.hackertarget.com/pagelinks/?q=%s' % (domain))
         page_links = req.content.split("\n")
         return page_links
     except:

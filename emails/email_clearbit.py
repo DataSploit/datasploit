@@ -37,7 +37,7 @@ def output(data, email=""):
     print data
     if type(data) == list and data[1] == "INVALID_API":
         print colored(
-                style.BOLD + '\n[-] Clearbit API Key not configured. Skipping Clearbit Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+                style.BOLD + '\n[-] Clearbit API Key not configured. Skipping Clearbit Search.\nPlease refer to https://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
     else:
         for x in data.keys():
             print '%s details:' % x

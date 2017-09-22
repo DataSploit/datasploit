@@ -20,7 +20,7 @@ def banner():
 
 
 def main(email):
-    req = requests.get('http://www.whoismind.com/email/%s.html' % (email))
+    req = requests.get('https://www.whoismind.com/email/%s.html' % (email))
     soup = BeautifulSoup(req.content, "lxml")
     atag = soup.findAll('a')
     domains = []

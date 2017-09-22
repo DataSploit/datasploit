@@ -19,7 +19,7 @@ class style:
 def netcraft_domain_history(domain):
     ip_history_dict = {}
     time.sleep(0.3)
-    endpoint = "http://toolbar.netcraft.com/site_report?url=%s" % (domain)
+    endpoint = "https://toolbar.netcraft.com/site_report?url=%s" % (domain)
     req = requests.get(endpoint)
 
     soup = BeautifulSoup(req.content, 'html.parser')

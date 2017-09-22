@@ -16,6 +16,7 @@ Author: @khasmek
 Original Idea: @jms_dot_py
 
 Original article -
+# Tried putting on HTTPS, but the CERT is broken on this website.
 http://www.automatingosint.com/blog/2017/07/osint-website-connections-tracking-codes/
 
 Original code -

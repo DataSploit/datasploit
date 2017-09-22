@@ -21,6 +21,8 @@ warnings.filterwarnings("ignore")
 
 def checkpunkspider(reversed_domain):
     time.sleep(0.5)
+
+    # Tried putting on HTTPS, but the CERT is broken on this website.
     req = requests.post("http://www.punkspider.org/service/search/detail/" + reversed_domain, verify=False)
     try:
         return json.loads(req.content)

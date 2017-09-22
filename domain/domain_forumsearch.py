@@ -19,7 +19,7 @@ class style:
 def boardsearch_forumsearch(domain):
     time.sleep(0.3)
     req = requests.get(
-        'http://boardreader.com/index.php?a=l&q=%s&d=0&extended_search=1&q1=%s&ltype=all&p=50' % (domain, domain))
+        'https://boardreader.com/index.php?a=l&q=%s&d=0&extended_search=1&q1=%s&ltype=all&p=50' % (domain, domain))
     soup = BeautifulSoup(req.content, "lxml")
     text = soup.findAll('bdo', {"dir": "ltr"})
     links = {}
