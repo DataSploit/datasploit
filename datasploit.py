@@ -6,6 +6,7 @@ import optparse
 import emailOsint
 import domainOsint
 import ipOsint
+import bitcoinOsint
 import usernameOsint
 
 parser = optparse.OptionParser()
@@ -41,6 +42,9 @@ def main(user_input, output = None):
     elif re.match('^[a-zA-Z\d-]{,63}(\.[a-zA-Z\d-]{,63}).$', user_input):
         print "Looks like a DOMAIN, running domainOsint...\n"
         domainOsint.run(user_input, output)
+    elif re.match('^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$', user_input):
+        print "Looks like a Bitcoin address...\n"
+        bitcoinOsint.run(user_input, output)
     else:
         print "Looks like a Username, running usernameOsint...\n"
         usernameOsint.run(user_input, output)
