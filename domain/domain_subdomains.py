@@ -99,13 +99,17 @@ def subdomains_from_google_ct(domain, subdomain_list):
     next = ''
     while True:
         url = 'https://www.google.com/transparencyreport/jsonp/ct/search?domain=%s&incl_exp=true&incl_sub=true&token=%s&c=' % (domain,next)
-        obj = json.loads('('.join(requests.get(url).text.split('(')[1:])[:-3])
-        for x in obj['results']:
-            if x['subject'].endswith(domain):
-                subdomain_list = check_and_append_subdomains(x['subject'], subdomain_list)
-        if 'nextPageToken' not in obj:
-            break
-        next = obj['nextPageToken']
+        res = requests.get(url)
+        if res.status_code == '200':
+            obj = json.loads('('.join(res.text.split('(')[1:])[:-3])
+            for x in obj['results']:
+                if x['subject'].endswith(domain):
+                    subdomain_list = check_and_append_subdomains(x['subject'], subdomain_list)
+            if 'nextPageToken' not in obj:
+                break
+            next = obj['nextPageToken']
+        else:
+            return None
     return subdomain_list
 
 

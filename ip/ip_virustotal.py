@@ -38,10 +38,20 @@ def output(data, ip=""):
     if type(data) == list and data[1] == "INVALID_API":
         print colored(
                 style.BOLD + '\n[-] VirusTotal API Key not configured. Skipping VirusTotal Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
-    else:
-        for i in data:
-            print i
-            print ""
+        return None
+
+    if data.status_code != "200":
+        print "Response Code: " + str(data.status_code)
+        data.raise_for_status()
+        if data.text:
+            parsed = json.loads(data.text)
+            print json.dumps(parsed, indent=4, sort_keys=True)
+        print ""
+        return None
+
+    parsed = data.json()
+    print json.dumps(parsed, indent=4, sort_keys=True)
+    print ""
 
 
 if __name__ == "__main__":
