@@ -27,7 +27,7 @@ def main(ip):
         params = "{'ip': '%s', 'apikey': '%s'}" % (ip, api)
         url = "http://www.virustotal.com/vtapi/v2/ip-address/report?ip=%s&apikey=%s" % (ip, api)
         req = requests.get(url, params)
-        data = json.loads(req.text.encode('utf-8'))
+        data = json.loads(req.text)
         data["response code"] = req.status_code
         data['raise for status'] = req.raise_for_status()
         return data
