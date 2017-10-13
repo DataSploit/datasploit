@@ -8,7 +8,7 @@ import sys
 import re
 from termcolor import colored
 
-ENABLED = False
+ENABLED = True
 
 
 class style:
