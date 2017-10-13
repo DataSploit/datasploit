@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import base
+import time
 import config as cfg
 import sys
 import requests
@@ -27,6 +28,10 @@ def main(ip):
         params = "{'ip': '%s', 'apikey': '%s'}" % (ip, api)
         url = "http://www.virustotal.com/vtapi/v2/ip-address/report?ip=%s&apikey=%s" % (ip, api)
         req = requests.get(url, params)
+	while req.text == "":
+            req = requests.get(url, params)
+            print("Request failed, pausing for seconds")
+            time.sleep(10)
         data = json.loads(req.text)
         data["response code"] = req.status_code
         data['raise for status'] = req.raise_for_status()
