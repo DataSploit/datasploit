@@ -3,7 +3,7 @@ import base
 import re, sys, json, time, requests
 import config as cfg
 
-ENABLED = False
+ENABLED = True
 
 
 def censys_search(domain):
@@ -32,6 +32,7 @@ def censys_search(domain):
 
                     temp_dict["ip"] = ip
                     temp_dict["protocols"] = protoList
+                    print temp_dict
 
                     if '80' in protoList:
                         new_dict = view(ip, temp_dict)

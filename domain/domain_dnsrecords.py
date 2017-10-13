@@ -33,7 +33,19 @@ def parse_dns_records(domain):
     dict_dns_record['Name Server Records'] = fetch_dns_records(domain, "NS")
     dict_dns_record['CNAME Records'] = fetch_dns_records(domain, "CNAME")
     dict_dns_record['AAAA Records'] = fetch_dns_records(domain, "AAAA")
-    return dict_dns_record
+    return sanitize_object(dict_dns_record)
+
+
+def sanitize_object(obj):
+    # Ensure that all returned data is JSON serializable
+    tmpList = []
+    for key in obj:
+        if isinstance(obj[key], list):
+            for o in obj[key]:
+                tmpList.append('%s' % o)
+            obj[key] = tmpList[:]
+            del tmpList[:]
+    return obj
 
 
 def banner():

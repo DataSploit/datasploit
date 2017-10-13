@@ -11,10 +11,9 @@ import usernameOsint
 parser = optparse.OptionParser()
 parser.add_option('-a', '--active', action="store", dest="domain", help="Launches Active Scans (work in progress)",
                   default="spam")
-parser.add_option('-o', '--output', action="store", dest="output", help="Save output in either JSON or HTML")
+parser.add_option('-o', '--output', action="store", dest="output", default="JSON", help="Save output in JSON")
 parser.add_option("-f", "--file", dest="filename", help="File listing of domains, IP addresses, emails, and/or usernames", default=None, metavar="FILE")
 options, args = parser.parse_args()
-print options, args
 
 def printart():
     print "\t                                                           "
@@ -54,15 +53,15 @@ def main(user_input, output = None):
 
 if __name__ == "__main__":
     if options.filename:
-        f = open(options.filename, "r")
         printart()
-        for line in f.readlines():
-            try:
-                user_input = line.replace("\r","").replace("\n","")
-            except:
-                print "\n[-] Invalid Input. Exiting now..\n"
-                sys.exit(0)
-            main(user_input)
+        with open(options.filename, "r") as infile:
+            for line in infile:
+                try:
+                    user_input = line.replace("\r","").replace("\n","")
+                except:
+                    print "\n[-] Invalid Input. Exiting now..\n"
+                    sys.exit(0)
+                main(user_input)
     else:
         try:
             user_input = sys.argv[1]

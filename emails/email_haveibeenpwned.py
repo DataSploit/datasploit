@@ -40,7 +40,7 @@ def output(data, email=""):
         for x in data:
             print "Title: %s\nBreachDate: %s\nPwnCount: %s\nDescription: %s\nDataClasses: %s\n" % (
                 x.get('Title', ''), x.get('BreachDate', ''), x.get('PwnCount', ''), x.get('Description', ''),
-                ", ".join(x.get('DataClasses', [])))
+            ", ".join(map(lambda y: y.encode('utf-8',"replace") ,x.get('DataClasses',[]))))
     else:
         print colored("[-] No breach status found.", 'red')
 
