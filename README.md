@@ -44,4 +44,7 @@ Options:
 ## Detailed Tool Documentation:
 > [https://datasploit.github.io/datasploit/](https://datasploit.github.io/datasploit/)
 
+##Video tutorial to setup DataSploit in fresh ubuntu box
+> [https://www.youtube.com/playlist?list=PLF-PQi4RWPTFFaKoTjChUHMRjJ-Im3OJK]
+
 
