@@ -23,12 +23,24 @@ def banner():
     print colored(style.BOLD + '---> Finding Whois Information.' + style.END, 'blue')
 
 
+def pretty(d, indent=0):
+   for key, value in d.items():
+      print('\t' * indent + str(key)+":")
+      if isinstance(value, dict):
+         pretty(value, indent+1)
+      elif isinstance(value,list):
+	 for v in value:
+             print('\t' * (indent+1) + str(v))
+      else:
+         print('\t' * (indent+1) + str(value))
+
+
 def main(domain):
     return whoisnew(domain)
 
 
 def output(data, domain=""):
-    print data
+    pretty(data)
     print "\n-----------------------------\n"
 
 

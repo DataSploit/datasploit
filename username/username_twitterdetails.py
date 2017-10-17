@@ -30,11 +30,15 @@ def twitterdetails(username):
     # preparing auth
     api = tweepy.API(auth)
 
-    f = open("temptweets.txt", "w+")
-    # writing tweets to temp file- last 1000
-    for tweet in tweepy.Cursor(api.user_timeline, id=username).items(1000):
-        f.write(tweet.text.encode("utf-8"))
-        f.write("\n")
+    try:
+        f = open("temptweets.txt", "w+")
+        # writing tweets to temp file- last 1000
+        for tweet in tweepy.Cursor(api.user_timeline, id=username).items(1000):
+            f.write(tweet.text.encode("utf-8"))
+            f.write("\n")
+    except tweepy.TweepError as e:
+        print str(e)
+        return None, None
 
     # extracting hashtags
     f = open('temptweets.txt', 'r')
@@ -82,17 +86,20 @@ def output(data, username=""):
         if data:
             hashlist = data[0]
             userlist = data[1]
-            count = Counter(hashlist).most_common()
-            print "Top Hashtag Occurrence for user " + username + " based on last 1000 tweets"
-            for hash, cnt in count:
-                print "#" + hash + " : " + str(cnt)
-            print "\n"
 
-            # counting user occurrence
-            countu = Counter(userlist).most_common()
-            print "Top User Occurrence for user " + username + " based on last 1000 tweets"
-            for usr, cnt in countu:
-                print "@" + usr + " : " + str(cnt)
+            if hashlist:
+                count = Counter(hashlist).most_common()
+                print "Top Hashtag Occurrence for user " + username + " based on last 1000 tweets"
+                for hash, cnt in count:
+                    print "#" + hash + " : " + str(cnt)
+                print "\n"
+
+            if userlist:
+                # counting user occurrence
+                countu = Counter(userlist).most_common()
+                print "Top User Occurrence for user " + username + " based on last 1000 tweets"
+                for usr, cnt in countu:
+                    print "@" + usr + " : " + str(cnt)
         else:
             print "No Associated Twitter account found."
 

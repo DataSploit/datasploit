@@ -8,7 +8,7 @@ import json
 from termcolor import colored
 
 # Control whether the module is enabled or not
-ENABLED = False
+ENABLED = True
 
 
 class style:

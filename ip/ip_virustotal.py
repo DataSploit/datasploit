@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import base
+import time
 import config as cfg
 import sys
 import requests
@@ -23,12 +24,18 @@ def banner():
 def main(ip):
     # Use the ip variable to do some stuff and return the data
     if cfg.virustotal_public_api != "":
-        print ip
         api = cfg.virustotal_public_api
         params = "{'ip': '%s', 'apikey': '%s'}" % (ip, api)
         url = "http://www.virustotal.com/vtapi/v2/ip-address/report?ip=%s&apikey=%s" % (ip, api)
         req = requests.get(url, params)
-        return req
+	while req.text == "":
+            req = requests.get(url, params)
+            print("Request failed, pausing for seconds")
+            time.sleep(10)
+        data = json.loads(req.text)
+        data["response code"] = req.status_code
+        data['raise for status'] = req.raise_for_status()
+        return data
     else:
         return [False, "INVALID_API"]
 
@@ -38,10 +45,17 @@ def output(data, ip=""):
     if type(data) == list and data[1] == "INVALID_API":
         print colored(
                 style.BOLD + '\n[-] VirusTotal API Key not configured. Skipping VirusTotal Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
-    else:
-        for i in data:
-            print i
-            print ""
+        return None
+
+    if data["response code"] != "200":
+        print "Response Code: " + str(data["response code"])
+        data['raise for status']
+        print json.dumps(data, indent=4, sort_keys=True)
+        print ""
+        return None
+
+    print json.dumps(data, indent=4, sort_keys=True)
+    print ""
 
 
 if __name__ == "__main__":

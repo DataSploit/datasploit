@@ -22,6 +22,7 @@ def run(component, module_dir, m_input, output = None):
             active_modules[os.path.basename(os.path.splitext(i)[0])] = x
 
     json_output = {}
+    txt_output = ""
 
     for name, x in active_modules.iteritems():
         if "banner" in dir(x):
@@ -30,7 +31,7 @@ def run(component, module_dir, m_input, output = None):
         if data:
             x.output(data, m_input)
 	if output and str(output).upper() == "JSON":
-		json_output[name] = data
+            json_output[name] = data
 
     if output and str(output).upper() == "JSON":
 	timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -42,4 +43,5 @@ def run(component, module_dir, m_input, output = None):
 	fh.write(json.dumps(json_output, default=json_util.default, indent = 4))
 	fh.close()
 	print "JSON report saved to %s/%s" % (filepath, filename)
+
 	

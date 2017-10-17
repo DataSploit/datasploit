@@ -7,7 +7,7 @@ import re
 import string
 from termcolor import colored
 
-ENABLED = False
+ENABLED = True
 
 
 class style:
@@ -24,6 +24,7 @@ def googlesearch(query, ext):
         'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
         'Accept-Encoding': 'none',
         'Accept-Language': 'en-US,en;q=0.8',
+        'Referer': 'www.datasploit.info/hello',
         'Connection': 'keep-alive'
     }
     req = urllib2.Request(getrequrl, headers=hdr)
