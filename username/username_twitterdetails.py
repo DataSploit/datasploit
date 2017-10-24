@@ -77,7 +77,7 @@ def main(username):
 def output(data, username=""):
     if data[1] == "INVALID_API":
         print colored(
-            style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+            style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to https://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
     else:
         if data:
             hashlist = data[0]

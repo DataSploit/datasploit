@@ -54,7 +54,9 @@ def subdomains(domain, subdomain_list):
 def subdomains_from_netcraft(domain, subdomain_list):
     print colored(' [+] Extracting subdomains Netcraft\n', 'blue')
     target_dom_name = domain.split(".")
-    req1 = requests.get("http://searchdns.netcraft.com/?host=%s" % domain)
+    req1 = requests.get("https://searchdns.netcraft.com/?host=%s" % domain)
+
+    #The page still shows HTTP in the HTML body, so this regex needs to staty at HTTP.
     link_regx = re.compile('<a href="http://toolbar.netcraft.com/site_report\?url=(.*)">')
     links_list = link_regx.findall(req1.content)
     for x in links_list:
@@ -76,7 +78,7 @@ def subdomains_from_netcraft(domain, subdomain_list):
                 next_page = 21
 
                 for x in range(2, num_pages):
-                    url = "http://searchdns.netcraft.com/?host=%s&last=%s&from=%s&restriction=site%%20contains" % (
+                    url = "https://searchdns.netcraft.com/?host=%s&last=%s&from=%s&restriction=site%%20contains" % (
                         domain, last_item, next_page)
                     req2 = requests.get(url)
                     link_regx = re.compile('<a href="http://toolbar.netcraft.com/site_report\?url=(.*)">')

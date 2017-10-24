@@ -20,7 +20,7 @@ def banner():
 
 
 def main(email):
-    req = requests.get('http://www.slideshare.net/search/slideshow?q=%s' % (email))
+    req = requests.get('https://www.slideshare.net/search/slideshow?q=%s' % (email))
     soup = BeautifulSoup(req.content, "lxml")
     atag = soup.findAll('a', {'class': 'title title-link antialiased j-slideshow-title'})
     slides = {}
@@ -33,7 +33,7 @@ def output(data, email=""):
     if data:
         print "Found %s published slides\n" % len(data)
         for tl, lnk in data.items():
-            print str(tl).strip() + " : http://www.slideshare.net" + str(lnk).strip()
+            print str(tl).strip() + " : https://www.slideshare.net" + str(lnk).strip()
     else:
         print colored('[-] No Associated Slides found.', 'red')
 

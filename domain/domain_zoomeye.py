@@ -32,7 +32,7 @@ def search_zoomeye(domain):
     time.sleep(0.3)
     zoomeye_token = get_accesstoken_zoomeye(domain)
     authData = {"Authorization": "JWT " + str(zoomeye_token)}
-    req = requests.get('http://api.zoomeye.org/web/search/?query=site:%s&page=1' % domain, headers=authData)
+    req = requests.get('https://api.zoomeye.org/web/search/?query=site:%s&page=1' % domain, headers=authData)
     return req.text
 
 
@@ -51,7 +51,7 @@ def main(domain):
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
         print colored(
-                style.BOLD + '\n[-] ZoomEye username and password not configured. Skipping Zoomeye Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+                style.BOLD + '\n[-] ZoomEye username and password not configured. Skipping Zoomeye Search.\nPlease refer to https://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
     else:
         if 'matches' in data.keys():
             print len(data['matches'])

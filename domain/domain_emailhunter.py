@@ -45,7 +45,7 @@ def main(domain):
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
             print colored(
-                style.BOLD + '\n[-] Emailhunter API key not configured, skipping Email Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+                style.BOLD + '\n[-] Emailhunter API key not configured, skipping Email Search.\nPlease refer to https://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
     else:
         for x in data:
             print str(x)

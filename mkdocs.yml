@@ -30,7 +30,7 @@ extra:
 site_name: DataSploit
 site_description: All about DataSploit.
 site_author: Shubham Mittal
-site_url: http://datasploit.github.io/datasploit/
+site_url: https://datasploit.github.io/datasploit/
 
 # Repository
 repo_name: datasploit/datasploit
