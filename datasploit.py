@@ -36,8 +36,8 @@ def main(argv):
     parser.add_argument("-q","--quiet",help="Run scans in automated manner accepting default answers",dest='quiet',action="store_false")
     parser.add_argument("-o","--output",help="Provide Destination Directory",dest='output')
     # check and ensure the config file is present otherwise create one. required for all further operations
-    config_file_path = os.path.dirname(__file__) + os.path.sep + "config.py"
-    config_sample_path= os.path.dirname(__file__) + os.path.sep + "config_sample.py"
+    config_file_path = os.path.join(os.path.dirname(__file__), "config.py")
+    config_sample_path= os.path.join(os.path.dirname(__file__), "config_sample.py")
     if not os.path.exists(config_file_path):
         print "[+] Looks like a new setup, setting up the config file."
         shutil.copyfile(config_sample_path,config_file_path)
