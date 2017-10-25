@@ -51,7 +51,8 @@ def output(data, ip=""):
                         print '\tTitle: %s' % x['http']['title']
                         print '\tRobots: %s' % x['http']['robots']
                         print '\tServer: %s' % x['http']['server']
-                        print '\tComponents: %s' % x['http']['components']
+                        if "components" in x['http']:
+                            print '\tComponents: %s' % x['http']['components']
                         print '\tSitemap: %s' % x['http']['sitemap']
                     if 'ssh' in x.keys():
                         print colored(style.BOLD + '[+] HTTP port present:\t' + style.END, 'green')

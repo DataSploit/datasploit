@@ -26,7 +26,7 @@ def main(username):
 
 def output(data, username=""):
     if "message" in data and data["message"] == "Not Found":
-        print 'Git account do not exist on this username.'
+        print 'Git account does not exist for this username.'
     else:
         print "Login: %s" % data['login']
         print "avatar_url: %s" % data['avatar_url']
