@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
+import json
 import base
 import sys
 import dns.resolver
 from termcolor import colored
 
 ENABLED = True
+OUTPUT_TYPE = "console"
 
 
 class style:
@@ -18,11 +20,13 @@ def fetch_dns_records(domain, rec_type):
         answers = dns.resolver.query(domain, rec_type)
         rec_list = []
         for rdata in answers:
-            rec_list.append(rdata)
+            rec_list.append(rdata.to_text())
         return rec_list
     except:
-        return colored("No Records Found", 'red')
-
+        if(OUTPUT_TYPE == "console"):
+            return colored("No Records Found", 'red')
+        if(OUTPUT_TYPE == "json"):
+            return list()
 
 def parse_dns_records(domain):
     dict_dns_record = {}
@@ -37,7 +41,8 @@ def parse_dns_records(domain):
 
 
 def banner():
-    print colored(style.BOLD + '---> Finding DNS Records.\n' + style.END, 'blue')
+    if(OUTPUT_TYPE == "console"):
+        print colored(style.BOLD + '---> Finding DNS Records.\n' + style.END, 'blue')
 
 
 def main(domain):
@@ -45,19 +50,26 @@ def main(domain):
 
 
 def output(data, domain=""):
-    for x in data.keys():
-        print x
-        if "No" in data[x] and "Found" in data[x]:
-            print "\t%s" % data[x]
-        else:
-            for y in data[x]:
-                print "\t%s" % y
-    print "\n-----------------------------\n"
+    if(OUTPUT_TYPE == "console"):
+        for x in data.keys():
+            print x
+            if "No" in data[x] and "Found" in data[x]:
+                print "\t%s" % data[x]
+            else:
+                for y in data[x]:
+                    print "\t%s" % y
+        print "\n-----------------------------\n"
+
+    if(OUTPUT_TYPE == "json"):
+        print(json.dumps(data))
 
 
 if __name__ == "__main__":
     try:
         domain = sys.argv[1]
+        if(len(sys.argv) > 2):
+            OUTPUT_TYPE = sys.argv[2]
+
         banner()
         result = main(domain)
         output(result, domain)
