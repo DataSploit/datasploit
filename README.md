@@ -14,6 +14,9 @@
 
 [DEFCON 24 Demolabs](https://www.defcon.org/html/defcon-24/dc-24-demolabs.html)
 
+**Install libxml-dev**
+
+
 # Overview of the tool:
 * Performs OSINT on a domain / email / username / phone and find out information from different sources.
 * Correlate and collaborate the results, show them in a consolidated manner. 
