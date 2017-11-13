@@ -34,20 +34,23 @@ def banner():
 
 def main(username):
     # Use the username variable to do some stuff and return the data
-    token = TravisPy.github_auth(cfg.github_travis_key)
-    q=urllib2.urlopen("https://api.travis-ci.org/repos/%s" % username)
-    jsondata=json.loads(q.read())
-    details=[]
+    if cfg.github_travis_key != "":
+      token = TravisPy.github_auth(cfg.github_travis_key)
+      q=urllib2.urlopen("https://api.travis-ci.org/repos/%s" % username)
+      jsondata=json.loads(q.read())
+      details=[]
 
-    if jsondata:
-        for data in jsondata:
-            builds=token.builds(slug=data["slug"])
-            for bd in builds:
-                bid=token.build(bd.id)
-                details.append((bid.commit.author_name,bid.commit.author_email))
-                details.append((bid.commit.committer_name,bid.commit.committer_email))
-    details=list(set(details))
-    return details
+      if jsondata:
+          for data in jsondata:
+              builds=token.builds(slug=data["slug"])
+              for bd in builds:
+                  bid=token.build(bd.id)
+                  details.append((bid.commit.author_name,bid.commit.author_email))
+                  details.append((bid.commit.committer_name,bid.commit.committer_email))
+      details=list(set(details))
+      return details
+    else:
+      print colored(style.BOLD + '\n[-] Travis CI key not configured. Skipping basic checks.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
 
 
 def output(data, username=""):
