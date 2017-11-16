@@ -3,6 +3,9 @@
 
 #Backup in ~/Desktop/config.py_backup
 
+# Avoid new variable error
+from config_sample import *
+
 shodan_api=""
 bing_api=""
 github_access_token=""
