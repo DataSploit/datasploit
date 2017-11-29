@@ -8,6 +8,7 @@ https://github.com/DataSploit/datasploit
 
 ```bash
 cd datasploit/
+touch config.py
 docker build -t datasploit .
 docker run -it datasploit:latest -i <target>
 ```
