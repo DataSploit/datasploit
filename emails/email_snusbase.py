@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+### Uses the snusbase.com API to query service for leaked accounts based on the email address
+### API: snusbase.com
+### Make sure your secret API url and token are saved in the config.py file
+### Maintained by @khast3x
+
 import base
 import config as cfg
 import requests
