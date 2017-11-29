@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y git
 RUN git clone https://github.com/DataSploit/datasploit.git datasploit
 
 WORKDIR datasploit
+COPY config.py .
 RUN pip install -r requirements.txt
 CMD python datasploit_config.py
 ENTRYPOINT ["python", "datasploit.py"]
