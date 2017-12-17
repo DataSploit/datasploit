@@ -17,25 +17,30 @@ def validate(bitcoin_address):
     r = requests.get("https://blockexplorer.com/api/addr-validate/" + bitcoin_address)
     return r.content
 
+def get_data(bitcoin_address, url):
+    block_explorer_url_full = "https://blockexplorer.com/api/addr/" + bitcoin_address + url
+    res = requests.get(block_explorer_url_full)
+    # Status 400 - Some internal error "Bitcoin JSON-RPC: Work queue depth exceeded. Code:429"
+    # Status 502 - Internal server error. Cloudflare error page breaks the code.
+    while res.status_code == 400 or res.status_code == 502: 
+      res = requests.get(block_explorer_url_full)
+    return res.content
+
 def get_account_properties(bitcoin_address):
-    block_explorer_url_addr = "https://blockexplorer.com/api/addr/"
     try:
-        print "[!] Details in Satoshis"
-        block_explorer_url_full = block_explorer_url_addr + bitcoin_address + "/balance"
-        balance = requests.get(block_explorer_url_full)
-        print "[+] Balance             : %s" % balance.content
+        print "[!] Details in Satoshis (1 BTC = 100,000,000 Satoshis)"
 
-        block_explorer_url_full = block_explorer_url_addr + bitcoin_address + "/totalReceived"
-        total_received = requests.get(block_explorer_url_full)
-        print "[+] Total Received      : %s" % total_received.content
+        balance = get_data(bitcoin_address, "/balance")
+        print "[+] Balance             : %s" % balance
 
-        block_explorer_url_full = block_explorer_url_addr + bitcoin_address + "/totalSent"
-        total_sent = requests.get(block_explorer_url_full)
-        print "[+] Total Sent          : %s" % total_sent.content
+        total_received = get_data(bitcoin_address, "/totalReceived")
+        print "[+] Total Received      : %s" % total_received
 
-        block_explorer_url_full = block_explorer_url_addr + bitcoin_address + "/unconfirmedBalance"
-        unconfirmed_balance = requests.get(block_explorer_url_full)
-        print "[+] Unconfirmed Balance : %s" % unconfirmed_balance.content
+        total_sent = get_data(bitcoin_address, "/totalSent")
+        print "[+] Total Sent          : %s" % total_sent
+
+        unconfirmed_balance = get_data(bitcoin_address, "/unconfirmedBalance")
+        print "[+] Unconfirmed Balance : %s" % unconfirmed_balance
 
         print ""
     except Exception as e:
