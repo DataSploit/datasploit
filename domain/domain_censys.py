@@ -2,9 +2,23 @@
 import base
 import re, sys, json, time, requests
 import config as cfg
+from termcolor import colored
 
-ENABLED = False
 
+ENABLED = True
+
+class style:
+    BOLD = '\033[1m'
+    END = '\033[0m'
+
+def check_api_keys():
+    try:
+        if cfg.censysio_id != "" and cfg.censysio_id != "XYZ" and cfg.censysio_secret != "" and cfg.censysio_secret != "XYZ":
+            return True
+        else:
+            return False
+    except:
+        return False
 
 def censys_search(domain):
     censys_list = []
@@ -14,7 +28,7 @@ def censys_search(domain):
 
     while page <= pages:
         print "Parsed and collected results from page %s" % (str(page))
-        time.sleep(0.5)
+        #time.sleep(0.5)
         params = {'query': domain, 'page': page}
         res = requests.post("https://www.censys.io/api/v1/search/ipv4", json=params,
                             auth=(cfg.censysio_id, cfg.censysio_secret))
@@ -67,14 +81,18 @@ def view(server, temp_dict):
 
 
 def output(data, domain=""):
-    for i in data:
-        print i
+    if data is not None:
+        for i in data:
+            print i
 
 
 def main(domain):
-    data = censys_search(domain)
-    return data
-
+    if check_api_keys() == True:
+        data = censys_search(domain)
+        return data
+    else:
+        print colored(style.BOLD + '\n[-] Please configure respective API Keys for this module.\n' + style.END, 'red')
+        return None
 
 if __name__ == "__main__":
     try:
@@ -83,4 +101,4 @@ if __name__ == "__main__":
         output(result, domain)
     except Exception as e:
         print e
-        print "Please provide a domain name as argument"
+        print colored(style.BOLD + '\n[-] Please provide a domain name as argument\n' + style.END, 'red')

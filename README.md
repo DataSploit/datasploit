@@ -1,15 +1,24 @@
-[![ToolsWatch Best Tools](https://www.toolswatch.org/badges/toptools/2016.svg)](https://www.toolswatch.org/2013/12/2013-top-security-tools-as-voted-by-toolswatch-org-readers/)
+[![ToolsWatch Best Tools](https://www.toolswatch.org/badges/toptools/2016.svg)](http://www.toolswatch.org/2017/02/2016-top-security-tools-as-voted-by-toolswatch-org-readers/)
 
-[![Black Hat Arsenal](https://www.toolswatch.org/badges/arsenal/2016.svg)](https://www.blackhat.com/us-16/arsenal.html#datasploit) US
+[![Arsenal-2017-EU](https://rawgit.com/toolswatch/badges/master/arsenal/2017.svg)](http://www.toolswatch.org/2017/09/black-hat-arsenal-europe-2017-lineup/) - EUROPE
 
-[![Black Hat Arsenal](https://www.toolswatch.org/badges/arsenal/2016.svg)](https://www.blackhat.com/us-16/arsenal.html#datasploit) EU
+[![Arsenal-2017-US](https://rawgit.com/toolswatch/badges/master/arsenal/2017.svg)](http://www.toolswatch.org/2017/06/the-black-hat-arsenal-usa-2017-phenomenal-line-up-announced/) - USA
 
+[![Arsenal-2017-ASIA](https://rawgit.com/toolswatch/badges/master/arsenal/2017.svg)](http://www.toolswatch.org/2017/02/the-black-hat-arsenal-asia-2017-great-line-up/) - ASIA
 
+[![Arsenal-2016-EU](https://www.toolswatch.org/badges/arsenal/2016.svg)](http://www.toolswatch.org/2016/09/the-black-hat-arsenal-europe-2016-line-up/) - EUROPE
 
+[![Arsenal-2016-US](https://www.toolswatch.org/badges/arsenal/2016.svg)](http://www.toolswatch.org/2016/06/the-black-hat-arsenal-usa-2016-remarkable-line-up/) - USA
+
+[![DEFCON 25 ReconVillage](https://img.shields.io/badge/DEFCON%2025-Recon%20Village-red.svg)](http://reconvillage.org/) [![DEFCON 24 Demolabs](https://img.shields.io/badge/DEFCON%2024-Demo%20Labs-red.svg)](https://www.defcon.org/html/defcon-24/dc-24-demolabs.html)
+
+[![Join Datasploit Slack](https://img.shields.io/badge/slack-open-e01563.svg)](http://datasploit.slack.com "Join our Slack community")
+
+[![Follow Datasploit on Twitter](https://img.shields.io/twitter/follow/datasploit.svg?style=social&label=Follow%20%40datasploit)](https://twitter.com/intent/user?screen_name=datasploit "Follow Datasploit on Twitter")
 
 # Overview of the tool:
 * Performs OSINT on a domain / email / username / phone and find out information from different sources.
-* Correlates and collaborate the results, show them in a consolidated manner. 
+* Correlate and collaborate the results, show them in a consolidated manner. 
 * Tries to find out credentials, api-keys, tokens, subdomains, domain history, legacy portals, etc. related to the target. 
 * Use specific script / launch automated OSINT for consolidated data.
 * Performs Active Scans on collected data.
@@ -44,4 +53,12 @@ Options:
 ## Detailed Tool Documentation:
 > [https://datasploit.github.io/datasploit/](https://datasploit.github.io/datasploit/)
 
+### Lead Developers
+* Shubham Mittal - https://github.com/upgoingstar
+* Sudhanshu Chauhan - https://github.com/sudhanshuc
+* Kunal Aggarwal - https://github.com/KunalAggarwal
 
+### Social Media 
+* [Official Website](https://datasploit.github.io/datasploit/) 
+* [Twitter](https://twitter.com/datasploit)
+* [Facebook](https://facebook.com/datasploit)

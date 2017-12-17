@@ -53,3 +53,4 @@ if __name__ == "__main__":
     except Exception as e:
         print e
         print "Please provide a domain name as argument"
+        

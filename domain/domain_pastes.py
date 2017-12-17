@@ -34,7 +34,7 @@ def colorize(string):
     formattedText += string[lastMatch:]
     return formattedText
 
-#test
+
 def google_search(domain):
     url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=\"%s\"&start=1" % (
         cfg.google_cse_key, cfg.google_cse_cx, domain)
@@ -81,23 +81,14 @@ def output(data, domain=""):
     else:
         print "[+] %s results found\n" % len(data[1])
         for x in data[1]:
-            print "Title: %s\nURL: %s\nSnippet: %s\n" % (x['title'].encode('utf-8'), colorize(x['link'].encode('utf-8')), colorize(x['snippet'].encode('utf-8')))
+	    title = x['title'].encode('ascii', 'ignore').decode('ascii')
+	    snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
+	    link = x['link'].encode('ascii', 'ignore').decode('ascii')
+            print "Title: %s\nURL: %s\nSnippet: %s\n" % (title, colorize(link), colorize(snippet))
 
 
 if __name__ == "__main__":
-        domain = sys.argv[1]
-        banner()
-        result = main(domain)
-        if result:
-            output(result, domain)
-
-
-
-
-
-'''
-
-if __name__ == "__main__":
+    try:
         domain = sys.argv[1]
         banner()
         result = main(domain)
@@ -105,4 +96,3 @@ if __name__ == "__main__":
     except Exception as e:
         print e
         print "Please provide a domain name as argument"
-'''

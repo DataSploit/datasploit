@@ -50,10 +50,10 @@ def google_search(email):
             url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=\"%s\"&start=%s" % (
                 cfg.google_cse_key, cfg.google_cse_cx, email, next_index)
             data = json.loads(requests.get(url).content)
-        if 'error' in data:
-            return True, all_results
-        else:
-            all_results += data['items']
+	    if 'error' in data:
+                return True, all_results
+            else:
+                all_results += data['items']
     return True, all_results
 
 
@@ -62,35 +62,35 @@ def banner():
 
 
 def main(email):
-    if cfg.google_cse_key != "" and cfg.google_cse_key != "XYZ" and cfg.google_cse_cx != "" and cfg.google_cse_cx != "XYZ":
-        status, data = google_search(email)
-        return [status, data]
-    else:
+    try:
+        if cfg.google_cse_key != "" and cfg.google_cse_key != "XYZ" and cfg.google_cse_cx != "" and cfg.google_cse_cx != "XYZ":
+            status, data = google_search(email)
+            return [status, data]
+        else:
+            return False, "INVALID_API"
+    except:
         return False, "INVALID_API"
 
 
-def output(data, email=""):
-    if type(data) == list and not data[0]:
-        if data[1] == "INVALID_API":
-            print colored(
-                style.BOLD + '\n[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
-        else:
-            print "Error Message: %s" % data[1]['error']['message']
-            print "Error Code: %s" % data[1]['error']['code']
-            print "Error Description: %s" % data[1]['error']['errors'][0]['reason']
+def output(data, email):
+    if data[0] == False:
+        print colored(
+            style.BOLD + '[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
     else:
+        #print data[0]
         print "[+] %s results found\n" % len(data[1])
         for x in data[1]:
-            print "Title: %s\nURL: %s\nSnippet: %s\n" % (x['title'].encode('utf-8'), colorize(x['link'].encode('utf-8')), colorize(x['snippet'].encode('utf-8')))
+	    title = x['title'].encode('ascii', 'ignore').decode('ascii')
+            snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
+            link = x['link'].encode('ascii', 'ignore').decode('ascii')
+            print "Title: %s\nURL: %s\nSnippet: %s\n" % (title, colorize(link), colorize(snippet))
 
 
 if __name__ == "__main__":
-    #try:
-    email = sys.argv[1]
-    banner()
-    result = main(email)
-    if result:
+    try:
+        email = sys.argv[1]
+        banner()
+        result = main(email)
         output(result, email)
-    #except Exception as e:
-    #print e
-    
+    except e as Exception:
+        print e

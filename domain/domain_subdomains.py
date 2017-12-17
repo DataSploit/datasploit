@@ -30,6 +30,10 @@ def check_and_append_subdomains(subdomain, subdomain_list):
         subdomain_list.append(subdomain)
     return subdomain_list
 
+def check_and_append_other_domains(other_domain, other_related_domain_list):
+    if other_domain not in other_related_domain_list:
+        other_related_domain_list.append(other_domain)
+    return other_related_domain_list
 
 def subdomains(domain, subdomain_list):
     print colored(' [+] Extracting subdomains from DNS Dumpster\n', 'blue')
@@ -94,19 +98,52 @@ def subdomains_from_netcraft(domain, subdomain_list):
         pass
     return subdomain_list
 
-def subdomains_from_google_ct(domain, subdomain_list):
+def find_domains_from_next_page_ct(page_identifier, domain, subdomain_list, other_related_domain_list):
+    url = "https://transparencyreport.google.com/transparencyreport/api/v3/httpsreport/ct/certsearch/page?p=%s" % page_identifier
+    req2 = requests.get(url)
+    obj2 = req2.text
+    new_obj2= obj2.replace(")]}'\n\n", '')
+    dd2 = json.loads(new_obj2)
+    details2 = dd2[0][1]
+    for x in details2:
+        if "*" in x[1]:
+            x[1] = x[1].replace("*.", "")
+        if x[1].endswith(domain):
+            subdomain_list = check_and_append_subdomains(x[1], subdomain_list)
+        else:
+            other_related_domain_list = check_and_append_other_domains(x[1], other_related_domain_list)
+    try:
+        nextpage_details = dd2[0][3]
+        if nextpage_details[3] != nextpage_details[4]:
+            page_identifier = nextpage_details[1]
+            find_domains_from_next_page_ct(page_identifier, domain, subdomain_list, other_related_domain_list)
+    except:
+        pass
+
+def subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list):
     print colored(' [+] Extracting subdomains from Certificate Transparency Reports\n', 'blue')
-    next = ''
-    while True:
-        url = 'https://www.google.com/transparencyreport/jsonp/ct/search?domain=%s&incl_exp=true&incl_sub=true&token=%s&c=' % (domain,next)
-        obj = json.loads('('.join(requests.get(url).text.split('(')[1:])[:-3])
-        for x in obj['results']:
-            if x['subject'].endswith(domain):
-                subdomain_list = check_and_append_subdomains(x['subject'], subdomain_list)
-        if 'nextPageToken' not in obj:
-            break
-        next = obj['nextPageToken']
-    return subdomain_list
+    url = 'https://transparencyreport.google.com/transparencyreport/api/v3/httpsreport/ct/certsearch?include_expired=true&include_subdomains=true&domain=%s' % (domain)
+    req = requests.get(url)
+    obj = req.text
+    new_obj= obj.replace(")]}'\n\n", '')
+    dd = json.loads(new_obj)
+    details = dd[0][1]
+    for x in details:
+        if "*" in x[1]:
+            x[1] = x[1].replace("*.", "")
+        if x[1].endswith(domain):
+            subdomain_list = check_and_append_subdomains(x[1], subdomain_list)
+        else:
+            other_related_domain_list = check_and_append_other_domains(x[1], other_related_domain_list)
+
+    try:
+        nextpage_details = dd[0][3]
+        if nextpage_details[3] != nextpage_details[4]:
+            page_identifier = nextpage_details[1]
+            find_domains_from_next_page_ct(page_identifier, domain, subdomain_list, other_related_domain_list)
+    except:
+        pass
+    return subdomain_list, other_related_domain_list
 
 
 def banner():
@@ -116,9 +153,11 @@ def banner():
 def main(domain):
     time.sleep(0.3)
     subdomain_list = []
+    other_related_domain_list = []
     subdomain_list = subdomains(domain, subdomain_list)
     subdomain_list = subdomains_from_netcraft(domain, subdomain_list)
-    subdomain_list = subdomains_from_google_ct(domain, subdomain_list)
+    subdomain_list, other_related_domain_list = subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list)\
+    # not printing list of 'other_related_domain_list' anywhere. This is done for later changes.
     return subdomain_list
 
 
@@ -129,11 +168,13 @@ def output(data, domain=""):
 
 
 if __name__ == "__main__":
-    try:
+    if len(sys.argv) != 0:
+        #try:
         domain = sys.argv[1]
         banner()
         result = main(domain)
         output(result, domain)
-    except Exception as e:
-        print e
+        #except Exception as e:
+    else:
         print "Please provide a domain name as argument"
+        

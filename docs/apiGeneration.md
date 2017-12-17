@@ -1,6 +1,6 @@
 We need following API keys to run this tool efficiently:
 
-shodan_api, censysio_id, censysio_secret, zoomeyeuser, zoomeyepass, clearbit_apikey, emailhunter, fullcontact, google_cse_key, google_cse_cx.
+shodan_api, censysio_id, censysio_secret, zoomeyeuser, zoomeyepass, clearbit_apikey, emailhunter, fullcontact, google_cse_key, google_cse_cx, github_travis_key.
 
 ## Shodan_api
 * [Register](https://account.shodan.io/register) an account in shodan.
@@ -69,3 +69,9 @@ shodan_api, censysio_id, censysio_secret, zoomeyeuser, zoomeyepass, clearbit_api
 * Now your account is activated and use those credentials in the tool.
 * Email ID which you have used to sign up is your username and is the value for *zoomeyeuser* field in config.py
 * Your account password is the value for *zoomeyepass* field in the config.py
+
+## Travis CI Access Token
+* [Register](https://github.com/join?source=header-home) an account with Github.
+* Login into Github (https://github.com/login) and go to the page 'New personal access token' (https://github.com/settings/tokens/new).
+* Generate a Github access token based on the instructions present at https://travispy.readthedocs.io/en/stable/getting_started/.
+* Copy the Access Token and use as the value for the *github_access_token* field in the config.py file.

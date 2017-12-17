@@ -26,6 +26,8 @@ def emailhunter(domain):
         if 'emails' in parsed.keys():
             for email in parsed['emails']:
                 collected_emails.append(email['value'])
+        elif json.loads(res.text).get('status') == "error":
+            print colored(style.BOLD + '[-] %s\n' % json.loads(res.text).get('message') + style.END, 'red')
     except:
         print 'CAPTCHA has been implemented, skipping this for now.'
     return collected_emails

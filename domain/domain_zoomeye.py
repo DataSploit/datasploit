@@ -8,7 +8,7 @@ import config as cfg
 from termcolor import colored
 import time
 
-ENABLED = True
+ENABLED = False
 
 
 class style:
@@ -22,18 +22,21 @@ def get_accesstoken_zoomeye(domain):
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     datalogin = '{"username": "%s","password": "%s"}' % (username, password)
     s = requests.post("https://api.zoomeye.org/user/login", data=datalogin, headers=headers)
-    print s.text
     responsedata = json.loads(s.text)
-    access_token1 = responsedata['access_token']
+    if "error" in responsedata and responsedata['error'] == "bad_request":
+	return False
+    access_token1 = responsedata.get('access_token', "78c4a2dd70ddeffc5fc3c0639f86245a")
     return access_token1
 
 
 def search_zoomeye(domain):
     time.sleep(0.3)
     zoomeye_token = get_accesstoken_zoomeye(domain)
+    if not zoomeye_token:
+	return [False, "BAD_API"]
     authData = {"Authorization": "JWT " + str(zoomeye_token)}
     req = requests.get('http://api.zoomeye.org/web/search/?query=site:%s&page=1' % domain, headers=authData)
-    return req.text
+    return True, req.text
 
 
 def banner():
@@ -43,7 +46,10 @@ def banner():
 def main(domain):
     if cfg.zoomeyepass != "" and cfg.zoomeyeuser != "":
         zoomeye_results = search_zoomeye(domain)
-        return json.loads(zoomeye_results)
+	if zoomeye_results[0]:
+	        return True, json.loads(zoomeye_results)
+	else:
+		return zoomeye_results
     else:
         return [False, "INVALID_API"]
 
@@ -52,6 +58,9 @@ def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
         print colored(
                 style.BOLD + '\n[-] ZoomEye username and password not configured. Skipping Zoomeye Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+    elif type(data) == list and data[1] == "BAD_API":
+	print colored(
+                style.BOLD + '\n[-] ZoomEye API is not functional right now.\n' + style.END, 'red')
     else:
         if 'matches' in data.keys():
             print len(data['matches'])

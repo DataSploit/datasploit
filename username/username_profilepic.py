@@ -22,7 +22,7 @@ def extracting(imglinks, username, prourl, tag, attribute, value, finattrib, pro
     res = requests.get(prourl)
     soup = BeautifulSoup(res.content, "lxml")
     img = soup.find(tag, {attribute: value})
-    if profile == "ask.fm":
+    if profile == "ask.fm" and not img[finattrib].startswith("http"):
         img[finattrib] = "http:" + img[finattrib]
         imglinks.append(img[finattrib])
         path = "profile_pic/" + username + "/" + profile + ".jpg"
