@@ -29,11 +29,17 @@ def main(domain):
 
 def output(data, domain=""):
     if 'creation_date' in data:
-        data['creation_date'] = data['creation_date'].strftime('%m/%d/%Y')
-    if 'creation_date' in data:
-        data['expiration_date'] = data['expiration_date'].strftime('%m/%d/%Y')
-    if 'creation_date' in data:
-        data['updated_date'] = data['updated_date'].strftime('%m/%d/%Y')
+        creation_date = data['creation_date']
+        data['creation_date'] = creation_date[0].strftime('%m/%d/%Y') if isinstance(creation_date, list) \
+            else creation_date.strftime('%m/%d/%Y')
+    if 'expiration_date' in data:
+        expiration_date = data['expiration_date']
+        data['expiration_date'] = expiration_date[0].strftime('%m/%d/%Y') if isinstance(expiration_date, list) \
+            else expiration_date.strftime('%m/%d/%Y')
+    if 'updated_date' in data:
+        updated_date = data['updated_date']
+        data['updated_date'] = updated_date[0].strftime('%m/%d/%Y') if isinstance(updated_date, list) \
+            else updated_date.strftime('%m/%d/%Y')
     print data
     print "\n-----------------------------\n"
 
