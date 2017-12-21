@@ -9,10 +9,10 @@ import argparse
 import emailOsint
 import domainOsint
 import ipOsint
+import bitcoinOsint
 import usernameOsint
 from tld import get_tld
 from netaddr import IPAddress,AddrFormatError
-
 
 def main(argv):
     output=None
@@ -77,6 +77,9 @@ def main(argv):
             elif get_tld(user_input, fix_protocol=True,fail_silently=True) is not None:
                 print "Looks like a DOMAIN, running domainOsint...\n"
                 domainOsint.run(user_input, output)
+            elif re.match('^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$', user_input):
+                print "Looks like a Bitcoin address...\n"
+                bitcoinOsint.run(user_input, output)
             else:
                 print "Nothing Matched assuming username, running usernameOsint...\n"
                 usernameOsint.run(user_input, output)
