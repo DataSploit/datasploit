@@ -157,6 +157,8 @@ def subdomains_from_dnstrails(domain, subdomain_list):
     req = requests.get(url, headers=headers)
     if req.status_code == 200:
         data = json.loads(req.text)
+        if 'result' not in data:
+            data['result'] = {'subdomains':''}
         if 'subdomains' in data['result'] and len(data['result']['subdomains']) != 0:
             subdomains_new = data['result']['subdomains']
             for a in range(0, len(subdomains_new)):
