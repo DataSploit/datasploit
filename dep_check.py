@@ -15,6 +15,9 @@ def check_dependency():
             missing_deps.append(req_dep)
 
     if missing_deps:
-        print "You are missing a module for Datasploit. Please install them using: "
-        print "pip install -r requirements.txt"
+        import os
+        dependecy = 'pip install '
+        for dep in missing_deps:
+            dependecy += dep + ' '
+        os.system(dependecy)
         sys.exit()
