@@ -55,11 +55,6 @@ shodan_api, censysio_id, censysio_secret, zoomeyeuser, zoomeyepass, clearbit_api
 * [Login](https://api.spyonweb.com/users/sign_in) and your Access Token will be on the main page.
 * Copy the Access Token and use as the value for the *spyonweb_access_token* field in the config.py file.
 
-## Reddit API
-* [Register](https://www.reddit.com/login) for an account on Reddit.
-* Go [Here](https://www.reddit.com/prefs/apps/) and click the *create app* button at the bottom.
-* Name the app whatever you want, select *script* type, for a redirect uri (if needed) you can use anything (eg. `http://www.example.com/unused/redirect/uri`).
-* Copy the *personal use script ID* to `reddit_id` and *secret* to `reddit_secret`.
 
 ## Zoomeye Username and Password
 * [Register](https://www.zoomeye.org/accounts/register) an user with zoomeye and use the credentials for this tool. (Don't worry if you are redirected to sso.telnet404.com. *This is how it works.)*

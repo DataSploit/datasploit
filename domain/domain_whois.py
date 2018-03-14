@@ -31,8 +31,7 @@ def output(data, domain=""):
     for k in ('creation_date', 'expiration_date', 'updated_date'):
         if k in data:
             date = data[k][0] if isinstance(data[k], list) else data[k]
-            if data[k]:
-                data[k] = date.strftime('%m/%d/%Y')
+            data[k] = date.strftime('%m/%d/%Y')
     print data
     print "\n-----------------------------\n"
 

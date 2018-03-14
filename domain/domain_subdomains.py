@@ -98,67 +98,7 @@ def subdomains_from_netcraft(domain, subdomain_list):
         pass
     return subdomain_list
 
-
-def ct_search(domain, subdomain_list, wildcard=True):
-
-    '''
-    ###################################################################
-    Credits:
-    This Code has been picked from @paulwebsec's git repo crt.sh.  
-    https://github.com/PaulSec/crt.sh/blob/master/crtsh.py
-
-    Please say Hi to him, We all love him :) 
-
-    Few changes made:
-        1. Removing class structure.
-        2. Instead of passing all fields, just passing subdomain
-        3. Checking for repeated subdomain entries 
-    ###################################################################
-    '''
-    print colored(' [+] Extracting subdomains from Certificate Transparency Reports\n', 'blue')
-    subdomain_list_tmp = []
-
-    base_url = "https://crt.sh/?q="
-    if wildcard:
-        base_url += "%25."
-    base_url += domain
-
-    ua = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 ' + \
-        'Firefox/40.1'
-    r = requests.get(url=base_url, headers={'User-Agent': ua})
-
-    if r.ok:
-        soup = BeautifulSoup(r.content, 'html.parser')
-        try:
-            table = soup.findAll('table')[2]
-            rows = table.find_all(['tr'])
-            for row in rows:
-                cells = row.find_all('td', limit=5)
-                if cells:
-                    '''tmp = {
-                                                                                                'crtsh_id': cells[0].text,
-                                                                                                'pem_url': 'https://crt.sh/?d=' + cells[0].text,
-                                                                                                'logged_at': cells[1].text,
-                                                                                                'not_before': cells[2].text,
-                                                                                            }'''
-                    tmp = {}
-                    if wildcard:
-                        tmp['domain'] = cells[3].text
-                        #tmp['issuer'] = cells[4].text
-                    else:
-                        tmp['domain'] = domain,
-                        #tmp['issuer'] = cells[3].text
-                    check_and_append_subdomains(tmp['domain'], subdomain_list)
-                    #subdomain_list_tmp.append(tmp)
-        except IndexError:
-            print("Error retrieving information.")
-
-    return subdomain_list_tmp
-
-
-
-
-'''def find_domains_from_next_page_ct(page_identifier, domain, subdomain_list, other_related_domain_list):
+def find_domains_from_next_page_ct(page_identifier, domain, subdomain_list, other_related_domain_list):
     url = "https://transparencyreport.google.com/transparencyreport/api/v3/httpsreport/ct/certsearch/page?p=%s" % page_identifier
     req2 = requests.get(url)
     obj2 = req2.text
@@ -203,7 +143,7 @@ def subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list)
             find_domains_from_next_page_ct(page_identifier, domain, subdomain_list, other_related_domain_list)
     except:
         pass
-    return subdomain_list, other_related_domain_list'''
+    return subdomain_list, other_related_domain_list
 
 def subdomains_from_dnstrails(domain, subdomain_list):
     print colored(' [+] Extracting subdomains from DNSTrails\n', 'blue')
@@ -217,14 +157,12 @@ def subdomains_from_dnstrails(domain, subdomain_list):
     req = requests.get(url, headers=headers)
     if req.status_code == 200:
         data = json.loads(req.text)
-        if 'result' in data and 'subdomains' in data['result'] and len(data['result']['subdomains']) != 0:
+        if 'subdomains' in data['result'] and len(data['result']['subdomains']) != 0:
             subdomains_new = data['result']['subdomains']
             for a in range(0, len(subdomains_new)):
                 subdomains_new[a] = subdomains_new[a] + '.' + domain
-                #print subdomains_new[a]
+                print subdomains_new[a]
                 subdomain_list = check_and_append_subdomains(subdomains_new[a], subdomain_list)
-        else:
-            print colored(' [!] {}\n'.format(data['error']), 'yellow')
     else:
         print colored(' [+] DNSTrails API rate limit exceeded\n', 'yellow')
     return subdomain_list
@@ -239,8 +177,7 @@ def main(domain):
     other_related_domain_list = []
     subdomain_list = subdomains(domain, subdomain_list)
     subdomain_list = subdomains_from_netcraft(domain, subdomain_list)
-    #subdomain_list, other_related_domain_list = subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list)
-    subdomains_from_ct = ct_search(domain, subdomain_list)
+    subdomain_list, other_related_domain_list = subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list)
     subdomain_list = subdomains_from_dnstrails(domain, subdomain_list)
     # not printing list of 'other_related_domain_list' anywhere. This is done for later changes.
     return subdomain_list
