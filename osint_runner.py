@@ -5,7 +5,7 @@ import json
 from glob import glob
 from collections import OrderedDict
 from datetime import datetime
-
+from flatten_json import flatten
 
 def run(component, module_dir, m_input, output = None):
     dir_path = "%s/%s" % (os.path.dirname(os.path.abspath(__file__)), module_dir)
@@ -39,5 +39,6 @@ def run(component, module_dir, m_input, output = None):
             os.makedirs(filepath)
         file = "%s/%s" % (filepath, filename)
         with open(file, "w") as fh:
-            json.dump(json_output, fh, indent=4, sort_keys=True)
+            json.dump(flatten(json_output), fh, indent=4, sort_keys=True, default=lambda x: None, separators=(',', ': '))
+            fh.write("\n")
         print "JSON report saved to %s/%s" % (filepath, filename)

@@ -34,16 +34,10 @@ def twitterdetails(username):
 
     # preparing auth
     api = tweepy.API(auth)
+
+    userinfo = api.get_user(screen_name=username)
+
     userdetails = {}
-    activitydetails = {}
-    try:
-        userinfo = api.get_user(screen_name=username)
-    except Exception as e:
-        if e.message[0]['code'] == 63:
-            print colored(style.BOLD + '[!] Error: ' + str(e.message[0]['message']) + style.END, 'red')
-        pass
-        return activitydetails, userdetails          
- 
     userdetails['Followers'] = userinfo.followers_count
     userdetails['Following'] = userinfo.friends_count
     userdetails['Geolocation Enabled'] = userinfo.geo_enabled
@@ -116,7 +110,7 @@ def output(data, username=""):
         print colored(
             style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
     else:
-        if data and data[0]:
+        if data:
             hashlist = data[0]['Hashtag Interactions']
             userlist = data[0]['User Interactions']
             userdetails = data[1]

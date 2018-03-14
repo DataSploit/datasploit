@@ -16,7 +16,6 @@ json2html
 lxml
 netaddr
 piplapis-python
-praw
 pymongo
 python-wappalyzer
 python-whois
