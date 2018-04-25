@@ -8,7 +8,7 @@ import json
 from termcolor import colored
 
 # Control whether the module is enabled or not
-ENABLED = False
+ENABLED = True
 
 
 class style:
@@ -24,7 +24,7 @@ def main(email):
     clearbit_apikey = vault.get_key('clearbit_apikey')
     if clearbit_apikey != None:
         headers = {"Authorization": "Bearer %s" % clearbit_apikey}
-        req = requests.get("https://person.clearbit.com/v1/people/email/%s" % (email), headers=headers)
+        req = requests.get("https://person-stream.clearbit.com/v2/people/find?email=%s" % (email), headers=headers)
         person_details = json.loads(req.content)
         if "error" in req.content and "queued" in req.content:
             print "This might take some more time, Please run this script again, after 5 minutes."
