@@ -20,12 +20,15 @@ def banner():
 
 
 def main(email):
-    req = requests.get('http://www.slideshare.net/search/slideshow?q=%s' % (email))
-    soup = BeautifulSoup(req.content, "lxml")
-    atag = soup.findAll('a', {'class': 'title title-link antialiased j-slideshow-title'})
     slides = {}
-    for at in atag:
-        slides[at.text] = at['href']
+    try:
+        req = requests.get('http://www.slideshare.net/search/slideshow?q=%s' % (email))
+        soup = BeautifulSoup(req.content, "lxml")
+        atag = soup.findAll('a', {'class': 'title title-link antialiased j-slideshow-title'})
+        for at in atag:
+            slides[at.text] = at['href']
+    except Exception as ex:
+        print ex
     return slides
 
 
