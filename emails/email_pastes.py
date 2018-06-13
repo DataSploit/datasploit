@@ -91,5 +91,5 @@ if __name__ == "__main__":
         banner()
         result = main(email)
         output(result, email)
-    except e as Exception:
+    except Exception as e:
         print e
