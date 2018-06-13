@@ -46,8 +46,8 @@ Options:
 ```
 
 # Required Setup:
-* Python 2.7 (because bunch of dependencies do not support Python 3.0)
-* Bunch of python libraries (use requirements.txt)
+* Python 2.7 (because dependency [`python-Wappalyzer`](https://github.com/chorsley/python-Wappalyzer) does not yet support Python 3)
+* Bunch of Python libraries (use `pip install -r requirements.txt`)
 * In **Kali Linux**, please install the requirements using the command `pip install --upgrade --force-reinstall -r requirements.txt`
 
 ## Detailed Tool Documentation:
