@@ -1,20 +1,18 @@
-import pip
+import pkg_resources
 import sys
 
 def check_dependency():
-    list_deps = []
     missing_deps = []
 
-    with open('requirements.txt') as f:
-        list_deps = f.read().splitlines()
-
-    pip_list = sorted([(i.key) for i in pip.get_installed_distributions()])
-
-    for req_dep in list_deps:
-        if req_dep not in pip_list:
-            missing_deps.append(req_dep)
+    with open('requirements.txt', 'r') as reqs_file:
+        for req_dep in reqs_file.read().splitlines():
+            try:
+                pkg_resources.get_distribution(req_dep)
+            except pkg_resources.DistributionNotFound:
+                missing_deps.append(req_dep)
 
     if missing_deps:
-        print "You are missing a module for Datasploit. Please install them using: "
-        print "pip install -r requirements.txt"
+        print "You are missing the following module(s) needed to run DataSploit:"
+        print ", ".join(missing_deps)
+        print "Please install them using: `pip install -r requirements.txt`"
         sys.exit()
