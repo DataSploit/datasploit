@@ -42,8 +42,8 @@ def twitterdetails(username):
         if e.message[0]['code'] == 63:
             print colored(style.BOLD + '[!] Error: ' + str(e.message[0]['message']) + style.END, 'red')
         pass
-        return activitydetails, userdetails          
- 
+        return activitydetails, userdetails
+
     userdetails['Followers'] = userinfo.followers_count
     userdetails['Following'] = userinfo.friends_count
     userdetails['Geolocation Enabled'] = userinfo.geo_enabled
@@ -60,36 +60,41 @@ def twitterdetails(username):
     userdetails['UTC Offset'] = userinfo.utc_offset
     userdetails['Verified Account'] = userinfo.verified
 
-    f = open("temptweets.txt", "w+")
-    # writing tweets to temp file- last 1000
-    for tweet in tweepy.Cursor(api.user_timeline, id=username).items(1000):
-        f.write(tweet.text.encode("utf-8"))
-        f.write("\n")
+    if not userinfo.protected:
+        f = open("temptweets.txt", "w+")
+        # writing tweets to temp file- last 1000
+        for tweet in tweepy.Cursor(api.user_timeline, id=username).items(1000):
+            f.write(tweet.text.encode("utf-8"))
+            f.write("\n")
 
-    # extracting hashtags
-    f = open('temptweets.txt', 'r')
-    q = f.read()
-    strings = re.findall(r'(?:\#+[\w_]+[\w\'_\-]*[\w_]+)', q)
-    tusers = re.findall(r'(?:@[\w_]+)', q)
-    f.close()
-    os.remove("temptweets.txt")
+        # extracting hashtags
+        f = open('temptweets.txt', 'r')
+        q = f.read()
+        strings = re.findall(r'(?:\#+[\w_]+[\w\'_\-]*[\w_]+)', q)
+        tusers = re.findall(r'(?:@[\w_]+)', q)
+        f.close()
+        os.remove("temptweets.txt")
 
-    hashlist = []
-    userlist = []
-    for item in strings:
-        item = item.strip('#')
-        item = item.lower()
-        hashlist.append(item)
+        hashlist = []
+        userlist = []
+        for item in strings:
+            item = item.strip('#')
+            item = item.lower()
+            hashlist.append(item)
 
-    for itm in tusers:
-        itm = itm.strip('@')
-        itm = itm.lower()
-        userlist.append(itm)
+        for itm in tusers:
+            itm = itm.strip('@')
+            itm = itm.lower()
+            userlist.append(itm)
 
-    activitydetails = {
-                       'Hashtag Interactions': hashlist[:10],
-                       'User Interactions': userlist[:10]
-                      }
+        activitydetails = {
+                           'Hashtag Interactions': hashlist[:10],
+                           'User Interactions': userlist[:10]
+                          }
+    else:
+        activitydetails = {
+                           'Error': 'Account Set to Private'
+                          }
 
     return activitydetails, userdetails
 
@@ -112,33 +117,36 @@ def main(username):
 
 
 def output(data, username=""):
-    if data[1] == "INVALID_API":
-        print colored(
-            style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
-    else:
-        if data and data[0]:
-            hashlist = data[0]['Hashtag Interactions']
-            userlist = data[0]['User Interactions']
+    if data:
+        if data[1] == "INVALID_API":
+            print colored(
+                style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+        if data[0]:
             userdetails = data[1]
-            for k,v in userdetails.iteritems():
+            for k, v in userdetails.iteritems():
                 try:
                     print k + ": " + str(v)
                 except UnicodeEncodeError as e:
                     print colored(style.BOLD + '[!] Error: ' + str(e) + style.END, 'red')
-            print "\n"
-            count = Counter(hashlist).most_common()
-            print "Top Hashtag Occurrence for user " + username + " based on last 1000 tweets"
-            for hash, cnt in count:
-                print "#" + hash + " : " + str(cnt)
-            print "\n"
+            if 'Error' in data[0]:
+                print colored(style.BOLD + '\n[!] ' + data[0]['Error'] + style.END, 'red')
+            else:
+                hashlist = data[0]['Hashtag Interactions']
+                userlist = data[0]['User Interactions']
+                print "\n"
+                count = Counter(hashlist).most_common()
+                print "Top Hashtag Occurrence for user " + username + " based on last 1000 tweets"
+                for hash, cnt in count:
+                    print "#" + hash + " : " + str(cnt)
+                print "\n"
 
-            # counting user occurrence
-            countu = Counter(userlist).most_common()
-            print "Top User Occurrence for user " + username + " based on last 1000 tweets"
-            for usr, cnt in countu:
-                print "@" + usr + " : " + str(cnt)
-        else:
-            print "No Associated Twitter account found."
+                # counting user occurrence
+                countu = Counter(userlist).most_common()
+                print "Top User Occurrence for user " + username + " based on last 1000 tweets"
+                for usr, cnt in countu:
+                    print "@" + usr + " : " + str(cnt)
+    else:
+        print "No Associated Twitter account found."
 
 
 if __name__ == "__main__":
