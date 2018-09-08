@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 # Credits: https://github.com/int0x80/tcispy
 
