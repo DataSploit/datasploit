@@ -5,8 +5,12 @@ def check_dependency():
     list_deps = []
     missing_deps = []
 
-    with open('requirements.txt') as f:
-        list_deps = f.read().splitlines()
+    try:
+        with open('requirements.txt') as f:
+            list_deps = f.read().splitlines()
+    except:
+	print "Cannot read requirements.txt to check for missing modules, exiting..."
+        sys.exit()
 
     # get list of installed python packages
     pip_list = []
