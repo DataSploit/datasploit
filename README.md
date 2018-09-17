@@ -1,3 +1,11 @@
+Forked for bugfixes:
+* supports config in /etc/datasploit
+* fixes requirements checking.
+
+In the future:
+* improve exception handling for tools which do not have a provided API(i.e.
+auto-skip/disable)
+
 [![ToolsWatch Best Tools](https://www.toolswatch.org/badges/toptools/2016.svg)](http://www.toolswatch.org/2017/02/2016-top-security-tools-as-voted-by-toolswatch-org-readers/)
 
 [![Arsenal-2017-EU](https://github.com/toolswatch/badges/blob/master/arsenal/europe/2017.svg)](http://www.toolswatch.org/2017/09/black-hat-arsenal-europe-2017-lineup/)

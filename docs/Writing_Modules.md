@@ -100,7 +100,7 @@ Each of these folder houses scripts of it's own kind, i.e., scripts working on d
 To write a new script for a module, there is a `template.py` located in each module directory to help you get started quickly. Following is the contents of the template.py file in the domain module:
 
 ```python
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import base
 import config as cfg

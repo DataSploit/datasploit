@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import dep_check
 dep_check.check_dependency()
@@ -43,6 +43,12 @@ def main(argv):
     ds_dir=os.path.dirname(os.path.realpath(__file__))
     config_file_path = os.path.join(ds_dir,"config.py")
     config_sample_path= os.path.join(ds_dir,"config_sample.py")
+    # If there is a systemwide config, use that instead
+    if os.path.isfile('/etc/datasploit/config.py') is True:
+        config_file_path = '/etc/datasploit/config.py'
+    elif os.path.isfile(os.getenv('HOME') + '/.config/datasploit/config.py') is True:
+        config_file_path = os.getenv('HOME') + '/.config/datasploit/config.py'
+
     print os.path.exists(config_file_path)
     if not os.path.exists(config_file_path):
         print "[+] Looks like a new setup, setting up the config file."

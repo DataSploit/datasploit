@@ -2,6 +2,10 @@
 #added to gitignore so will not be syned
 
 #Backup in ~/Desktop/config.py_backup
+# The location of this file will be checked in order:
+# program $PWD, generally /usr/share/datasploit
+# /etc/datasploit/
+# ~/.config/datasploit/
 
 shodan_api=""
 bing_api=""
