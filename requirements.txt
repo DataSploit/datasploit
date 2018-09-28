@@ -23,6 +23,7 @@ python-whois
 pytz
 requests
 requests-file
+selenium
 simplejson
 termcolor
 tld

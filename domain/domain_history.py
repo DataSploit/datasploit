@@ -2,9 +2,10 @@
 
 import base
 import sys
-import requests
 from bs4 import BeautifulSoup
 import re
+from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from termcolor import colored
 import time
 
@@ -20,14 +21,31 @@ def netcraft_domain_history(domain):
     ip_history_dict = {}
     time.sleep(0.3)
     endpoint = "http://toolbar.netcraft.com/site_report?url=%s" % (domain)
-    req = requests.get(endpoint)
-
-    soup = BeautifulSoup(req.content, 'html.parser')
-    urls_parsed = soup.findAll('a', href=re.compile(r'.*netblock\?q.*'))
-    for url in urls_parsed:
-        if urls_parsed.index(url) != 0:
-            ip_history_dict[str(url).split('=')[2].split(">")[1].split("<")[0]] = str(url.parent.findNext('td')).strip(
-                "<td>").strip("</td>")
+    # These try's could be in a for loop, but I wanted manual control
+    # over the order in which the webdrivers were chosen.
+    driver = None
+    try:
+        webdriver.PhantomJS()
+        driver = webdriver.PhantomJS()
+    except WebDriverException:
+        try:
+            webdriver.Firefox().quit()
+            driver = webdriver.Firefox()
+        except WebDriverException:
+            try:
+                webdriver.Chrome().quit()
+                driver = webdriver.Chrome()
+            except WebDriverException:
+                ip_history_dict = { 'Error': 'No WebDriver Found!\nTry installing PhantomJS or adding the Chrome or Firefox binaries to your $PATH.'}
+    if driver:
+        driver.get(endpoint)
+        html = driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+        urls_parsed = soup.findAll('a', href=re.compile(r'.*netblock\?q.*'))
+        for url in urls_parsed:
+            if urls_parsed.index(url) != 0:
+                ip_history_dict[url['href'].split('=')[1]] = url.get_text()
+        driver.quit()
     return ip_history_dict
 
 
@@ -40,8 +58,16 @@ def main(domain):
 
 
 def output(data, domain=""):
-    for x in data.keys():
-        print "%s: %s" % (data[x], x)
+    if len(data.keys()) > 0:
+        for x in data.keys():
+            if 'Error' in x:
+                print data[x]
+                data[x] = ''
+            else:
+                print "%s: %s" % (data[x], x)
+    else:
+        print colored(style.BOLD + '\n[!] No previous domain owners found!\n' +
+                      style.END, 'red')
     print "\n-----------------------------\n"
 
 

@@ -27,7 +27,9 @@ People can either write modules for DataSploit or can simpley import datasploit 
 
 Worried about setup? We got you. You should be worried about two things:
 
-* Install the required python dependencies. Either use requirements.txt or simpley pip install datasploit. 
+* Install dependencies
+    - Python dependencies: Either use requirements.txt (`pip install -r requirements.txt`) if installed with `git clone` or simply `pip install datasploit` to install everything needed as a library.
+    - System dependencies: PhantomJS, Chrome or Firefox needs to be installed for certain modules to render javascript heavy websites.
 * Feeding specific API keys for few specific sources. We are going to have a knowledge base where step by step instructions to generate these API keys will be documented. Sweet deal? 
 * [Click here to check step by step setup guide](/setupGuide/)
 
