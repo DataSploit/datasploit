@@ -9,9 +9,11 @@ import json
 # Control whether the module is enabled or not
 ENABLED = True
 
+
 class style:
    BOLD = '\033[1m'
    END = '\033[0m'
+
 
 def banner():
     # Write a cool banner here
@@ -23,13 +25,14 @@ def main(username):
     # Use the username variable to do some stuff and return the data
     url = "https://keybase.io/_/api/1.0/user/lookup.json?usernames=%s" %username
     req = requests.get(url)
-    data = json.loads(req.text) 
-    if data['them'][0] is not None:
+    data = json.loads(req.text)
+    dict_them = []
+    if 'them' in data and data['them'][0] is not None:
         dict_them = data['them'][0]
-        return dict_them
-    else:
-        dict_them = []
-        return dict_them
+    if data['status']['code'] is 100:
+        error = str(data['status']['name'] + " - " + data['status']['desc'])
+        dict_them = {'Error': error}
+    return dict_them
 
 
 def output(dict_them, username):
@@ -58,6 +61,10 @@ def output(dict_them, username):
                 print "[+] Total %s Devices found." % len(dict_them['devices'].keys())
                 for x in dict_them['devices'].keys():
                     print "  - %s (%s)" % (dict_them['devices'][x]['name'], dict_them['devices'][x]['type'])
+        if 'Error' in dict_them:
+            for k, v in dict_them.items():
+                print colored(style.BOLD + '[!] ' + k + ': '+ v + style.END, 'red')
+                del dict_them['Error']
     else:
         print "User not found on Keybase"
     print ""
@@ -68,4 +75,3 @@ if __name__ == "__main__":
     banner()
     result = main(username)
     output(result, username)
-
