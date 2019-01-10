@@ -30,27 +30,30 @@ def run(component, module_dir, m_input, output = None):
             x.output(data, m_input)
 	if output and str(output).lower() == "text":
             try:
-                if x.WRITE_TEXT_FILE:
-                    filename = "text_report_%s_%s_%s.txt" % (m_input, x.MODULE_NAME, datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-                    text_data = x.output_text(data)
-		    fh = open(filename, "w")
-		    fh.write(text_data)
-		    fh.close()
-		    print "[+] Text Report written to %s" % filename
+                filepath = "./reports/text"
+                if not os.path.exists(filepath):
+                    os.makedirs(filepath)
+                filename = "text_report_%s_%s_%s.txt" % (m_input, x.MODULE_NAME, datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+                file = "%s/%s" % (filepath, filename)
+                text_data = x.output_text(data)
+                with open(file, "w") as fh:
+                    fh.write(text_data)
+                    fh.close()
+                print "[+] Text Report written to %s" % filename
             except Exception as e:
                 pass
-"""
-        if output and str(output).upper() == "JSON":
-            json_output[name] = data
+
+    if output and str(output).upper() == "JSON":
+        json_output[name] = data
 
     if output and str(output).upper() == "JSON":
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         filename = "datasploit_%s_%s_%s.json" % (module_dir, m_input, timestamp)
-        filepath = "reports/json"
+        filepath = "./reports/json"
         if not os.path.exists(filepath):
             os.makedirs(filepath)
         file = "%s/%s" % (filepath, filename)
         with open(file, "w") as fh:
             json.dump(json_output, fh, indent=4, sort_keys=True)
         print "JSON report saved to %s/%s" % (filepath, filename)
-"""
+

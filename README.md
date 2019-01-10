@@ -36,12 +36,11 @@
          	   Open Source Assistant for #OSINT            
                  website: www.datasploit.info               
 	
-Usage: domainOsint.py [options]
+Usage: domainOsint.py domain [options]
 
 Options:
   -h,	    	--help			    show this help message and exit
-  -d DOMAIN,	--domain=DOMAIN		Domain name against which automated Osint 
-                                    is to be performed.
+  -o,		--option[text, json]	    Generate a report in the reports directory reports/json or reports/text
 
 ```
 

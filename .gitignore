@@ -84,3 +84,5 @@ target/
 
 profile_pic/
 reports/json/
+reports/text/
+text*

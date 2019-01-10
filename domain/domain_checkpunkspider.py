@@ -20,12 +20,13 @@ warnings.filterwarnings("ignore")
 
 
 def checkpunkspider(reversed_domain):
-    time.sleep(0.5)
+    """  time.sleep(0.5)
     req = requests.post("http://www.punkspider.org/service/search/detail/" + reversed_domain, verify=False)
     try:
         return json.loads(req.content)
     except:
-        return {}
+        return {} """
+    return {}
 
 
 def banner():
