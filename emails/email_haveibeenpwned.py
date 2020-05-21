@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import sys
 import requests
 import json
@@ -16,7 +16,7 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Checking breach status in HIBP (@troyhunt)\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Checking breach status in HIBP (@troyhunt)\n' + style.END, 'blue'))
 
 
 def main(email):
@@ -24,7 +24,7 @@ def main(email):
     if req.status_code == 404:
 	return {}
     if 'Attention Required! | CloudFlare' in req.content:
-        print "CloudFlare detected"
+        print("CloudFlare detected")
         return {}
     if req.content != "":
 	try:
@@ -37,13 +37,13 @@ def main(email):
 
 def output(data, email=""):
     if data:
-        print colored("Pwned at %s Instances\n", 'green') % len(data)
+        print(colored("Pwned at %s Instances\n", 'green') % len(data))
         for x in data:
-            print "Title: %s\nBreachDate: %s\nPwnCount: %s\nDescription: %s\nDataClasses: %s\n" % (
+            print("Title: %s\nBreachDate: %s\nPwnCount: %s\nDescription: %s\nDataClasses: %s\n" % (
                 x.get('Title', ''), x.get('BreachDate', ''), x.get('PwnCount', ''), x.get('Description', ''),
-                ", ".join(x.get('DataClasses', [])))
+                ", ".join(x.get('DataClasses', []))))
     else:
-        print colored("[-] No breach status found.", 'red')
+        print(colored("[-] No breach status found.", 'red'))
 
 
 if __name__ == "__main__":
@@ -53,5 +53,5 @@ if __name__ == "__main__":
         result = main(email)
         output(result, email)
     except Exception as e:
-        print e
-        print "Please provide an email as argument"
+        print(e)
+        print("Please provide an email as argument")

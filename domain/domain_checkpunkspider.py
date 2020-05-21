@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import requests
 import sys
 import json
@@ -29,7 +29,7 @@ def checkpunkspider(reversed_domain):
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Trying luck with PunkSpider\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Trying luck with PunkSpider\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -42,15 +42,15 @@ def main(domain):
 
 def output(data, domain=""):
     if data is not None:
-        if 'data' in data.keys() and len(data['data']) >= 1:
-            print colored("Few vulnerabilities found at Punkspider", 'green')
+        if 'data' in list(data.keys()) and len(data['data']) >= 1:
+            print(colored("Few vulnerabilities found at Punkspider", 'green'))
             for x in data['data']:
-                print "==> ", x['bugType']
-                print "Method:", x['verb'].upper()
-                print "URL:\n" + x['vulnerabilityUrl']
-                print "Param:", x['parameter']
+                print("==> ", x['bugType'])
+                print("Method:", x['verb'].upper())
+                print("URL:\n" + x['vulnerabilityUrl'])
+                print("Param:", x['parameter'])
         else:
-            print colored("[-] No Vulnerabilities found on PunkSpider\n", 'red')
+            print(colored("[-] No Vulnerabilities found on PunkSpider\n", 'red'))
 
 
 if __name__ == "__main__":
@@ -60,5 +60,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

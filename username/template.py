@@ -15,14 +15,14 @@ def banner():
 
 def main(username):
     # Use the username variable to do some stuff and return the data
-    print username
+    print(username)
     return []
 
 
 def output(data, username=""):
     # Use the data variable to print out to console as you like
     for i in data:
-        print i
+        print(i)
 
 
 if __name__ == "__main__":
@@ -32,5 +32,5 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
-        print "Please provide a username as argument"
+        print(e)
+        print("Please provide a username as argument")

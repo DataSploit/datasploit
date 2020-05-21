@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import sys
 import requests
 from bs4 import BeautifulSoup
@@ -38,10 +38,10 @@ def check_and_append_other_domains(other_domain, other_related_domain_list):
     return other_related_domain_list
 
 def subdomains(domain, subdomain_list):
-    print colored(' [+] Extracting subdomains from DNS Dumpster\n', 'blue')
+    print(colored(' [+] Extracting subdomains from DNS Dumpster\n', 'blue'))
     r = requests.get("https://dnsdumpster.com/", verify=False)
     cookies = {}
-    if 'csrftoken' in r.cookies.keys():
+    if 'csrftoken' in list(r.cookies.keys()):
         cookies['csrftoken'] = r.cookies['csrftoken']
         data = {}
         data['csrfmiddlewaretoken'] = cookies['csrftoken']
@@ -58,7 +58,7 @@ def subdomains(domain, subdomain_list):
 
 
 def subdomains_from_netcraft(domain, subdomain_list):
-    print colored(' [+] Extracting subdomains Netcraft\n', 'blue')
+    print(colored(' [+] Extracting subdomains Netcraft\n', 'blue'))
     target_dom_name = domain.split(".")
     req1 = requests.get("http://searchdns.netcraft.com/?host=%s" % domain)
     link_regx = re.compile('<a href="http://toolbar.netcraft.com/site_report\?url=(.*)">')
@@ -117,7 +117,7 @@ def ct_search(domain, subdomain_list, wildcard=True):
         3. Checking for repeated subdomain entries 
     ###################################################################
     '''
-    print colored(' [+] Extracting subdomains from Certificate Transparency Reports\n', 'blue')
+    print(colored(' [+] Extracting subdomains from Certificate Transparency Reports\n', 'blue'))
     subdomain_list_tmp = []
 
     base_url = "https://crt.sh/?q="
@@ -208,7 +208,7 @@ def subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list)
     return subdomain_list, other_related_domain_list'''
 
 def subdomains_from_dnstrails(domain, subdomain_list):
-    print colored(' [+] Extracting subdomains from DNSTrails\n', 'blue')
+    print(colored(' [+] Extracting subdomains from DNSTrails\n', 'blue'))
     url = 'https://app.securitytrails.com/api/domain/info/' + domain
     headers = {
         'User-Agent': 'Mozilla/5.0 Firefox/57.0',
@@ -226,13 +226,13 @@ def subdomains_from_dnstrails(domain, subdomain_list):
                 #print subdomains_new[a]
                 subdomain_list = check_and_append_subdomains(subdomains_new[a], subdomain_list)
         else:
-            print colored(' [!] {}\n'.format(data['error']), 'yellow')
+            print(colored(' [!] {}\n'.format(data['error']), 'yellow'))
     else:
-        print colored(' [+] DNSTrails API rate limit exceeded\n', 'yellow')
+        print(colored(' [+] DNSTrails API rate limit exceeded\n', 'yellow'))
     return subdomain_list
 
 def banner():
-    print colored(style.BOLD + '---> Finding subdomains, will be back soon with list. \n' + style.END, 'blue')
+    print(colored(style.BOLD + '---> Finding subdomains, will be back soon with list. \n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -249,10 +249,10 @@ def main(domain):
 
 
 def output(data, domain=""):
-    print colored("List of subdomains found\n", 'green')
+    print(colored("List of subdomains found\n", 'green'))
     for sub in data:
 	if not re.match("\d{4}-\d{2}-\d{2}", sub):
-            print sub
+            print(sub)
 
 
 def output_text(data):
@@ -272,4 +272,4 @@ if __name__ == "__main__":
         output(result, domain)
         #except Exception as e:
     else:
-        print "Please provide a domain name as argument"
+        print("Please provide a domain name as argument")

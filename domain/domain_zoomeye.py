@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import requests
 import json
 import sys
@@ -40,7 +40,7 @@ def search_zoomeye(domain):
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Finding hosts from ZoomEye\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Finding hosts from ZoomEye\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -56,23 +56,23 @@ def main(domain):
 
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
-        print colored(
-                style.BOLD + '\n[-] ZoomEye username and password not configured. Skipping Zoomeye Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+        print(colored(
+                style.BOLD + '\n[-] ZoomEye username and password not configured. Skipping Zoomeye Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
     elif type(data) == list and data[1] == "BAD_API":
-	print colored(
-                style.BOLD + '\n[-] ZoomEye API is not functional right now.\n' + style.END, 'red')
+	print(colored(
+                style.BOLD + '\n[-] ZoomEye API is not functional right now.\n' + style.END, 'red'))
     else:
-        if 'matches' in data.keys():
-            print len(data['matches'])
+        if 'matches' in list(data.keys()):
+            print(len(data['matches']))
             for x in data['matches']:
                 if x['site'].split('.')[-2] == domain.split('.')[-2]:
-                    if 'title' in x.keys():
-                        print "IP: %s\nSite: %s\nTitle: %s\nHeaders: %s\nLocation: %s\n" % (
-                            x['ip'], x['site'], x['title'], x['headers'].replace("\n\n", ""), x['geoinfo'])
+                    if 'title' in list(x.keys()):
+                        print("IP: %s\nSite: %s\nTitle: %s\nHeaders: %s\nLocation: %s\n" % (
+                            x['ip'], x['site'], x['title'], x['headers'].replace("\n\n", ""), x['geoinfo']))
                     else:
-                        for val in x.keys():
-                            print "%s: %s" % (val, x[val])
-        print "\n-----------------------------\n"
+                        for val in list(x.keys()):
+                            print("%s: %s" % (val, x[val]))
+        print("\n-----------------------------\n")
 
 
 if __name__ == "__main__":

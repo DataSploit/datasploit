@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import vault
 import requests
 import json
@@ -25,7 +25,7 @@ def shodandomainsearch(domain):
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Searching in Shodan:\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Searching in Shodan:\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -37,14 +37,14 @@ def main(domain):
 
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
-        print colored(
-                style.BOLD + '\n[-] Shodan API Key not configured. Skipping Shodan search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+        print(colored(
+                style.BOLD + '\n[-] Shodan API Key not configured. Skipping Shodan search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
     else:
-        if 'matches' in data.keys():
+        if 'matches' in list(data.keys()):
             for x in data['matches']:
-                print "IP: %s\nHosts: %s\nDomain: %s\nPort: %s\nData: %s\nLocation: %s\n" % (
-                x['ip_str'], x['hostnames'], x['domains'], x['port'], x['data'].replace("\n", ""), x['location'])
-        print "-----------------------------\n"
+                print("IP: %s\nHosts: %s\nDomain: %s\nPort: %s\nData: %s\nLocation: %s\n" % (
+                x['ip_str'], x['hostnames'], x['domains'], x['port'], x['data'].replace("\n", ""), x['location']))
+        print("-----------------------------\n")
 
 
 if __name__ == "__main__":
@@ -54,5 +54,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

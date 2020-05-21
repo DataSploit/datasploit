@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import sys
 import whois
 from termcolor import colored
@@ -23,7 +23,7 @@ def whoisnew(domain):
 
 
 def banner():
-    print colored(style.BOLD + '---> Finding Whois Information.' + style.END, 'blue')
+    print(colored(style.BOLD + '---> Finding Whois Information.' + style.END, 'blue'))
 
 
 def main(domain):
@@ -36,8 +36,8 @@ def output(data, domain=""):
             date = data[k][0] if isinstance(data[k], list) else data[k]
             if data[k]:
                 data[k] = date.strftime('%m/%d/%Y')
-    print data
-    print "\n-----------------------------\n"
+    print(data)
+    print("\n-----------------------------\n")
 
 
 if __name__ == "__main__":
@@ -47,5 +47,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

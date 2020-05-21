@@ -6,7 +6,7 @@ def edit():
 	config_path = os.path.dirname(__file__)
 	config_file = "%s/config.py" % config_path
 	if not os.path.exists(config_file):
-		print "[+] Looks like a new setup, setting up the config file."
+		print("[+] Looks like a new setup, setting up the config file.")
 		os.rename("%s/config_sample.py" % config_path, config_file)
 	fh = open(config_file)
 	config = fh.read()

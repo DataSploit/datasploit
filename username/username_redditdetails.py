@@ -23,8 +23,8 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Getting information from Reddit\n' +
-                  style.END, 'blue')
+    print(colored(style.BOLD + '\n[+] Getting information from Reddit\n' +
+                  style.END, 'blue'))
 
 
 def submission_latest(redditor):
@@ -44,7 +44,7 @@ def submission_stats(redditor):
             temp_submissions[sub] += 1
         else:
             temp_submissions[sub] = 1
-    for k, v in sorted(temp_submissions.items(),
+    for k, v in sorted(list(temp_submissions.items()),
                        key=itemgetter(1), reverse=True)[:10]:
         top_posted_subreddits[k] = v
     return top_posted_subreddits
@@ -92,7 +92,7 @@ def comment_stats(redditor):
             temp_comments[sub] += 1
         else:
             temp_comments[sub] = 1
-    for k, v in sorted(temp_comments.items(),
+    for k, v in sorted(list(temp_comments.items()),
                        key=itemgetter(1), reverse=True)[:10]:
         top_commented_subreddits[k] = v
     return top_commented_subreddits
@@ -184,43 +184,43 @@ def main(username):
 
 def output(data, username=""):
     if 'Error' in data:
-        print str(data['Error'])
+        print(str(data['Error']))
         del data['Error']
     else:
-        for k, v in data['Redditor Stats'].items():
-            print str(k) + ": " + str(v)
-        print colored(style.BOLD + '\n---> Top Ten Submitted to Subreddits\n' +
-                      style.END, 'blue')
-        for k, v in sorted(data['Top 10 Submitted to Subreddits'].items(),
+        for k, v in list(data['Redditor Stats'].items()):
+            print(str(k) + ": " + str(v))
+        print(colored(style.BOLD + '\n---> Top Ten Submitted to Subreddits\n' +
+                      style.END, 'blue'))
+        for k, v in sorted(list(data['Top 10 Submitted to Subreddits'].items()),
                            key=itemgetter(1), reverse=True):
-            print str(k) + ": " + str(v)
-        print colored(style.BOLD + '\n---> Top Ten Commented in Subreddits\n' +
-                      style.END, 'blue')
-        for k, v in sorted(data['Top 10 Commented in Subreddits'].items(),
+            print(str(k) + ": " + str(v))
+        print(colored(style.BOLD + '\n---> Top Ten Commented in Subreddits\n' +
+                      style.END, 'blue'))
+        for k, v in sorted(list(data['Top 10 Commented in Subreddits'].items()),
                            key=itemgetter(1), reverse=True):
-            print str(k) + ": " + str(v)
-        print "\n"
+            print(str(k) + ": " + str(v))
+        print("\n")
         if EXTRA_VERBOSE:
-            print colored(style.BOLD + '---> Top Submissions\n' +
-                          style.END, 'blue')
+            print(colored(style.BOLD + '---> Top Submissions\n' +
+                          style.END, 'blue'))
             for submission in sorted(data['Top Submissions'],
                                      key=itemgetter('Score'), reverse=True):
-                for k, v in submission.items():
-                    print str(k) + ": " + str(v)
-                print "\n"
-            print colored(style.BOLD + '---> Top Comments\n' +
-                          style.END, 'blue')
+                for k, v in list(submission.items()):
+                    print(str(k) + ": " + str(v))
+                print("\n")
+            print(colored(style.BOLD + '---> Top Comments\n' +
+                          style.END, 'blue'))
             for submission in sorted(data['Top Comments'],
                                      key=itemgetter('Score'), reverse=True):
-                for k, v in submission.items():
-                    print str(k) + ": " + str(v)
-                print "\n"
-            print colored(style.BOLD + '---> Contriversial Posts\n' +
-                          style.END, 'blue')
-            print "\nTotal: " + str(data['Contriversial Posts']['Total'])
-            print "\nSee file output (if enabled) for more details. Due to API"
-            print "limitations only the last 100 Contriversial posts can be accessed."
-            print "\n"
+                for k, v in list(submission.items()):
+                    print(str(k) + ": " + str(v))
+                print("\n")
+            print(colored(style.BOLD + '---> Contriversial Posts\n' +
+                          style.END, 'blue'))
+            print("\nTotal: " + str(data['Contriversial Posts']['Total']))
+            print("\nSee file output (if enabled) for more details. Due to API")
+            print("limitations only the last 100 Contriversial posts can be accessed.")
+            print("\n")
 
 
 if __name__ == "__main__":
@@ -230,5 +230,5 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
-        print "Please provide a username as argument"
+        print(e)
+        print("Please provide a username as argument")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import vault
 import requests
 import json
@@ -26,18 +26,18 @@ def emailhunter(domain):
     res = requests.get(url)
     try:
         parsed = json.loads(res.text)
-        if 'emails' in parsed.keys():
+        if 'emails' in list(parsed.keys()):
             for email in parsed['emails']:
                 collected_emails.append(email['value'])
         elif json.loads(res.text).get('status') == "error":
-            print colored(style.BOLD + '[-] %s\n' % json.loads(res.text).get('message') + style.END, 'red')
+            print(colored(style.BOLD + '[-] %s\n' % json.loads(res.text).get('message') + style.END, 'red'))
     except:
-        print 'CAPTCHA has been implemented, skipping this for now.'
+        print('CAPTCHA has been implemented, skipping this for now.')
     return collected_emails
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Harvesting Email Addresses:.\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Harvesting Email Addresses:.\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -49,11 +49,11 @@ def main(domain):
 
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
-            print colored(
-                style.BOLD + '\n[-] Emailhunter API key not configured, skipping Email Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+            print(colored(
+                style.BOLD + '\n[-] Emailhunter API key not configured, skipping Email Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
     else:
         for x in data:
-            print str(x)
+            print(str(x))
 
 
 def output_text(data):

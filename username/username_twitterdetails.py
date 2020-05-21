@@ -20,7 +20,7 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Getting information from Twitter\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n[+] Getting information from Twitter\n' + style.END, 'blue'))
 
 
 def twitterdetails(username):
@@ -40,7 +40,7 @@ def twitterdetails(username):
         userinfo = api.get_user(screen_name=username)
     except Exception as e:
         if e.message[0]['code'] == 63:
-            print colored(style.BOLD + '[!] Error: ' + str(e.message[0]['message']) + style.END, 'red')
+            print(colored(style.BOLD + '[!] Error: ' + str(e.message[0]['message']) + style.END, 'red'))
         pass
         return activitydetails, userdetails          
  
@@ -113,32 +113,32 @@ def main(username):
 
 def output(data, username=""):
     if data[1] == "INVALID_API":
-        print colored(
-            style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+        print(colored(
+            style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
     else:
         if data and data[0]:
             hashlist = data[0]['Hashtag Interactions']
             userlist = data[0]['User Interactions']
             userdetails = data[1]
-            for k,v in userdetails.iteritems():
+            for k,v in userdetails.items():
                 try:
-                    print k + ": " + str(v)
+                    print(k + ": " + str(v))
                 except UnicodeEncodeError as e:
-                    print colored(style.BOLD + '[!] Error: ' + str(e) + style.END, 'red')
-            print "\n"
+                    print(colored(style.BOLD + '[!] Error: ' + str(e) + style.END, 'red'))
+            print("\n")
             count = Counter(hashlist).most_common()
-            print "Top Hashtag Occurrence for user " + username + " based on last 1000 tweets"
+            print("Top Hashtag Occurrence for user " + username + " based on last 1000 tweets")
             for hash, cnt in count:
-                print "#" + hash + " : " + str(cnt)
-            print "\n"
+                print("#" + hash + " : " + str(cnt))
+            print("\n")
 
             # counting user occurrence
             countu = Counter(userlist).most_common()
-            print "Top User Occurrence for user " + username + " based on last 1000 tweets"
+            print("Top User Occurrence for user " + username + " based on last 1000 tweets")
             for usr, cnt in countu:
-                print "@" + usr + " : " + str(cnt)
+                print("@" + usr + " : " + str(cnt))
         else:
-            print "No Associated Twitter account found."
+            print("No Associated Twitter account found.")
 
 
 if __name__ == "__main__":
@@ -148,5 +148,5 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
-        print "Please provide a username as argument"
+        print(e)
+        print("Please provide a username as argument")

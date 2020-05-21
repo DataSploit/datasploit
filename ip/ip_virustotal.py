@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import vault
 import sys
 import requests
@@ -16,14 +16,14 @@ class style:
 
 def banner():
     # Write a cool banner here
-    print colored(style.BOLD + "[+] Searching in VirusTotal Dataset" + style.END)
+    print(colored(style.BOLD + "[+] Searching in VirusTotal Dataset" + style.END))
     pass
 
 
 def main(ip):
     # Use the ip variable to do some stuff and return the data
     if vault.get_key('virustotal_public_api') != None:
-        print ip
+        print(ip)
         api = vault.get_key('virustotal_public_api')
         params = "{'ip': '%s', 'apikey': '%s'}" % (ip, api)
         url = "http://www.virustotal.com/vtapi/v2/ip-address/report?ip=%s&apikey=%s" % (ip, api)
@@ -36,12 +36,12 @@ def main(ip):
 def output(data, ip=""):
     # Use the data variable to print out to console as you like
     if type(data) == list and data[1] == "INVALID_API":
-        print colored(
-                style.BOLD + '\n[-] VirusTotal API Key not configured. Skipping VirusTotal Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+        print(colored(
+                style.BOLD + '\n[-] VirusTotal API Key not configured. Skipping VirusTotal Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
     else:
         for i in data:
-            print i
-            print ""
+            print(i)
+            print("")
 
 
 if __name__ == "__main__":
@@ -51,5 +51,5 @@ if __name__ == "__main__":
         result = main(ip)
         output(result, ip)
     except Exception as e:
-        print e
-        print "Please provide an IP Address as argument"
+        print(e)
+        print("Please provide an IP Address as argument")

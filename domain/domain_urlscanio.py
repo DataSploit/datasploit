@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import json
 import requests
 import time
@@ -23,8 +23,8 @@ class style:
 
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Scanning with urlscan.io.\n' +
-                  style.END, 'blue'))
+    print((colored(style.BOLD + '\n[+] Scanning with urlscan.io.\n' +
+                  style.END, 'blue')))
 
 
 def build_headers(user_agent='', referer=''):
@@ -63,8 +63,8 @@ def get_results(uuid):
             else:
                 time.sleep(10)
         except requests.exceptions.ConnectionError:
-            print(colored(style.BOLD + " [!] COULD NOT CONNECT TO URLSCAN.IO" +
-                  style.END, 'red'))
+            print((colored(style.BOLD + " [!] COULD NOT CONNECT TO URLSCAN.IO" +
+                  style.END, 'red')))
             sys.exit(0)
 
 
@@ -101,13 +101,13 @@ def output(data, domain=""):
                      'lists': lists_fields,
                      'stats': stats_fields
                     }
-    for search_field, fields_lists in master_fields.iteritems():
-        for field, pname in fields_lists.iteritems():
+    for search_field, fields_lists in master_fields.items():
+        for field, pname in fields_lists.items():
             if field in data[search_field]:
                 if isinstance(data[search_field][field], list):
-                    print(" [+] {}: {}".format(pname, ', '.join(data[search_field][field])))
+                    print((" [+] {}: {}".format(pname, ', '.join(data[search_field][field]))))
                 else:
-                    print(" [+] {}: {}".format(pname, data[search_field][field]))
+                    print((" [+] {}: {}".format(pname, data[search_field][field])))
 
 
 if __name__ == "__main__":
@@ -117,5 +117,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

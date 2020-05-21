@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import sys
 import requests
 from bs4 import BeautifulSoup
@@ -16,7 +16,7 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Searching Slideshare\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Searching Slideshare\n' + style.END, 'blue'))
 
 
 def main(email):
@@ -31,11 +31,11 @@ def main(email):
 
 def output(data, email=""):
     if data:
-        print "Found %s published slides\n" % len(data)
-        for tl, lnk in data.items():
-            print str(tl).strip() + " : http://www.slideshare.net" + str(lnk).strip()
+        print("Found %s published slides\n" % len(data))
+        for tl, lnk in list(data.items()):
+            print(str(tl).strip() + " : http://www.slideshare.net" + str(lnk).strip())
     else:
-        print colored('[-] No Associated Slides found.', 'red')
+        print(colored('[-] No Associated Slides found.', 'red'))
 
 
 if __name__ == "__main__":
@@ -45,5 +45,5 @@ if __name__ == "__main__":
         result = main(email)
         output(result, email)
     except Exception as e:
-        print e
-        print "Please provide an email as argument"
+        print(e)
+        print("Please provide an email as argument")

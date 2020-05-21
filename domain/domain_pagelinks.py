@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import sys
 import requests
 from termcolor import colored
@@ -21,12 +21,12 @@ def pagelinks(domain):
         page_links = req.content.split("\n")
         return page_links
     except:
-        print 'Connection time out.'
+        print('Connection time out.')
         return []
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Finding Pagelinks:\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Finding Pagelinks:\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -35,8 +35,8 @@ def main(domain):
 
 def output(data, domain=""):
     for x in data:
-        print x
-    print "\n-----------------------------\n"
+        print(x)
+    print("\n-----------------------------\n")
 
 
 if __name__ == "__main__":
@@ -46,5 +46,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

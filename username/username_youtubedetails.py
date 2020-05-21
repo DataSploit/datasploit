@@ -5,7 +5,7 @@ import vault
 import httplib2
 import os
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from apiclient.discovery import build
 from termcolor import colored
 
@@ -20,14 +20,14 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Getting information from YouTube\n' +
-                  style.END, 'blue')
+    print(colored(style.BOLD + '\n[+] Getting information from YouTube\n' +
+                  style.END, 'blue'))
 
 
 def remove_empty_kwargs(**kwargs):
     good_kwargs = {}
     if kwargs is not None:
-        for key, value in kwargs.items():
+        for key, value in list(kwargs.items()):
             if value:
                 good_kwargs[key] = value
     return good_kwargs
@@ -166,24 +166,24 @@ def main(username):
 def output(data, username=""):
     for i in data:
         if type(i) == type(dict()):
-            for k,v in i.iteritems():
+            for k,v in i.items():
                 # Don't feed more detailed dictionaries to the console
                 if type(v) != type(dict()):
-                    print k + ': ' +  v
+                    print(k + ': ' +  v)
         elif type(i) == type(list()):
             for v in i:
                 if type(v) == type(dict()):
-                    for k,v in v.iteritems():
+                    for k,v in v.items():
                         if type(v) != type(dict()):
-                            print k + ': ' +  v
+                            print(k + ': ' +  v)
                 else:
-                    print v
+                    print(v)
         else:
             if "[!]" in i:
-                print i
+                print(i)
                 data.remove(i)
             else:
-                print i
+                print(i)
 
 
 if __name__ == "__main__":
@@ -193,5 +193,5 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
-        print "Please provide a username as argument"
+        print(e)
+        print("Please provide a username as argument")

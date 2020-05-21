@@ -24,7 +24,7 @@ def __boldtext(text, color = 'blue'):
 
 
 def banner():
-    print __boldtext("[+] Hunting for Emails from Git Repositories")
+    print(__boldtext("[+] Hunting for Emails from Git Repositories"))
 
 
 def __get_username_repos(username):
@@ -57,7 +57,7 @@ def main(username):
 	main_emails_list = []
 	for repo in repos:
 		main_emails_list += __get_email_from_repo(repo, username)
-	main_emails_list = map(lambda s: s[0], Counter(main_emails_list).most_common())
+	main_emails_list = [s[0] for s in Counter(main_emails_list).most_common()]
 	return main_emails_list
 
 
@@ -65,9 +65,9 @@ def output(data, username=""):
 	# Use the data variable to print out to console as you like
 	if data:
 		for i in data:
-        		print i
+        		print(i)
 	else:
-		print colored("Found nothing!", "red")
+		print(colored("Found nothing!", "red"))
 
 
 def output_text(data):
@@ -81,5 +81,5 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
-        print "Please provide a username as argument"
+        print(e)
+        print("Please provide a username as argument")

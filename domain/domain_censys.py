@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import base
+from . import base
 import re, sys, json, time, requests
 import vault
 from termcolor import colored
@@ -30,15 +30,15 @@ def censys_search(domain):
     censysio_secret = vault.get_key('censysio_secret')
 
     while page <= pages:
-        print "Parsed and collected results from page %s" % (str(page))
+        print("Parsed and collected results from page %s" % (str(page)))
         #time.sleep(0.5)
         params = {'query': domain, 'page': page}
         res = requests.post("https://www.censys.io/api/v1/search/ipv4", json=params,
                             auth=(censysio_id, censysio_secret))
         payload = res.json()
 
-        if 'error' not in payload.keys():
-            if 'results' in payload.keys():
+        if 'error' not in list(payload.keys()):
+            if 'results' in list(payload.keys()):
                 for r in payload['results']:
                     temp_dict = {}
                     ip = r["ip"]
@@ -72,23 +72,23 @@ def view(server, temp_dict):
     payload = res.json()
 
     try:
-        if 'title' in payload['80']['http']['get'].keys():
+        if 'title' in list(payload['80']['http']['get'].keys()):
             # print "[+] Title: %s" % payload['80']['http']['get']['title']
             title = payload['80']['http']['get']['title']
             temp_dict['title'] = title
-        if 'server' in payload['80']['http']['get']['headers'].keys():
+        if 'server' in list(payload['80']['http']['get']['headers'].keys()):
             header = "[+] Server: %s" % payload['80']['http']['get']['headers']['server']
             temp_dict["server_header"] = payload['80']['http']['get']['headers']['server']
         return temp_dict
 
     except Exception as error:
-        print error
+        print(error)
 
 
 def output(data, domain=""):
     if data is not None:
         for i in data:
-            print i
+            print(i)
 
 
 def main(domain):
@@ -96,7 +96,7 @@ def main(domain):
         data = censys_search(domain)
         return data
     else:
-        print colored(style.BOLD + '\n[-] Please configure respective API Keys for this module.\n' + style.END, 'red')
+        print(colored(style.BOLD + '\n[-] Please configure respective API Keys for this module.\n' + style.END, 'red'))
         return None
 
 if __name__ == "__main__":
@@ -105,5 +105,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print colored(style.BOLD + '\n[-] Please provide a domain name as argument\n' + style.END, 'red')
+        print(e)
+        print(colored(style.BOLD + '\n[-] Please provide a domain name as argument\n' + style.END, 'red'))

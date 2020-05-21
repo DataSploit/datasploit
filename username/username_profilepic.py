@@ -4,9 +4,10 @@ import base
 import os
 import sys
 import requests
-import urllib
-from bs4 import BeautifulSoup
 import username_usernamesearch
+import urllib.request, urllib.parse, urllib.error
+
+from bs4 import BeautifulSoup
 from termcolor import colored
 
 # Control whether the module is enabled or not
@@ -26,12 +27,12 @@ def extracting(imglinks, username, prourl, tag, attribute, value, finattrib, pro
         img[finattrib] = "http:" + img[finattrib]
         imglinks.append(img[finattrib])
         path = "profile_pic/" + username + "/" + profile + ".jpg"
-        urllib.urlretrieve(img[finattrib], path)
+        urllib.request.urlretrieve(img[finattrib], path)
     else:
         if img is not None:
             imglinks.append(img.get(finattrib))
             path = "profile_pic/" + username + "/" + profile + ".jpg"
-            urllib.urlretrieve(img.get(finattrib), path)
+            urllib.request.urlretrieve(img.get(finattrib), path)
     return imglinks
 
 
@@ -209,7 +210,7 @@ def profilepic(urls, username):
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Getting Profile Pics\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n[+] Getting Profile Pics\n' + style.END, 'blue'))
 
 
 def main(username):
@@ -218,13 +219,13 @@ def main(username):
     if not os.path.exists(file_path):
         os.makedirs(file_path)
     imagelinks = profilepic(usernames, username)
-    print "Profile Pics saved to : %s" % file_path
+    print("Profile Pics saved to : %s" % file_path)
     return imagelinks
 
 
 def output(data, username=""):
     for link in data:
-        print link
+        print(link)
 
 
 if __name__ == "__main__":

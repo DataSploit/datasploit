@@ -4,7 +4,7 @@ import base
 import os
 import requests
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from termcolor import colored
 from bs4 import BeautifulSoup
@@ -20,8 +20,8 @@ class style:
 
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Checking Tinder for username\n'
-                  + style.END, 'blue'))
+    print((colored(style.BOLD + '\n[+] Checking Tinder for username\n'
+                  + style.END, 'blue')))
 
 
 def fetch_content(username):
@@ -52,7 +52,7 @@ def download_photo(username, url):
     if not os.path.exists(file_path):
         os.makedirs(file_path)
     path = file_path + "/tinder." + url.split('.')[-1]
-    urllib.urlretrieve(url, path)
+    urllib.request.urlretrieve(url, path)
 
 
 def main(username):
@@ -68,8 +68,8 @@ def output(data, username=""):
     if len(data) is 0:
         print('username not found')
     else:
-        for k, v in data.iteritems():
-            print('{k}: {v}'.format(k=k.capitalize(), v=v))
+        for k, v in data.items():
+            print(('{k}: {v}'.format(k=k.capitalize(), v=v)))
 
 
 if __name__ == "__main__":

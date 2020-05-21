@@ -25,16 +25,16 @@ def run_active(filename,entity):
 		fh = open(filename, 'r')
 		for y in fh.readlines():
 			subdomain_list.append(y.strip("\n").strip("\r"))
-		print colored(style.BOLD + "\n[+] Running Active Scan on " + str(len(subdomain_list)) + " subdomains" + style.END, 'green')
-		print "\n"
+		print(colored(style.BOLD + "\n[+] Running Active Scan on " + str(len(subdomain_list)) + " subdomains" + style.END, 'green'))
+		print("\n")
 		for x in subdomain_list:
-			print x + ": ",
+			print(x + ": ", end=' ')
 			recrd = fetch_dns_records(x,"CNAME") 
-			print recrd
+			print(recrd)
 			if "No Records Found" not in recrd:
 				try:
 					req = requests.get("http://" + str(x), timeout=5)
-					print colored("[+] HTTP - " + str(x) + ":\t" + str(req.status_code), 'green')
+					print(colored("[+] HTTP - " + str(x) + ":\t" + str(req.status_code), 'green'))
 					#If response code is 404, might be a third party app without mapping
 					if req.status_code == 404 or req.status_code == 403:
 						might_be_vuln.append(["http", x, recrd, req.status_code])
@@ -43,7 +43,7 @@ def run_active(filename,entity):
 					pass
 				try:
 					req = requests.get("https://" + str(x), timeout=5)
-					print colored("[+] HTTPS - " + str(x) + ":\t" + str(req.status_code), 'green')
+					print(colored("[+] HTTPS - " + str(x) + ":\t" + str(req.status_code), 'green'))
 					#If response code is 404, might be a third party app without mapping
 					if req.status_code == 404 or req.status_code == 403:
 						might_be_vuln.append(["http", x])
@@ -52,16 +52,16 @@ def run_active(filename,entity):
 					pass
 			else:
 				counter = counter + 1
-		print colored(style.BOLD + "\n[+] No CNAME record found for " + str(counter) + " subdomains \n" + style.END, 'green')
+		print(colored(style.BOLD + "\n[+] No CNAME record found for " + str(counter) + " subdomains \n" + style.END, 'green'))
 		if len(might_be_vuln) != 0:
-			print "Following subdomains are affected by Subdomain Take Over Vulnerability\n"
+			print("Following subdomains are affected by Subdomain Take Over Vulnerability\n")
 			for x in might_be_vuln:
-				print x
+				print(x)
 		else:
-			print "No subdomains are affected by Subdomain Take Over Vulnerability\n"
+			print("No subdomains are affected by Subdomain Take Over Vulnerability\n")
 
 	elif entity == "emails":
-		print "Work in Progress"
+		print("Work in Progress")
 
 
 options, args = parser.parse_args()
@@ -74,4 +74,4 @@ elif subdomain_file != 'spam':
 	filename = subdomain_file
 	run_active(filename, "subdomains")
 else:
-	print 'Please pass filename'
+	print('Please pass filename')

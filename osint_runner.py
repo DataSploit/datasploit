@@ -16,27 +16,28 @@ def run(component, module_dir, m_input, output = None):
         module_name = os.path.basename(os.path.splitext(i)[0])
         x = importlib.import_module(module_name)
         if not x.ENABLED:
-            print "[-] Skipping %s because it is marked as disabled." % module_name.split("_")[1].title()
+            print("[-] Skipping %s because it is marked as disabled." % module_name.split("_")[1].title())
         else:
             active_modules[os.path.basename(os.path.splitext(i)[0])] = x
 
     json_output = {}
 
-    for name, x in active_modules.iteritems():
+    for name, x in active_modules.items():
         if "banner" in dir(x):
             x.banner()
         data = x.main(m_input)
         if data:
             x.output(data, m_input)
-	if output and str(output).lower() == "text":
+        #if str(output).lower() == "text":
+        if output and str(output).lower() == "text":
             try:
                 if x.WRITE_TEXT_FILE:
                     filename = "text_report_%s_%s_%s.txt" % (m_input, x.MODULE_NAME, datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
                     text_data = x.output_text(data)
-		    fh = open(filename, "w")
-		    fh.write(text_data)
-		    fh.close()
-		    print "[+] Text Report written to %s" % filename
+                    fh = open(filename, "w")
+                    fh.write(text_data)
+                    fh.close()
+                    print("[+] Text Report written to %s" % filename)
             except Exception as e:
                 pass
 """

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import base
 import sys
 from termcolor import colored
@@ -18,7 +19,7 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Checking Gitlab user details\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n[+] Checking Gitlab user details\n' + style.END, 'blue'))
 
 
 def main(username):
@@ -49,11 +50,11 @@ def main(username):
 def output(data, username=""):
     # Use the data variable to print out to console as you like
     if data:
-        print "Gitlab user details:\n"
+        print("Gitlab user details:\n")
         for dt in data:
-            print dt
+            print(dt)
     else:
-        print "No data found."
+        print("No data found.")
 
 
 if __name__ == "__main__":
@@ -63,5 +64,5 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
-        print "Please provide a username as argument"
+        print(e)
+        print("Please provide a username as argument")

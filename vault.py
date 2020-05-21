@@ -12,11 +12,11 @@ def get_key(a):
               return config[a]
           else:
               msg = "[-] " + a + " not configured"
-              print colored(msg, 'yellow')
+              print(colored(msg, 'yellow'))
               return None
       except:
           msg = "[!] " + a + " not present"
-          print colored(msg, 'yellow')
+          print(colored(msg, 'yellow'))
           return None
     else:
-      print colored("[-] Error opening config file", 'yellow')
+      print(colored("[-] Error opening config file", 'yellow'))

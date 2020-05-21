@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import vault
 import requests
 import json
@@ -60,7 +60,7 @@ def google_search(domain):
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Finding Paste(s)..\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Finding Paste(s)..\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -74,19 +74,19 @@ def main(domain):
 def output(data, domain=""):
     if not data[0]:
         if type(data) == list and data[1] == "INVALID_API":
-            print colored(
-                style.BOLD + '\n[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+            print(colored(
+                style.BOLD + '\n[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
         else:
-            print "Error Message: %s" % data[1]['error']['message']
-            print "Error Code: %s" % data[1]['error']['code']
-            print "Error Description: %s" % data[1]['error']['errors'][0]['reason']
+            print("Error Message: %s" % data[1]['error']['message'])
+            print("Error Code: %s" % data[1]['error']['code'])
+            print("Error Description: %s" % data[1]['error']['errors'][0]['reason'])
     else:
-        print "[+] %s results found\n" % len(data[1])
+        print("[+] %s results found\n" % len(data[1]))
         for x in data[1]:
 	    title = x['title'].encode('ascii', 'ignore').decode('ascii')
 	    snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
 	    link = x['link'].encode('ascii', 'ignore').decode('ascii')
-            print "Title: %s\nURL: %s\nSnippet: %s\n" % (title, colorize(link), colorize(snippet))
+            print("Title: %s\nURL: %s\nSnippet: %s\n" % (title, colorize(link), colorize(snippet)))
 
 
 if __name__ == "__main__":
@@ -96,5 +96,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

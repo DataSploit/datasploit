@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import sys
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import re
 import string
 from termcolor import colored
@@ -26,8 +26,8 @@ def googlesearch(query, ext):
         'Accept-Language': 'en-US,en;q=0.8',
         'Connection': 'keep-alive'
     }
-    req = urllib2.Request(getrequrl, headers=hdr)
-    response = urllib2.urlopen(req)
+    req = urllib.request.Request(getrequrl, headers=hdr)
+    response = urllib.request.urlopen(req)
     data = response.read()
     data = re.sub('<b>', '', data)
     for e in ('>', '=', '<', '\\', '(', ')', '"', 'http', ':', '//'):
@@ -39,7 +39,7 @@ def googlesearch(query, ext):
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Searching Google for domain results\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Searching Google for domain results\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -52,13 +52,13 @@ def main(domain):
 
 
 def output(data, domain=""):
-    for key, results in data.iteritems():
+    for key, results in data.items():
         if results:
             results = set(results)
             for x in results:
                 x = re.sub('<li class="first">', '', x)
                 x = re.sub('</li>', '', x)
-                print x
+                print(x)
 
 
 if __name__ == "__main__":
@@ -68,5 +68,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

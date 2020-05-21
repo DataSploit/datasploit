@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import vault
 import re
 import requests
@@ -28,8 +28,8 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Checking for Google tracking codes.\n' +
-                  style.END, 'blue')
+    print(colored(style.BOLD + '\n[+] Checking for Google tracking codes.\n' +
+                  style.END, 'blue'))
 
 
 def clean_tracking_code(tracking_code):
@@ -59,7 +59,7 @@ def extract_tracking_codes(domain):
     for code in extracted_codes:
         code = clean_tracking_code(code)
         if code.lower() not in tracking_codes:
-            if code not in connections.keys():
+            if code not in list(connections.keys()):
                 connections[code] = [domain]
             else:
                 connections[code].append(domain)
@@ -106,12 +106,12 @@ def main(domain):
         if 'err' in connections:
             return [ connections ]
         else:
-            if len(connections.keys()):
+            if len(list(connections.keys())):
                 common_domains = {}
                 tracking_codes = {}
-                tracking_codes['Tracking Codes'] = connections.keys()
+                tracking_codes['Tracking Codes'] = list(connections.keys())
                 dirty_domains = spyonweb_analytics_codes(connections)
-                for k, v in dirty_domains.items():
+                for k, v in list(dirty_domains.items()):
                     common_domains[k] = (sorted(set(v)))
                 return [ common_domains, tracking_codes ]
             else:
@@ -126,27 +126,27 @@ def main(domain):
 def output(data, domain=""):
     for i in data:
         try:
-            for k, v in i.items():
+            for k, v in list(i.items()):
                 if k == 'err':
-                    print '\n ERRORS:'
-                    print v
+                    print('\n ERRORS:')
+                    print(v)
                 elif k == 'Tracking Codes':
-                    print '\n' + k + ':'
+                    print('\n' + k + ':')
                     for code in v:
-                        print '\t' + str(code)
+                        print('\t' + str(code))
                 else:
                     if 'conn refused' in v:
-                        print colored(style.BOLD +
+                        print(colored(style.BOLD +
                                       '\n[!] Error: Connection requests exceeded!\n' +
-                                      style.END, 'red')
-                    print k + ':'
+                                      style.END, 'red'))
+                    print(k + ':')
                     for url in v:
                         if url == 'conn refused':
                             v.remove('conn refused')
                         else:
-                            print '\t' + str(url)
+                            print('\t' + str(url))
         except:
-            print i
+            print(i)
             data.remove(i)
 
 
@@ -157,5 +157,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

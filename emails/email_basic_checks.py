@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import vault
 import requests
 import json
@@ -32,25 +32,25 @@ def basic_checks(email):
 
 def output(data, email=""):
     if data == -1:
-        print colored(style.BOLD + '\n[-] Please pass a valid email ID.\n' + style.END, 'red')
+        print(colored(style.BOLD + '\n[-] Please pass a valid email ID.\n' + style.END, 'red'))
     elif data == -2:
-        print colored(style.BOLD + '\n[-] MailBoxLayer_API Key not configured. Skipping basic checks.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+        print(colored(style.BOLD + '\n[-] MailBoxLayer_API Key not configured. Skipping basic checks.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
     else:
-        print "Is it a free Email Address?:",
-        print "No" if not data['free'] else "Yes"
+        print("Is it a free Email Address?:", end=' ')
+        print("No" if not data['free'] else "Yes")
 
-        print "Email ID Exist?: ",
-        print "Yes" if data['smtp_check'] else "No"
+        print("Email ID Exist?: ", end=' ')
+        print("Yes" if data['smtp_check'] else "No")
 
-        print "Can this domain recieve emails?: ",
-        print "Yes" if data['mx_found'] else "No"
+        print("Can this domain recieve emails?: ", end=' ')
+        print("Yes" if data['mx_found'] else "No")
 
-        print "Is it a Disposable email?: ",
-        print "Yes" if data['disposable'] else "No"
+        print("Is it a Disposable email?: ", end=' ')
+        print("Yes" if data['disposable'] else "No")
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Basic Email Check(s)..\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Basic Email Check(s)..\n' + style.END, 'blue'))
 
 
 def main(email):
@@ -64,5 +64,5 @@ if __name__ == "__main__":
         result = main(email)
         output(result, email)
     except Exception as e:
-        print e
-        print "Please provide an email as argument"
+        print(e)
+        print("Please provide an email as argument")

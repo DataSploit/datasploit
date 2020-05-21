@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import requests
 from bs4 import BeautifulSoup
 import sys
@@ -29,7 +29,7 @@ def boardsearch_forumsearch(domain):
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Gathering links from Forums:\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Gathering links from Forums:\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -37,10 +37,10 @@ def main(domain):
 
 
 def output(data, domain=""):
-    print "[+] Associated Forum Links\n"
-    for tl, lnk in data.items():
-        print "%s (%s)" % (lnk, tl)
-    print "\n-----------------------------\n"
+    print("[+] Associated Forum Links\n")
+    for tl, lnk in list(data.items()):
+        print("%s (%s)" % (lnk, tl))
+    print("\n-----------------------------\n")
 
 
 if __name__ == "__main__":
@@ -50,5 +50,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

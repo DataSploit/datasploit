@@ -21,8 +21,8 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Scraping Git for Repos and Commits' + style.END, 'blue')
-    print colored(style.BOLD + '[!] This is BETA code, might not provide correct results\n' + style.END, 'red')
+    print(colored(style.BOLD + '\n[+] Scraping Git for Repos and Commits' + style.END, 'blue'))
+    print(colored(style.BOLD + '[!] This is BETA code, might not provide correct results\n' + style.END, 'red'))
 
 
 def find_repos(username):
@@ -45,7 +45,7 @@ def find_repos(username):
 def find_commits(repo_name):
     list_commits = []
     access_token = vault.get_key('github_access_token')
-    for x in xrange(1, 10):
+    for x in range(1, 10):
         url = "https://api.github.com/repos/%s/commits?page=%s&access_token=%s" % (repo_name, x, access_token)
         req = requests.get(url)
         data = json.loads(req.content)
@@ -75,21 +75,21 @@ def main(username):
 def output(data, username=""):
     if type(data) == list:
         if data[1] == "INVALID_API":
-            print colored(
-                 style.BOLD + '\n[-] Github Access Token not configured. Skipping Gi Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+            print(colored(
+                 style.BOLD + '\n[-] Github Access Token not configured. Skipping Gi Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
     else:
-        print "[+] Found %s repos for username %s\n" % (len(data), username)
+        print("[+] Found %s repos for username %s\n" % (len(data), username))
         counter = 1
-        for repo_name, commits in data.iteritems():
-            print "%s. %s (%s commits)" % (counter, repo_name, len(commits))
+        for repo_name, commits in data.items():
+            print("%s. %s (%s commits)" % (counter, repo_name, len(commits)))
             for commit in commits:
-                print "\t%s" % commit
-            print ""
+                print("\t%s" % commit)
+            print("")
             counter += 1
 
 def output_text(data):
 	text_data = []
-	for repo_name, commits in data.iteritems():
+	for repo_name, commits in data.items():
 		for commit in commits:
 			text_data.append(commit)
 	return "\n".join(text_data)
@@ -102,6 +102,6 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
+        print(e)
         traceback.print_exc()
-        print "Please provide a username as argument"
+        print("Please provide a username as argument")

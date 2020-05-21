@@ -19,7 +19,7 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Username found on\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n[+] Username found on\n' + style.END, 'blue'))
 
 
 def main(username):
@@ -36,8 +36,8 @@ def main(username):
 
 def output(data, username=""):
     for lnk in data:
-        print lnk
-    print "\n-----------------------------\n"
+        print(lnk)
+    print("\n-----------------------------\n")
 
 
 if __name__ == "__main__":
@@ -47,5 +47,5 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
-        print "Please provide a username as argument"
+        print(e)
+        print("Please provide a username as argument")

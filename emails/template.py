@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import vault
 import sys
 
@@ -15,14 +15,14 @@ def banner():
 
 def main(email):
     # Use the email variable to do some stuff and return the data
-    print email
+    print(email)
     return []
 
 
 def output(data, email=""):
     # Use the data variable to print out to console as you like
     for i in data:
-        print i
+        print(i)
 
 
 if __name__ == "__main__":
@@ -32,5 +32,5 @@ if __name__ == "__main__":
         result = main(email)
         output(result, email)
     except Exception as e:
-        print e
-        print "Please provide an email as argument"
+        print(e)
+        print("Please provide an email as argument")

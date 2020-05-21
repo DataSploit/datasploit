@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import vault
 import sys
 import json
@@ -24,7 +24,7 @@ def github_search(query):
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Searching Github for domain results\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Searching Github for domain results\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -38,24 +38,24 @@ def main(domain):
 def output(data, domain=""):
     if type(data) == list and not data[0]:
         if data[1] == "INVALID_API":
-            print colored(
-                style.BOLD + '\n[-] Github Access Token not configured, skipping Github Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+            print(colored(
+                style.BOLD + '\n[-] Github Access Token not configured, skipping Github Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
         else:
-            print colored("Sad! Nothing found on github", 'red')
+            print(colored("Sad! Nothing found on github", 'red'))
     else:
-        print colored("[+] Found %s results on github." % data[0], 'green')
+        print(colored("[+] Found %s results on github." % data[0], 'green'))
         if data[0] >= 30:
-            print "Top 30 results shown below"
+            print("Top 30 results shown below")
         else:
-            print "Top %s results shown below" % data[0]
+            print("Top %s results shown below" % data[0])
         count = 1
         for snip in data[1]:
-            print "%s. File: %s" % (str(count).zfill(2), snip['html_url'])
-            print "    Owner: %s" % snip['repository']['full_name']
-            print "    Repository: %s" % snip['repository']['html_url']
+            print("%s. File: %s" % (str(count).zfill(2), snip['html_url']))
+            print("    Owner: %s" % snip['repository']['full_name'])
+            print("    Repository: %s" % snip['repository']['html_url'])
             count += 1
-        print '\nCheck results here: https://github.com/search?q="%s"&type=Code&utf8=%%E2%%9C%%93"' % domain
-        print "-----------------------------\n"
+        print('\nCheck results here: https://github.com/search?q="%s"&type=Code&utf8=%%E2%%9C%%93"' % domain)
+        print("-----------------------------\n")
 
 
 if __name__ == "__main__":
@@ -66,5 +66,5 @@ if __name__ == "__main__":
         if result:
             output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

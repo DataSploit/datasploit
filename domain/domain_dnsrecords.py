@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import sys
 import dns.resolver
 from termcolor import colored
@@ -37,7 +37,7 @@ def parse_dns_records(domain):
 
 
 def banner():
-    print colored(style.BOLD + '---> Finding DNS Records.\n' + style.END, 'blue')
+    print(colored(style.BOLD + '---> Finding DNS Records.\n' + style.END, 'blue'))
 
 
 def main(domain):
@@ -45,18 +45,18 @@ def main(domain):
 
 
 def output(data, domain=""):
-    for x in data.keys():
-        print x
+    for x in list(data.keys()):
+        print(x)
         if "No" in data[x] and "Found" in data[x]:
-            print "\t%s" % data[x]
+            print("\t%s" % data[x])
             data[x] = ''
         else:
             for y in data[x]:
                 try:
-                    print "\t%s" % y
+                    print("\t%s" % y)
                 except:
                     pass
-    print "\n-----------------------------\n"
+    print("\n-----------------------------\n")
 
 
 if __name__ == "__main__":
@@ -66,5 +66,5 @@ if __name__ == "__main__":
         result = main(domain)
         output(result, domain)
     except Exception as e:
-        print e
-        print "Please provide a domain name as argument"
+        print(e)
+        print("Please provide a domain name as argument")

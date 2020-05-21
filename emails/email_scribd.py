@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import re
 import sys
 import requests
@@ -16,7 +16,7 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Searching Scribd Docs\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Searching Scribd Docs\n' + style.END, 'blue'))
 
 
 def main(email):
@@ -33,14 +33,14 @@ def main(email):
 
 def output(data, email=""):
     if data:
-        print "Found %s associated SCRIBD documents:\n" % len(data)
+        print("Found %s associated SCRIBD documents:\n" % len(data))
         for link in data:
-            print link
-        print ""
-        print colored(style.BOLD + 'More results might be available, please follow this link:' + style.END)
-        print "https://www.scribd.com/search?page=1&content_type=documents&query=" + email
+            print(link)
+        print("")
+        print(colored(style.BOLD + 'More results might be available, please follow this link:' + style.END))
+        print("https://www.scribd.com/search?page=1&content_type=documents&query=" + email)
     else:
-        print colored('[-] No Associated Scribd Documents found.', 'red')
+        print(colored('[-] No Associated Scribd Documents found.', 'red'))
 
 
 if __name__ == "__main__":
@@ -50,6 +50,6 @@ if __name__ == "__main__":
         result = main(email)
         output(result, email)
     except Exception as e:
-        print e
-        print "Please provide an email as argument"
+        print(e)
+        print("Please provide an email as argument")
 

@@ -12,7 +12,7 @@ import vault
 
 #module dependencies
 from travispy import TravisPy
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import json
 
 import warnings
@@ -29,7 +29,7 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n[+] Checking Travis-CI user (author and associated committer) details\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n[+] Checking Travis-CI user (author and associated committer) details\n' + style.END, 'blue'))
 
 
 def main(username):
@@ -37,7 +37,7 @@ def main(username):
     if github_access_token != None:
         # Use the username variable to do some stuff and return the data
         token = TravisPy.github_auth(github_access_token)
-        q=urllib2.urlopen("https://api.travis-ci.org/repos/%s" % username)
+        q=urllib.request.urlopen("https://api.travis-ci.org/repos/%s" % username)
         jsondata=json.loads(q.read())
         details=[]
 
@@ -61,14 +61,14 @@ def output(data, username=""):
     if data:
         # Check if error and if list length is 1, and remove from file output if so
         if "[!] Error:" in data[0] and len(data) == 1:
-            print data[0]
+            print(data[0])
             del data[0]
         else:
-            print "Name(s) and Email(s) of author and associated committer(s):\n"
+            print("Name(s) and Email(s) of author and associated committer(s):\n")
             for dt in data:
-                print dt[0] + ': ' + dt[1]
+                print(dt[0] + ': ' + dt[1])
     else:
-        print "No data found."
+        print("No data found.")
 
 
 if __name__ == "__main__":
@@ -78,5 +78,5 @@ if __name__ == "__main__":
         result = main(username)
         output(result, username)
     except Exception as e:
-        print e
-        print "Please provide a username as argument"
+        print(e)
+        print("Please provide a username as argument")

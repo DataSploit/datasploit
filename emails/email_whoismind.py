@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import base
+from . import base
 import sys
 import requests
 from bs4 import BeautifulSoup
@@ -16,7 +16,7 @@ class style:
 
 
 def banner():
-    print colored(style.BOLD + '\n---> Searching Whoismind for associated domains\n' + style.END, 'blue')
+    print(colored(style.BOLD + '\n---> Searching Whoismind for associated domains\n' + style.END, 'blue'))
 
 
 def main(email):
@@ -34,8 +34,8 @@ def main(email):
 def output(data, email=""):
     for domain in data:
         if domain:
-            print domain
-    print "\n-----------------------------\n"
+            print(domain)
+    print("\n-----------------------------\n")
 
 
 if __name__ == "__main__":
@@ -45,5 +45,5 @@ if __name__ == "__main__":
         result = main(email)
         output(result, email)
     except Exception as e:
-        print e
-        print "Please provide an email as argument"
+        print(e)
+        print("Please provide an email as argument")
