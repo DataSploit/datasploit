@@ -16,7 +16,6 @@ MODULE_NAME = "Git_Emails"
 GITHUB_BASE = "https://api.github.com"
 access_token = vault.get_key('github_access_token')
 
-
 def __boldtext(text, color = 'blue'):
 	BOLD = '\033[1m'
 	END = '\033[0m'
@@ -28,15 +27,21 @@ def banner():
 
 
 def __get_username_repos(username):
-	r = requests.get("%s/users/%s/repos?access_token=%s" % (GITHUB_BASE, username, access_token))
-	repos = []
-	response = json.loads(r.content)
-	if "message" in response and response["message"] == "Not Found":
-		return []
-	else:
-		for repo in response:
-			repos.append(repo['full_name'])
-	return repos
+        if not access_token:
+                return [ colored(base.style.BOLD +
+                                 '[!] Error: No github token found. Skipping' +
+                                 base.style.END, 'red') ]
+        r = requests.get("%s/users/%s/repos?access_token=%s" % (GITHUB_BASE, username, access_token))
+        repos = []
+        response = json.loads(r.content)
+        for i in response['message']:
+                print("i: {0}".format(i))
+        if "message" in response and response["message"] == "Not Found":
+                return []
+        else:
+                for repo in response:
+                        repos.append(repo['full_name'])
+        return repos
 
 
 def __get_email_from_repo(repo, username):
@@ -75,11 +80,12 @@ def output_text(data):
 
 
 if __name__ == "__main__":
-    try:
-        username = sys.argv[1]
-        banner()
-        result = main(username)
-        output(result, username)
-    except Exception as e:
-        print(e)
-        print("Please provide a username as argument")
+        try:
+                username = sys.argv[1]
+                banner()
+                result = main(username)
+                output(result, username)
+        except Exception as e:
+                print(e)
+                print("Please provide a username as argument")
+                
