@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import re
 import sys
 import requests
@@ -10,17 +10,15 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n---> Searching Scribd Docs\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Searching Scribd Docs\n' + base.style.END, 'blue'))
 
 
 def main(email):
     req = requests.get('https://www.scribd.com/search?page=1&content_type=documents&query=%s' % (email))
+    print("REQ: {0}".format(req.text))
+    # maybe use beautiful soup here?
     m = re.findall('(?<=https://www.scribd.com/doc/)\w+', req.text.encode('UTF-8'))
     m = set(m)
     m = list(m)
@@ -37,7 +35,7 @@ def output(data, email=""):
         for link in data:
             print(link)
         print("")
-        print(colored(style.BOLD + 'More results might be available, please follow this link:' + style.END))
+        print(colored(base.style.BOLD + 'More results might be available, please follow this link:' + base.style.END))
         print("https://www.scribd.com/search?page=1&content_type=documents&query=" + email)
     else:
         print(colored('[-] No Associated Scribd Documents found.', 'red'))

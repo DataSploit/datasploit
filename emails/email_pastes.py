@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import vault
 import requests
 import json
@@ -10,10 +10,6 @@ from termcolor import colored
 
 ENABLED = True
 
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def colorize(string):
@@ -52,7 +48,7 @@ def google_search(email):
             url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=\"%s\"&start=%s" % (
                 google_cse_key, google_cse_cx, email, next_index)
             data = json.loads(requests.get(url).content)
-	    if 'error' in data:
+            if 'error' in data:
                 return True, all_results
             else:
                 all_results += data['items']
@@ -60,11 +56,11 @@ def google_search(email):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Finding Paste(s)..\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Finding Paste(s)..\n' + base.style.END, 'blue'))
 
 
 def main(email):
-    if vault.get_key('google_cse_key') != None and vault.get_key('google_cse_cx') != None:
+    if vault.get_key('google_cse_key') and vault.get_key('google_cse_cx'):
         status, data = google_search(email)
         return [status, data]
     else:
@@ -74,12 +70,12 @@ def main(email):
 def output(data, email):
     if data[0] == False:
         print(colored(
-            style.BOLD + '[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+            base.style.BOLD + '[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
     else:
         #print data[0]
         print("[+] %s results found\n" % len(data[1]))
         for x in data[1]:
-	    title = x['title'].encode('ascii', 'ignore').decode('ascii')
+            title = x['title'].encode('ascii', 'ignore').decode('ascii')
             snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
             link = x['link'].encode('ascii', 'ignore').decode('ascii')
             print("Title: %s\nURL: %s\nSnippet: %s\n" % (title, colorize(link), colorize(snippet)))
@@ -91,5 +87,5 @@ if __name__ == "__main__":
         banner()
         result = main(email)
         output(result, email)
-    except e as Exception:
+    except Exception as e:
         print(e)

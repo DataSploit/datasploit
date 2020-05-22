@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import requests
 import sys
 import vault
@@ -9,10 +9,6 @@ from termcolor import colored
 
 ENABLED = True
 
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def main(email):
@@ -27,14 +23,15 @@ def main(email):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Checking Fullcontact..\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Checking Fullcontact..\n' + base.style.END, 'blue'))
 
 
 def output(data, email=""):
     if type(data) == list and data[1] == "INVALID_API":
         print(colored(
-                style.BOLD + '\n[-] Full-Contact API Key not configured. Skipping Fullcontact Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+                base.style.BOLD + '\n[-] Full-Contact API Key not configured. Skipping Fullcontact Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
     else:
+        print("DATA: {0}".format(data))
         if data.get("status", "") == 200:
             if data.get("contactInfo", "") != "":
                 print("Name: %s" % data.get("contactInfo", "").get('fullName', ''))

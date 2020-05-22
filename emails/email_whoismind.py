@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import sys
 import requests
 from bs4 import BeautifulSoup
@@ -10,13 +10,9 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n---> Searching Whoismind for associated domains\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Searching Whoismind for associated domains\n' + base.style.END, 'blue'))
 
 
 def main(email):
@@ -28,6 +24,8 @@ def main(email):
         if 'href' in at and at.text in at['href']:
             domains.append(at.text)
     domains = list(set(domains))
+    if not domains:
+        print(colored(base.style.BOLD + '\n[!] Nothing found for Whoismind\n' + base.style.END, 'red'))
     return domains
 
 

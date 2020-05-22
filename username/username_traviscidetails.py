@@ -45,9 +45,9 @@ def main(username):
         details=list(set(details))
         return details
     else:
-        return [ colored(base.style.BOLD +
+        return [colored(base.style.BOLD +
                          '[!] Error: No github token for Travis CI found. Skipping' +
-                         base.style.END, 'red') ]
+                         base.style.END, 'red')]
 
 
 def output(data, username=""):

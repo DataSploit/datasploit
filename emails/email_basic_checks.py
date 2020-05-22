@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import vault
 import requests
 import json
@@ -8,18 +8,14 @@ import sys
 import re
 from termcolor import colored
 
+# Control whether the module is enabled or not
 ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def basic_checks(email):
     if re.match('[^@]+@[^@]+\.[^@]+', email):
         mailboxlayer_api = vault.get_key('mailboxlayer_api')
-        if vault.get_key('mailboxlayer_api') != None:
+        if vault.get_key('mailboxlayer_api'):
             url = "http://apilayer.net/api/check?access_key=%s&email=%s&smtp=1&format=1" % (mailboxlayer_api, email)
             req = requests.get(url)
             resp = json.loads(req.text)
@@ -32,9 +28,11 @@ def basic_checks(email):
 
 def output(data, email=""):
     if data == -1:
-        print(colored(style.BOLD + '\n[-] Please pass a valid email ID.\n' + style.END, 'red'))
+        print(colored(base.style.BOLD + '\n[-] Please pass a valid email ID.\n' + base.style.END, 'red'))
     elif data == -2:
-        print(colored(style.BOLD + '\n[-] MailBoxLayer_API Key not configured. Skipping basic checks.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+        print(colored(
+            base.style.BOLD + '\n[-] MailBoxLayer_API Key not configured. Skipping basic checks.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END,
+            'red'))
     else:
         print("Is it a free Email Address?:", end=' ')
         print("No" if not data['free'] else "Yes")
@@ -50,7 +48,7 @@ def output(data, email=""):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Basic Email Check(s)..\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Basic Email Check(s)..\n' + base.style.END, 'blue'))
 
 
 def main(email):

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from . import base
+import base
+import vault
 import sys
 import requests
 import json
@@ -10,27 +11,24 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n---> Checking breach status in HIBP (@troyhunt)\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Checking breach status in HIBP (@troyhunt)\n' + base.style.END, 'blue'))
 
 
 def main(email):
-    req = requests.get("https://haveibeenpwned.com/api/v2/breachedaccount/%s" % (email), headers = {"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36"})
+    req = requests.get("https://haveibeenpwned.com/api/v3/breachedaccount/%s" % (email), headers = {"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36"})
     if req.status_code == 404:
-	return {}
+        return {}
+    print("CONtents:{0}".format(req.content))
     if 'Attention Required! | CloudFlare' in req.content:
         print("CloudFlare detected")
         return {}
     if req.content != "":
-	try:
+        try:
             return json.loads(req.content)
-	except:
-	    return {}
+        except:
+            return {}
     else:
         return {}
 

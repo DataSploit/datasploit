@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import sys
 import requests
 from bs4 import BeautifulSoup
@@ -10,13 +10,9 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n---> Searching Slideshare\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Searching Slideshare\n' + base.style.END, 'blue'))
 
 
 def main(email):
@@ -26,6 +22,8 @@ def main(email):
     slides = {}
     for at in atag:
         slides[at.text] = at['href']
+    if not slides:
+        print(colored(base.style.BOLD + '\n[!] Nothing found from Slideshare\n' + base.style.END, 'red'))
     return slides
 
 
