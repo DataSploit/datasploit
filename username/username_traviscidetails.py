@@ -22,14 +22,8 @@ warnings.filterwarnings('ignore')
 # Control whether the module is enabled or not
 ENABLED = True
 
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
-
 def banner():
-    print(colored(style.BOLD + '\n[+] Checking Travis-CI user (author and associated committer) details\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Checking Travis-CI user (author and associated committer) details\n' + base.style.END, 'blue'))
 
 
 def main(username):
@@ -51,9 +45,9 @@ def main(username):
         details=list(set(details))
         return details
     else:
-        return [ colored(style.BOLD +
+        return [ colored(base.style.BOLD +
                          '[!] Error: No github token for Travis CI found. Skipping' +
-                         style.END, 'red') ]
+                         base.style.END, 'red') ]
 
 
 def output(data, username=""):

@@ -13,13 +13,8 @@ from bs4 import BeautifulSoup
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
-
 def banner():
-    print(colored(style.BOLD + '\n[+] Checking Gitlab user details\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Checking Gitlab user details\n' + base.style.END, 'blue'))
 
 
 def main(username):
@@ -43,8 +38,10 @@ def main(username):
                   gitlabdetails.append("Location:" + div.text.strip())
                 elif div.find("i", {"class" : "fa fa-briefcase"}):
                   gitlabdetails.append("Organisation: " + div.text.strip())
-
-    return gitlabdetails
+    if not gitlabdetails:
+        print("No info from Gitlab")
+    else:
+        return gitlabdetails
 
 
 def output(data, username=""):

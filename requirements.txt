@@ -3,6 +3,7 @@ anyjson
 beautifulsoup4
 billiard
 bs4
+cfscrape
 clearbit
 config
 configobj

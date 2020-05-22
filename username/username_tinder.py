@@ -14,14 +14,10 @@ from bs4 import BeautifulSoup
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print((colored(style.BOLD + '\n[+] Checking Tinder for username\n'
-                  + style.END, 'blue')))
+    print((colored(base.style.BOLD + '\n[+] Checking Tinder for username\n'
+                  + base.style.END, 'blue')))
 
 
 def fetch_content(username):
@@ -61,6 +57,9 @@ def main(username):
     if check_useranme_exists(content):
         userinfo = parse_page(content)
         download_photo(username, str(content.find(id='user-photo').get('src')))
+    if not userinfo:
+        print(colored(base.style.BOLD + '\n[!] Nothing found on Tinder\n'
+                      + base.style.END, 'red'))
     return userinfo
 
 

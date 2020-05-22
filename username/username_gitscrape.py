@@ -15,14 +15,10 @@ WRITE_TEXT_FILE = True
 MODULE_NAME = "Git_Repos_Commits"
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Scraping Git for Repos and Commits' + style.END, 'blue'))
-    print(colored(style.BOLD + '[!] This is BETA code, might not provide correct results\n' + style.END, 'red'))
+    print(colored(base.style.BOLD + '\n[+] Scraping Git for Repos and Commits' + base.style.END, 'blue'))
+    print(colored(base.style.BOLD + '[!] This is BETA code, might not provide correct results\n' + base.style.END, 'red'))
 
 
 def find_repos(username):
@@ -76,7 +72,7 @@ def output(data, username=""):
     if type(data) == list:
         if data[1] == "INVALID_API":
             print(colored(
-                 style.BOLD + '\n[-] Github Access Token not configured. Skipping Gi Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+                 base.style.BOLD + '\n[-] Github Access Token not configured. Skipping Gi Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
     else:
         print("[+] Found %s repos for username %s\n" % (len(data), username))
         counter = 1

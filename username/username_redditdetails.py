@@ -17,14 +17,10 @@ ENABLED = True
 EXTRA_VERBOSE = False
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Getting information from Reddit\n' +
-                  style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Getting information from Reddit\n' +
+                  base.style.END, 'blue'))
 
 
 def submission_latest(redditor):
@@ -189,34 +185,34 @@ def output(data, username=""):
     else:
         for k, v in list(data['Redditor Stats'].items()):
             print(str(k) + ": " + str(v))
-        print(colored(style.BOLD + '\n---> Top Ten Submitted to Subreddits\n' +
-                      style.END, 'blue'))
+        print(colored(base.style.BOLD + '\n---> Top Ten Submitted to Subreddits\n' +
+                      base.style.END, 'blue'))
         for k, v in sorted(list(data['Top 10 Submitted to Subreddits'].items()),
                            key=itemgetter(1), reverse=True):
             print(str(k) + ": " + str(v))
-        print(colored(style.BOLD + '\n---> Top Ten Commented in Subreddits\n' +
-                      style.END, 'blue'))
+        print(colored(base.style.BOLD + '\n---> Top Ten Commented in Subreddits\n' +
+                      base.style.END, 'blue'))
         for k, v in sorted(list(data['Top 10 Commented in Subreddits'].items()),
                            key=itemgetter(1), reverse=True):
             print(str(k) + ": " + str(v))
         print("\n")
         if EXTRA_VERBOSE:
-            print(colored(style.BOLD + '---> Top Submissions\n' +
-                          style.END, 'blue'))
+            print(colored(base.style.BOLD + '---> Top Submissions\n' +
+                          base.style.END, 'blue'))
             for submission in sorted(data['Top Submissions'],
                                      key=itemgetter('Score'), reverse=True):
                 for k, v in list(submission.items()):
                     print(str(k) + ": " + str(v))
                 print("\n")
-            print(colored(style.BOLD + '---> Top Comments\n' +
-                          style.END, 'blue'))
+            print(colored(base.style.BOLD + '---> Top Comments\n' +
+                          base.style.END, 'blue'))
             for submission in sorted(data['Top Comments'],
                                      key=itemgetter('Score'), reverse=True):
                 for k, v in list(submission.items()):
                     print(str(k) + ": " + str(v))
                 print("\n")
-            print(colored(style.BOLD + '---> Contriversial Posts\n' +
-                          style.END, 'blue'))
+            print(colored(base.style.BOLD + '---> Contriversial Posts\n' +
+                          base.style.END, 'blue'))
             print("\nTotal: " + str(data['Contriversial Posts']['Total']))
             print("\nSee file output (if enabled) for more details. Due to API")
             print("limitations only the last 100 Contriversial posts can be accessed.")

@@ -10,13 +10,9 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Checking git user details\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Checking git user details\n' + base.style.END, 'blue'))
 
 
 def main(username):

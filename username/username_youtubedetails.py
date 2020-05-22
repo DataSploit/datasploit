@@ -14,14 +14,10 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Getting information from YouTube\n' +
-                  style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Getting information from YouTube\n' +
+                  base.style.END, 'blue'))
 
 
 def remove_empty_kwargs(**kwargs):
@@ -156,11 +152,11 @@ def main(username):
                                                 maxResults=max_results)
             return [ channel_id, channel_details, channel_analysis ]
         else:
-            return [ colored(style.BOLD +'[!] Error: Channel not found for ' +
-                             username + '\n' + style.END, 'red') ]
+            return [ colored(base.style.BOLD +'[!] Error: Channel not found for ' +
+                             username + '\n' + base.style.END, 'red') ]
     else:
-        return [ colored(style.BOLD + '[!] Error: No Google API key found. Skipping' +
-                         style.END, 'red') ]
+        return [ colored(base.style.BOLD + '[!] Error: No Google API key found. Skipping' +
+                         base.style.END, 'red') ]
 
 
 def output(data, username=""):

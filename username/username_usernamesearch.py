@@ -13,13 +13,9 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Username found on\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Username found on\n' + base.style.END, 'blue'))
 
 
 def main(username):

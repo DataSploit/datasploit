@@ -62,3 +62,6 @@ Options:
 * [Official Website](https://datasploit.github.io/datasploit/) 
 * [Twitter](https://twitter.com/datasploit)
 * [Facebook](https://facebook.com/datasploit)
+
+### TODO
+* Create a file that sets if a module is enabled or not

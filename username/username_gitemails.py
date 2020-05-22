@@ -9,7 +9,7 @@ from termcolor import colored
 from collections import Counter
 
 # Control whether the module is enabled or not
-ENABLED = True
+ENABLED = True 
 WRITE_TEXT_FILE = True
 MODULE_NAME = "Git_Emails"
 
@@ -27,10 +27,6 @@ def banner():
 
 
 def __get_username_repos(username):
-        if not access_token:
-                return [ colored(base.style.BOLD +
-                                 '[!] Error: No github token found. Skipping' +
-                                 base.style.END, 'red') ]
         r = requests.get("%s/users/%s/repos?access_token=%s" % (GITHUB_BASE, username, access_token))
         repos = []
         response = json.loads(r.content)
@@ -57,13 +53,18 @@ def __get_email_from_repo(repo, username):
 
 
 def main(username):
-	# Use the username variable to do some stuff and return the data
-	repos = __get_username_repos(username)
-	main_emails_list = []
-	for repo in repos:
-		main_emails_list += __get_email_from_repo(repo, username)
-	main_emails_list = [s[0] for s in Counter(main_emails_list).most_common()]
-	return main_emails_list
+        # Use the username variable to do some stuff and return the data
+        if not access_token:
+                return [ colored(base.style.BOLD +
+                                 '[!] Error: No Github token found. Skipping' +
+                                 base.style.END, 'red') ]
+
+        repos = __get_username_repos(username)
+        main_emails_list = []
+        for repo in repos:
+                main_emails_list += __get_email_from_repo(repo, username)
+        main_emails_list = [s[0] for s in Counter(main_emails_list).most_common()]
+        return main_emails_list
 
 
 def output(data, username=""):

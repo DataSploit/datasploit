@@ -14,10 +14,6 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def extracting(imglinks, username, prourl, tag, attribute, value, finattrib, profile):
     res = requests.get(prourl)
@@ -210,7 +206,7 @@ def profilepic(urls, username):
 
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Getting Profile Pics\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Getting Profile Pics\n' + base.style.END, 'blue'))
 
 
 def main(username):

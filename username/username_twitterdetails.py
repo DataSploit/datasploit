@@ -14,13 +14,9 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def banner():
-    print(colored(style.BOLD + '\n[+] Getting information from Twitter\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Getting information from Twitter\n' + base.style.END, 'blue'))
 
 
 def twitterdetails(username):
@@ -40,7 +36,7 @@ def twitterdetails(username):
         userinfo = api.get_user(screen_name=username)
     except Exception as e:
         if e.message[0]['code'] == 63:
-            print(colored(style.BOLD + '[!] Error: ' + str(e.message[0]['message']) + style.END, 'red'))
+            print(colored(base.style.BOLD + '[!] Error: ' + str(e.message[0]['message']) + base.style.END, 'red'))
         pass
         return activitydetails, userdetails          
  
@@ -114,7 +110,7 @@ def main(username):
 def output(data, username=""):
     if data[1] == "INVALID_API":
         print(colored(
-            style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+            base.style.BOLD + '\n[-] Twitter API Keys not configured. Skipping Twitter search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
     else:
         if data and data[0]:
             hashlist = data[0]['Hashtag Interactions']
@@ -124,7 +120,7 @@ def output(data, username=""):
                 try:
                     print(k + ": " + str(v))
                 except UnicodeEncodeError as e:
-                    print(colored(style.BOLD + '[!] Error: ' + str(e) + style.END, 'red'))
+                    print(colored(base.style.BOLD + '[!] Error: ' + str(e) + base.style.END, 'red'))
             print("\n")
             count = Counter(hashlist).most_common()
             print("Top Hashtag Occurrence for user " + username + " based on last 1000 tweets")
