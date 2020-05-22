@@ -1,15 +1,10 @@
 #!/usr/bin/env python
 
-from ipwhois import IPWhois
 import sys
+from ipwhois import IPWhois
 from termcolor import colored
 
 ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def banner():

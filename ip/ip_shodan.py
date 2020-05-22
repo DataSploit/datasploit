@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import vault
 import requests
 import json
@@ -10,13 +10,8 @@ from termcolor import colored
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
-
 def banner():
-    print(colored(style.BOLD + '[+] Searching in Shodan' + style.END))
+    print(colored(base.style.BOLD + '[+] Searching in Shodan' + base.style.END))
 
 
 def main(ip):
@@ -32,30 +27,30 @@ def main(ip):
 def output(data, ip=""):
     if type(data) == list and data[1] == "INVALID_API":
         print(colored(
-                style.BOLD + '\n[-] Shodan API Key not configured. Skipping Shodan search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+                base.style.BOLD + '\n[-] Shodan API Key not configured. Skipping Shodan search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
     else:
         if 'error' in list(data.keys()):
             print('No information available for that IP.')
         else:
             asn = ''
-            print(colored(style.BOLD + '\n----------- Per Port Results -----------' + style.END))
+            print(colored(base.style.BOLD + '\n----------- Per Port Results -----------' + base.style.END))
             if 'data' in list(data.keys()):
                 for x in data['data']:
-                    print(colored(style.BOLD + '\nResponse from Open Port: %s' + style.END, 'green') % (x['port']))
+                    print(colored(base.style.BOLD + '\nResponse from Open Port: %s' + base.style.END, 'green') % (x['port']))
                     '''if 'title' in x.keys():
-                        print colored(style.BOLD + '[+] Title:\t\t'  + style.END, 'green') + str(x['title'])'''
+                        print colored(base.style.BOLD + '[+] Title:\t\t'  + base.style.END, 'green') + str(x['title'])'''
                     if 'title' in list(x.keys()):
-                        print(colored(style.BOLD + '[+] HTML Content:\t' + style.END, 'green') + str(
+                        print(colored(base.style.BOLD + '[+] HTML Content:\t' + base.style.END, 'green') + str(
                             'Yes (Please inspect Manually on this port)'))
                     if 'http' in list(x.keys()):
-                        print(colored(style.BOLD + '[+] HTTP port present:\t' + style.END, 'green'))
+                        print(colored(base.style.BOLD + '[+] HTTP port present:\t' + base.style.END, 'green'))
                         print('\tTitle: %s' % x['http']['title'])
                         print('\tRobots: %s' % x['http']['robots'])
                         print('\tServer: %s' % x['http']['server'])
                         print('\tComponents: %s' % x['http']['components'])
                         print('\tSitemap: %s' % x['http']['sitemap'])
                     if 'ssh' in list(x.keys()):
-                        print(colored(style.BOLD + '[+] HTTP port present:\t' + style.END, 'green'))
+                        print(colored(base.style.BOLD + '[+] HTTP port present:\t' + base.style.END, 'green'))
                         print('\tType: %s' % x['ssh']['type'])
                         print('\tCipher: %s' % x['ssh']['cipher'])
                         print('\tFingerprint: %s' % x['ssh']['fingerprint'])
@@ -72,7 +67,7 @@ def output(data, ip=""):
                         print('Product: %s' % x['product'])
                     if 'version' in list(x.keys()):
                         print('Version: %s' % x['version'])
-            print(colored(style.BOLD + '\n----------- Basic Info -----------' + style.END, 'blue'))
+            print(colored(base.style.BOLD + '\n----------- Basic Info -----------' + base.style.END, 'blue'))
             print('Open Ports: %s' % data['ports'])
             print('Latitude: %s' % data['latitude'])
             print('Hostnames: %s' % data['hostnames'])
@@ -82,7 +77,7 @@ def output(data, ip=""):
             if asn != '':
                 print('ASN: %s' % asn)
             if 'vulns' in list(data.keys()):
-                print(colored(style.BOLD + 'Vulnerabilties: %s' + style.END, 'red') % data['vulns'])
+                print(colored(base.style.BOLD + 'Vulnerabilties: %s' + base.style.END, 'red') % data['vulns'])
         print("")
 
 if __name__ == "__main__":
