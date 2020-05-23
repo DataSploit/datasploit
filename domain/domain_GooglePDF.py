@@ -22,15 +22,17 @@ def googlesearch(query, ext):
         'Connection': 'keep-alive'
     }
     req = urllib.request.Request(getrequrl, headers=hdr)
-    response = urllib.request.urlopen(req)
-    data = response.read().decode('UTF-8')
-    data = re.sub('<b>', '', data)
-    for e in ('>', '=', '<', '\\', '(', ')', '"', 'http', ':', '//'):
-        data = str.replace(data, e, ' ')
-
-    r1 = re.compile('[-_.a-zA-Z0-9.-_]*' + '\.' + ext)
-    res = r1.findall(data)
-    return res
+    try:
+        response = urllib.request.urlopen(req)
+        data = response.read().decode('UTF-8')
+        data = re.sub('<b>', '', data)
+        for e in ('>', '=', '<', '\\', '(', ')', '"', 'http', ':', '//'):
+            data = str.replace(data, e, ' ')
+        r1 = re.compile('[-_.a-zA-Z0-9.-_]*' + '\.' + ext)
+        res = r1.findall(data)
+        return res
+    except urllib.error.HTTPError as he:
+        print(he)
 
 
 def banner():
