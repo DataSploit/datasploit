@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import vault
 import requests
 import json
@@ -9,11 +9,6 @@ import re
 from termcolor import colored
 
 ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def colorize(string):
@@ -52,15 +47,15 @@ def google_search(domain):
             url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=\"%s\"&start=%s" % (
                 google_cse_key, google_cse_cx, domain, next_index)
             data = json.loads(requests.get(url).content)
-	    if 'error' in data:
-	       return True, all_results
-	    else:
-	        all_results += data['items']
+            if 'error' in data:
+                return True, all_results
+            else:
+                all_results += data['items']
     return True, all_results
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Finding Paste(s)..\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Finding Paste(s)..\n' + base.style.END, 'blue'))
 
 
 def main(domain):
@@ -75,7 +70,7 @@ def output(data, domain=""):
     if not data[0]:
         if type(data) == list and data[1] == "INVALID_API":
             print(colored(
-                style.BOLD + '\n[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+                base.style.BOLD + '\n[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
         else:
             print("Error Message: %s" % data[1]['error']['message'])
             print("Error Code: %s" % data[1]['error']['code'])
@@ -83,9 +78,9 @@ def output(data, domain=""):
     else:
         print("[+] %s results found\n" % len(data[1]))
         for x in data[1]:
-	    title = x['title'].encode('ascii', 'ignore').decode('ascii')
-	    snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
-	    link = x['link'].encode('ascii', 'ignore').decode('ascii')
+            title = x['title'].encode('ascii', 'ignore').decode('ascii')
+            snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
+            link = x['link'].encode('ascii', 'ignore').decode('ascii')
             print("Title: %s\nURL: %s\nSnippet: %s\n" % (title, colorize(link), colorize(snippet)))
 
 
