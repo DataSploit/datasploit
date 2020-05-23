@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import requests
 import sys
 import json
@@ -8,12 +8,7 @@ import warnings
 from termcolor import colored
 import time
 
-ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
+ENABLED = False
 
 
 warnings.filterwarnings("ignore")
@@ -29,7 +24,7 @@ def checkpunkspider(reversed_domain):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Trying luck with PunkSpider\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Trying luck with PunkSpider\n' + base.style.END, 'blue'))
 
 
 def main(domain):
