@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import sys
 import requests
 from bs4 import BeautifulSoup
@@ -9,11 +9,6 @@ from termcolor import colored
 import time
 
 ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def netcraft_domain_history(domain):
@@ -32,7 +27,7 @@ def netcraft_domain_history(domain):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Searching Domain history in Netcraft\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Searching Domain history in Netcraft\n' + base.style.END, 'blue'))
 
 
 def main(domain):
