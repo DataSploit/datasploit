@@ -22,7 +22,6 @@ def censys_search(domain):
     censys_list = []
 
     pages = float('inf')
-    print("PAGES: {0}".format(pages))
     page = 1
 
     censysio_id = vault.get_key('censysio_id')
@@ -30,17 +29,14 @@ def censys_search(domain):
 
     while page <= pages:
         print("Parsed and collected results from page %s" % (str(page)))
-        #time.sleep(0.5)
+        time.sleep(0.5)
         params = {'query': domain, 'page': page}
         res = requests.post("https://www.censys.io/api/v1/search/ipv4", json=params,
                             auth=(censysio_id, censysio_secret))
         payload = res.json()
         if 'error' not in list(payload.keys()):
             if len(payload['results']) > 0:
-                print("HERE")
-            #if 'results' in list(payload.keys()):
                 for r in payload['results']:
-                    print("R: {0}".format(r))
                     temp_dict = {}
                     ip = r["ip"]
                     proto = r["protocols"]
