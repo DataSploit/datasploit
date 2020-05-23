@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import vault
 import requests
 import json
@@ -9,11 +9,6 @@ from termcolor import colored
 import time
 
 ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def shodandomainsearch(domain):
@@ -25,7 +20,7 @@ def shodandomainsearch(domain):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Searching in Shodan:\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Searching in Shodan:\n' + base.style.END, 'blue'))
 
 
 def main(domain):
@@ -38,7 +33,7 @@ def main(domain):
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
         print(colored(
-                style.BOLD + '\n[-] Shodan API Key not configured. Skipping Shodan search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+                base.style.BOLD + '\n[-] Shodan API Key not configured. Skipping Shodan search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
     else:
         if 'matches' in list(data.keys()):
             for x in data['matches']:
