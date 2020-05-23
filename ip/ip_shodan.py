@@ -7,7 +7,8 @@ import json
 import sys
 from termcolor import colored
 
-ENABLED = True
+# set to false until I find time to debug. API may have been updated
+ENABLED = False
 
 
 def banner():

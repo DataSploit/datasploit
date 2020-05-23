@@ -4,7 +4,6 @@ import base
 import vault
 import sys
 import requests
-import json
 from termcolor import colored
 
 # Control whether the module is enabled or not
@@ -13,16 +12,17 @@ ENABLED = True
 
 def banner():
     # Write a cool banner here
-    print(colored(style.BOLD + "[+] Searching in VirusTotal Dataset" + style.END))
+    print(colored(base.style.BOLD + "[+] Searching in VirusTotal Dataset" + base.style.END))
     pass
 
 
 def main(ip):
     # Use the ip variable to do some stuff and return the data
-    if vault.get_key('virustotal_public_api') != None:
+    if vault.get_key('virustotal_public_api'):
         print(ip)
         api = vault.get_key('virustotal_public_api')
         params = "{'ip': '%s', 'apikey': '%s'}" % (ip, api)
+        print(params)
         url = "http://www.virustotal.com/vtapi/v2/ip-address/report?ip=%s&apikey=%s" % (ip, api)
         req = requests.get(url, params)
         return req
@@ -34,7 +34,7 @@ def output(data, ip=""):
     # Use the data variable to print out to console as you like
     if type(data) == list and data[1] == "INVALID_API":
         print(colored(
-                style.BOLD + '\n[-] VirusTotal API Key not configured. Skipping VirusTotal Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+                base.style.BOLD + '\n[-] VirusTotal API Key not configured. Skipping VirusTotal Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
     else:
         for i in data:
             print(i)

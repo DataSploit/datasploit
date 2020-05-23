@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import base
 from ipwhois import IPWhois
 from termcolor import colored
 
@@ -8,7 +9,7 @@ ENABLED = True
 
 
 def banner():
-    print(colored(style.BOLD + '[+] Getting WHOIS Information' + style.END))
+    print(colored(base.style.BOLD + '[+] Getting WHOIS Information' + base.style.END))
 
 
 def main(ip):
@@ -24,7 +25,7 @@ def output(data, ip=""):
     if not data:
         print('ASN Registry Lookup Failed')
     else:
-        print(colored(style.BOLD + '--------------- Basic Info ---------------' + style.END, 'blue'))
+        print(colored(base.style.BOLD + '--------------- Basic Info ---------------' + base.style.END, 'blue'))
         print('ASN ID: %s' % data['asn'])
         if 'network' in list(data.keys()):
             print('Org. Name: %s' % data['network']['name'])
@@ -33,7 +34,7 @@ def output(data, ip=""):
             print('Parent Handle: %s' % data['network']['parent_handle'])
             print('Country: %s' % data['network']['country'])
         if 'objects' and 'entities' in list(data.keys()):
-            print(colored(style.BOLD + '\n----------- Per Handle Results -----------' + style.END, 'blue'))
+            print(colored(base.style.BOLD + '\n----------- Per Handle Results -----------' + base.style.END, 'blue'))
             for x in data['entities']:
                 print('Handle: %s' % x)
                 if 'contact' in list(data['objects'][x].keys()):
