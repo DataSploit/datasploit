@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import vault
 import re
 import requests
@@ -22,14 +22,9 @@ https://github.com/automatingosint/osint_public/blob/master/trackingcodes/websit
 '''
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
-
 def banner():
-    print(colored(style.BOLD + '\n[+] Checking for Google tracking codes.\n' +
-                  style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n[+] Checking for Google tracking codes.\n' +
+                  base.style.END, 'blue'))
 
 
 def clean_tracking_code(tracking_code):
@@ -47,15 +42,15 @@ def extract_tracking_codes(domain):
             site = "http://" + domain
         response = requests.get(site)
     except:
-        connections['err'] = str(colored(style.BOLD +
-                                 '\n[!] Failed to reach site.\n' + style.END, 'red'))
+        connections['err'] = str(colored(base.style.BOLD +
+                                 '\n[!] Failed to reach site.\n' + base.style.END, 'red'))
         return connections
 
     extracted_codes = []
     google_adsense_pattern   = re.compile("pub-[0-9]{1,}", re.IGNORECASE)
     google_analytics_pattern = re.compile("ua-\d+-\d+", re.IGNORECASE)
-    extracted_codes.extend(google_adsense_pattern.findall(response.content))
-    extracted_codes.extend(google_analytics_pattern.findall(response.content))
+    extracted_codes.extend(google_adsense_pattern.findall(response.content.decode('UTF-8')))
+    extracted_codes.extend(google_analytics_pattern.findall(response.content.decode('UTF-8')))
     for code in extracted_codes:
         code = clean_tracking_code(code)
         if code.lower() not in tracking_codes:
@@ -115,12 +110,12 @@ def main(domain):
                     common_domains[k] = (sorted(set(v)))
                 return [ common_domains, tracking_codes ]
             else:
-                return [ colored(style.BOLD + '\n[!] No tracking codes found!\n' +
-                                 style.END, 'red') ]
+                return [ colored(base.style.BOLD + '\n[!] No tracking codes found!\n' +
+                                 base.style.END, 'red') ]
     else:
-        return [ colored(style.BOLD +
+        return [ colored(base.style.BOLD +
                          '[!] Error: No SpyOnWeb API token found. Skipping' +
-                         style.END, 'red') ]
+                         base.style.END, 'red') ]
 
 
 def output(data, domain=""):
@@ -136,9 +131,9 @@ def output(data, domain=""):
                         print('\t' + str(code))
                 else:
                     if 'conn refused' in v:
-                        print(colored(style.BOLD +
+                        print(colored(base.style.BOLD +
                                       '\n[!] Error: Connection requests exceeded!\n' +
-                                      style.END, 'red'))
+                                      base.style.END, 'red'))
                     print(k + ':')
                     for url in v:
                         if url == 'conn refused':
