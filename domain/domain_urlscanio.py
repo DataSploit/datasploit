@@ -71,8 +71,13 @@ def main(domain):
         scan = start_scan(domain, headers).json()
     # No need to check for a completed scan immediately.
     time.sleep(5)
-    results = get_results(scan['uuid'])
-    return results.json()
+    if 'status' not in list(scan.keys()):
+        results = get_results(scan['uuid'])
+        return results.json()
+    else:
+        print("Scan results: {0}".format(scan))
+        return []
+
 
 
 def output(data, domain=""):
