@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from . import base
+import base
 import re, sys, json, time, requests
 import vault
 from termcolor import colored
@@ -7,23 +7,22 @@ from termcolor import colored
 
 ENABLED = True
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 def check_api_keys():
     try:
-        if vault.get_key('censysio_id') != None and vault.get_key('censysio_secret') != None:
+        if vault.get_key('censysio_id') and vault.get_key('censysio_secret'):
             return True
         else:
             return False
-    except:
+    except Exception as e:
+        print("Censys Keys not setutp")
         return False
 
 def censys_search(domain):
     censys_list = []
 
     pages = float('inf')
+    print("PAGES: {0}".format(pages))
     page = 1
 
     censysio_id = vault.get_key('censysio_id')
@@ -36,10 +35,12 @@ def censys_search(domain):
         res = requests.post("https://www.censys.io/api/v1/search/ipv4", json=params,
                             auth=(censysio_id, censysio_secret))
         payload = res.json()
-
         if 'error' not in list(payload.keys()):
-            if 'results' in list(payload.keys()):
+            if len(payload['results']) > 0:
+                print("HERE")
+            #if 'results' in list(payload.keys()):
                 for r in payload['results']:
+                    print("R: {0}".format(r))
                     temp_dict = {}
                     ip = r["ip"]
                     proto = r["protocols"]
@@ -58,6 +59,9 @@ def censys_search(domain):
 
                     pages = payload['metadata']['pages']
                     page += 1
+            else:
+                censys_list = None
+                break
         else:
             censys_list = None
             break
@@ -96,7 +100,7 @@ def main(domain):
         data = censys_search(domain)
         return data
     else:
-        print(colored(style.BOLD + '\n[-] Please configure respective API Keys for this module.\n' + style.END, 'red'))
+        print(colored(base.style.BOLD + '\n[-] Please configure respective API Keys for this module.\n' + base.style.END, 'red'))
         return None
 
 if __name__ == "__main__":
@@ -106,4 +110,4 @@ if __name__ == "__main__":
         output(result, domain)
     except Exception as e:
         print(e)
-        print(colored(style.BOLD + '\n[-] Please provide a domain name as argument\n' + style.END, 'red'))
+        print(colored(base.style.BOLD + '\n[-] Please provide a domain name as argument\n' + base.style.END, 'red'))
