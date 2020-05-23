@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import requests
 from bs4 import BeautifulSoup
 import sys
@@ -10,10 +10,6 @@ import time
 
 ENABLED = True
 
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def boardsearch_forumsearch(domain):
@@ -29,7 +25,7 @@ def boardsearch_forumsearch(domain):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Gathering links from Forums:\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Gathering links from Forums:\n' + base.style.END, 'blue'))
 
 
 def main(domain):
