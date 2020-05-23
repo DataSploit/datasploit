@@ -47,12 +47,12 @@ def extract_tracking_codes(domain):
         return connections
 
     extracted_codes = []
+
+    #
     google_adsense_pattern   = re.compile("pub-[0-9]{1,}", re.IGNORECASE)
     google_analytics_pattern = re.compile("ua-\d+-\d+", re.IGNORECASE)
-
-
-    extracted_codes.extend(google_adsense_pattern.findall(response.content.decode('UTF-16')))
-    extracted_codes.extend(google_analytics_pattern.findall(response.content.decode('UTF-16')))
+    extracted_codes.extend(google_adsense_pattern.findall(response.text))
+    extracted_codes.extend(google_analytics_pattern.findall(response.text))
     for code in extracted_codes:
         code = clean_tracking_code(code)
         if code.lower() not in tracking_codes:
