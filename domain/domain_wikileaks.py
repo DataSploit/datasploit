@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import requests
 from bs4 import BeautifulSoup
 import sys
@@ -8,11 +8,6 @@ from termcolor import colored
 import time
 
 ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def wikileaks(domain):
@@ -30,7 +25,7 @@ def wikileaks(domain):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Searching through WikiLeaks\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Searching through WikiLeaks\n' + base.style.END, 'blue'))
 
 
 def main(domain):
