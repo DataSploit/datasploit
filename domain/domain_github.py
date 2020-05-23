@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import vault
 import sys
 import json
@@ -9,10 +9,6 @@ from termcolor import colored
 
 ENABLED = True
 
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def github_search(query):
@@ -24,7 +20,7 @@ def github_search(query):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Searching Github for domain results\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Searching Github for domain results\n' + base.style.END, 'blue'))
 
 
 def main(domain):
@@ -39,7 +35,7 @@ def output(data, domain=""):
     if type(data) == list and not data[0]:
         if data[1] == "INVALID_API":
             print(colored(
-                style.BOLD + '\n[-] Github Access Token not configured, skipping Github Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+                base.style.BOLD + '\n[-] Github Access Token not configured, skipping Github Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
         else:
             print(colored("Sad! Nothing found on github", 'red'))
     else:
