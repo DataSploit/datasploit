@@ -24,7 +24,7 @@ def banner():
 
 
 def main(domain):
-    if vault.get_key('github_access_token') != None:
+    if vault.get_key('github_access_token'):
         count, results = github_search(domain)
         return [count, results]
     else:
