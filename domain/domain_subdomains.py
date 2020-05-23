@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import sys
 import requests
 from bs4 import BeautifulSoup
@@ -20,10 +20,6 @@ MODULE_NAME = "Domain_subdomains"
 '''
 Author(s): @upgoingstar & @khasmek
 '''
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 
@@ -62,16 +58,16 @@ def subdomains_from_netcraft(domain, subdomain_list):
     target_dom_name = domain.split(".")
     req1 = requests.get("http://searchdns.netcraft.com/?host=%s" % domain)
     link_regx = re.compile('<a href="http://toolbar.netcraft.com/site_report\?url=(.*)">')
-    links_list = link_regx.findall(req1.content)
+    links_list = link_regx.findall(req1.content.decode('UTF-8'))
     for x in links_list:
         dom_name = x.split("/")[2].split(".")
         if (dom_name[len(dom_name) - 1] == target_dom_name[1]) and (dom_name[len(dom_name) - 2] == target_dom_name[0]):
             subdomain_list = check_and_append_subdomains(x.split("/")[2], subdomain_list)
     num_regex = re.compile('Found (.*) site')
-    num_subdomains = num_regex.findall(req1.content)
+    num_subdomains = num_regex.findall(req1.content.decode('UTF-8'))
     if not num_subdomains:
         num_regex = re.compile('First (.*) sites returned')
-        num_subdomains = num_regex.findall(req1.content)
+        num_subdomains = num_regex.findall(req1.content.decode('UTF-8'))
     if num_subdomains:
         if num_subdomains[0] != str(0):
             num_pages = int(num_subdomains[0]) / 20 + 1
@@ -90,7 +86,7 @@ def subdomains_from_netcraft(domain, subdomain_list):
                     for y in links_list:
                         dom_name1 = y.split("/")[2].split(".")
                         if (dom_name1[len(dom_name1) - 1] == target_dom_name[1]) and (
-                                    dom_name1[len(dom_name1) - 2] == target_dom_name[0]):
+                                dom_name1[len(dom_name1) - 2] == target_dom_name[0]):
                             subdomain_list = check_and_append_subdomains(y.split("/")[2], subdomain_list)
                     last_item = links_list[len(links_list) - 1].split("/")[2]
                     next_page = 20 * x + 1
@@ -126,7 +122,7 @@ def ct_search(domain, subdomain_list, wildcard=True):
     base_url += domain
 
     ua = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 ' + \
-        'Firefox/40.1'
+         'Firefox/40.1'
     r = requests.get(url=base_url, headers={'User-Agent': ua})
 
     if r.ok:
@@ -232,7 +228,7 @@ def subdomains_from_dnstrails(domain, subdomain_list):
     return subdomain_list
 
 def banner():
-    print(colored(style.BOLD + '---> Finding subdomains, will be back soon with list. \n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '[+] Finding subdomains, will be back soon with list. \n' + base.style.END, 'blue'))
 
 
 def main(domain):
@@ -251,16 +247,16 @@ def main(domain):
 def output(data, domain=""):
     print(colored("List of subdomains found\n", 'green'))
     for sub in data:
-	if not re.match("\d{4}-\d{2}-\d{2}", sub):
+        if not re.match("\d{4}-\d{2}-\d{2}", sub):
             print(sub)
 
 
 def output_text(data):
-	ret_out = []
-	for sub in data:
-        	if not re.match("\d{4}-\d{2}-\d{2}", sub):
-        		ret_out.append(sub)
-	return "\n".join(ret_out)
+    ret_out = []
+    for sub in data:
+        if not re.match("\d{4}-\d{2}-\d{2}", sub):
+            ret_out.append(sub)
+    return "\n".join(ret_out)
 
 
 if __name__ == "__main__":
