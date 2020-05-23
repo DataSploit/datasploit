@@ -53,12 +53,12 @@ def output(data, domain=""):
 
 
 def output_text(data):
-	return "\n".join(data)
+    return "\n".join(data)
 
 
 if __name__ == "__main__":
-        domain = sys.argv[1]
-        banner()
-        result = main(domain)
-        if result:
-            output(result, domain)
+    domain = sys.argv[1]
+    banner()
+    result = main(domain)
+    if result:
+        output(result, domain)
