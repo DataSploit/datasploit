@@ -107,8 +107,8 @@ def auto_select_target(target, output=None):
         else:
             print("Nothing Matched assuming username, running usernameOsint...\n")
             usernameOsint.run(target, output)
-    except:
-        print("Unknown Error Occured")
+    except Exception as e:
+        print("Unknown Error Occured:\n\t {0}".format(e))
 
 if __name__ == "__main__":
    main(sys.argv[1:])
