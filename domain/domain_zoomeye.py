@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import requests
 import json
 import sys
@@ -8,12 +8,7 @@ import vault
 from termcolor import colored
 import time
 
-ENABLED = False
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
+ENABLED = True
 
 
 def get_accesstoken_zoomeye(domain):
@@ -24,7 +19,7 @@ def get_accesstoken_zoomeye(domain):
     s = requests.post("https://api.zoomeye.org/user/login", data=datalogin, headers=headers)
     responsedata = json.loads(s.text)
     if "error" in responsedata and responsedata['error'] == "bad_request":
-	return False
+        return False
     access_token1 = responsedata.get('access_token', "78c4a2dd70ddeffc5fc3c0639f86245a")
     return access_token1
 
@@ -33,23 +28,23 @@ def search_zoomeye(domain):
     time.sleep(0.3)
     zoomeye_token = get_accesstoken_zoomeye(domain)
     if not zoomeye_token:
-	return [False, "BAD_API"]
+        return [False, "BAD_API"]
     authData = {"Authorization": "JWT " + str(zoomeye_token)}
     req = requests.get('http://api.zoomeye.org/web/search/?query=site:%s&page=1' % domain, headers=authData)
     return True, req.text
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Finding hosts from ZoomEye\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Finding hosts from ZoomEye\n' + base.style.END, 'blue'))
 
 
 def main(domain):
     if vault.get_key('zoomeyepass') != "" and vault.get_key('zoomeyeuser') != "":
         zoomeye_results = search_zoomeye(domain)
-	if zoomeye_results[0]:
-	        return True, json.loads(zoomeye_results)
-	else:
-		return zoomeye_results
+        if zoomeye_results[0]:
+            return json.loads(zoomeye_results[1])
+        else:
+            return zoomeye_results
     else:
         return [False, "INVALID_API"]
 
@@ -57,11 +52,12 @@ def main(domain):
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
         print(colored(
-                style.BOLD + '\n[-] ZoomEye username and password not configured. Skipping Zoomeye Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red'))
+            base.style.BOLD + '\n[-] ZoomEye username and password not configured. Skipping Zoomeye Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + base.style.END, 'red'))
     elif type(data) == list and data[1] == "BAD_API":
-	print(colored(
-                style.BOLD + '\n[-] ZoomEye API is not functional right now.\n' + style.END, 'red'))
+        print(colored(
+            base.style.BOLD + '\n[-] ZoomEye API is not functional right now.\n' + base.style.END, 'red'))
     else:
+        print("DATA {0}".format(data))
         if 'matches' in list(data.keys()):
             print(len(data['matches']))
             for x in data['matches']:
