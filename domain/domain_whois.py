@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import sys
 import whois
 from termcolor import colored
@@ -9,21 +9,17 @@ import time
 ENABLED = True
 
 
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
-
 
 def whoisnew(domain):
-	try:
-	    w = whois.whois(domain)
-	    return dict(w)
-	except:
-		return {}
+    try:
+        w = whois.whois(domain)
+        return dict(w)
+    except:
+        return {}
 
 
 def banner():
-    print(colored(style.BOLD + '---> Finding Whois Information.' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '---> Finding Whois Information.' + base.style.END, 'blue'))
 
 
 def main(domain):
