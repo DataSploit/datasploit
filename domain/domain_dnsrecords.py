@@ -1,16 +1,11 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 import sys
 import dns.resolver
 from termcolor import colored
 
 ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def fetch_dns_records(domain, rec_type):
@@ -37,7 +32,7 @@ def parse_dns_records(domain):
 
 
 def banner():
-    print(colored(style.BOLD + '---> Finding DNS Records.\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '---> Finding DNS Records.\n' + base.style.END, 'blue'))
 
 
 def main(domain):
