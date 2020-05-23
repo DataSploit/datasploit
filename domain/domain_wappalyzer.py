@@ -1,17 +1,12 @@
 #!/usr/bin/env python
 
-from . import base
+import base
 from Wappalyzer import Wappalyzer, WebPage
 import sys
 import time
 from termcolor import colored
 
 ENABLED = True
-
-
-class style:
-    BOLD = '\033[1m'
-    END = '\033[0m'
 
 
 def wappalyzeit(domain):
@@ -30,7 +25,7 @@ def wappalyzeit(domain):
 
 
 def banner():
-    print(colored(style.BOLD + '\n---> Wapplyzing web page of base domain:\n' + style.END, 'blue'))
+    print(colored(base.style.BOLD + '\n---> Wapplyzing web page of base domain:\n' + base.style.END, 'blue'))
 
 
 def main(domain):
